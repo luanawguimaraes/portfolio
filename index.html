@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Luana Guimarães | Portfólio UGC Creator</title>
 <meta name="description" content="Portfólio UGC de Luana Guimarães: vídeos autênticos e estratégicos para marcas de beleza, skincare, moda, fitness, pet e tech.">
-<meta name="theme-color" content="#FFFFF6">
+<meta name="theme-color" content="#f6e9c5">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -15,9 +15,9 @@
      Troque as cores aqui e o site inteiro acompanha.
      ========================================================== */
   :root {
-    --creme: #FFFFF6;
-    --creme-2: #f7f4e4;
-    --creme-3: #ece7d4;
+    --creme: #f6e9c5;
+    --creme-2: #efdfb2;
+    --creme-3: #e5d29e;
     --tinta: #14110d;
     --tinta-suave: #4a433b;
     /* Os nomes "azul" e "laranja" ficaram do modelo original; hoje as duas são o roxo */
@@ -105,7 +105,7 @@
   }
   .midia img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .midia.quente { background: linear-gradient(160deg, #f6f1fb 0%, #d9cceb 50%, var(--roxo-claro) 100%); }
-  .midia.neutra { background: linear-gradient(160deg, var(--creme-2) 0%, var(--creme-3) 55%, #c9b9a6 100%); }
+  .midia.neutra { background: linear-gradient(160deg, #fbf4e0 0%, var(--creme-3) 55%, #c9b48a 100%); }
   .midia.noite { background: linear-gradient(160deg, #3a2d52 0%, var(--azul-escuro) 55%, var(--tinta) 100%); }
   .legenda-midia {
     position: relative; z-index: 1; margin: 14px; padding: 6px 12px; border-radius: 999px;
@@ -121,7 +121,7 @@
   .topo {
     position: fixed; inset: 0 0 auto 0; z-index: 50; height: var(--topo);
     display: flex; align-items: center;
-    background: rgba(255, 255, 246, .86);
+    background: rgba(246, 233, 197, .88);
     backdrop-filter: saturate(140%) blur(12px); -webkit-backdrop-filter: saturate(140%) blur(12px);
     border-bottom: 1px solid transparent; transition: border-color .3s, box-shadow .3s;
   }
@@ -196,7 +196,7 @@
   /* ==========================================================
      3. CONTEÚDOS DE DESTAQUE
      ========================================================== */
-  .destaques { background: var(--branco); }
+  .destaques { background: var(--creme); }
   .destaques-grade { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(20px, 3vw, 36px); }
   .card-video { text-decoration: none; display: block; border-radius: var(--raio); transition: transform .4s; }
   .card-video:hover { transform: translateY(-6px); }

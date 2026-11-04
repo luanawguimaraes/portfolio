@@ -200,7 +200,8 @@
   .sobre-grade { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(40px, 7vw, 110px); align-items: center; }
   .sobre-foto { position: relative; }
   .sobre-foto::after { content: ""; position: absolute; inset: 22px -22px -22px 22px; border: 1px solid var(--azul); border-radius: var(--raio); z-index: -1; }
-  .sobre-img { object-position: 50% 22%; } /* mantém o rosto no enquadramento 4:5 */
+  .sobre-colagem::after { display: none; } /* a montagem já tem as próprias molduras */
+  .sobre-colagem img { width: 100%; height: auto; filter: drop-shadow(0 18px 30px rgba(20, 17, 13, .10)); }
   .sobre-texto .titulo-secao { margin-bottom: 24px; font-weight: 800; line-height: 1; letter-spacing: -.03em; font-size: clamp(34px, 4vw, 56px); max-width: none; }
   .sobre-texto p { color: var(--tinta-suave); max-width: 58ch; }
   .sobre-texto p strong { color: var(--tinta); font-weight: 700; }
@@ -627,11 +628,9 @@
   <!-- ============ 2. SOBRE MIM ============ -->
   <section class="secao" id="sobre" aria-labelledby="titulo-sobre">
     <div class="container sobre-grade">
-      <div class="sobre-foto revelar">
-        <!-- FOTO DO SOBRE: arquivo sobre.webp, na mesma pasta do index.html -->
-        <div class="midia quente r-4-5">
-          <img class="sobre-img" src="sobre.webp" alt="Luana Guimarães sentada, de blusa preta e calça jeans, olhando para a câmera" data-i18n-attr="alt:sobre.fotoAlt" loading="lazy" width="1000" height="1499">
-        </div>
+      <div class="sobre-foto sobre-colagem revelar">
+        <!-- FOTO DO SOBRE: montagem com a foto principal e duas fotos menores (arquivo sobre-colagem.webp) -->
+        <img src="sobre-colagem.webp" alt="Luana Guimarães sentada, de blusa preta e calça jeans, com duas fotos menores: uma segurando um produto de cabelo e outra com o braço sobre a cabeça" data-i18n-attr="alt:sobre.fotoAlt" loading="lazy" width="1100" height="1226">
       </div>
       <div class="sobre-texto">
         <span class="rotulo revelar" data-i18n="sobre.rotulo">Sobre mim</span>
@@ -1007,7 +1006,7 @@
     "capa.faixa": "Brands I have worked with",
     "legenda.creator": "creator photo 4:5",
     "legenda.video": "video cover 9:16",
-    "sobre.fotoAlt": "Luana Guimarães sitting in a black top and jeans, looking at the camera",
+    "sobre.fotoAlt": "Luana Guimarães sitting in a black top and jeans, with two smaller photos: one holding a hair product and one with her arm over her head",
     "sobre.rotulo": "About me",
     "sobre.titulo": "Hi, I'm <em>Luana!</em>",
     "sobre.texto": "I'm <strong>27</strong>, I have a <strong>degree in Marketing</strong> and I work in the influencer market as a UGC content creator and creative strategist. Along the way, I have <strong>developed more than 90 UGC portfolios for creators</strong>, deepening my understanding of positioning, image building and strategic communication.",

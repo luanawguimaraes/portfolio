@@ -1314,7 +1314,7 @@
   }
   cracha.addEventListener("pointerenter", (e) => {
     if (e.pointerType !== "mouse" || reduzirMovimento) return;
-    balancoAlvo = 3.2;
+    balancoAlvo = 6; // quanto o crachá balança, em graus para cada lado
     if (!balancando) { balancando = true; balancoFase = 0; balancoTempo = performance.now(); requestAnimationFrame(balancar); }
   });
   cracha.addEventListener("pointerleave", () => { balancoAlvo = 0; });

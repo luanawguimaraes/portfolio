@@ -206,7 +206,18 @@
   .sobre-foto { position: relative; }
   .sobre-foto::after { content: ""; position: absolute; inset: 22px -22px -22px 22px; border: 1px solid var(--azul); border-radius: var(--raio); z-index: -1; }
   .sobre-colagem::after { display: none; } /* a montagem já tem as próprias molduras */
-  .sobre-colagem img { width: 100%; height: auto; filter: drop-shadow(0 18px 30px rgba(20, 17, 13, .10)); }
+  .colagem { position: relative; filter: drop-shadow(0 18px 30px rgba(20, 17, 13, .10)); }
+  .colagem img { display: block; height: auto; }
+  .colagem-base { width: 100%; }
+  .colagem-foto, .colagem-frente { position: absolute; }
+  /* posições medidas na própria montagem (em % da imagem de 1100 x 1226 px) */
+  .colagem-foto1 { left: .818%; top: .897%; width: 41.909%; --amp: 1.55%; animation: flutuar 5.6s ease-in-out infinite; }
+  .colagem-foto2 { left: 59.818%; top: 68.026%; width: 38.636%; --amp: 1.77%; animation: flutuar 6.4s ease-in-out -3.2s infinite; }
+  .colagem-frente { left: 34.636%; top: 16.884%; width: 7.909%; }
+  @keyframes flutuar {
+    0%, 100% { transform: translateY(calc(var(--amp) * -1)); }
+    50% { transform: translateY(var(--amp)); }
+  }
   .sobre-texto .titulo-secao { margin-bottom: 24px; font-weight: 800; line-height: 1; letter-spacing: -.03em; font-size: clamp(34px, 4vw, 56px); max-width: none; }
   .sobre-texto p { color: var(--tinta-suave); max-width: 58ch; }
   .sobre-texto p strong { color: var(--tinta); font-weight: 700; }
@@ -558,6 +569,7 @@
     .faixa-trilho { animation: none; width: auto; }
     .faixa-lista { flex-wrap: wrap; justify-content: center; row-gap: 10px; }
     .faixa-lista[aria-hidden="true"], .faixa-temas li[aria-hidden="true"] { display: none; }
+    .colagem-foto { animation: none; }
   }
 </style>
 </head>
@@ -638,8 +650,15 @@
   <section class="secao" id="sobre" aria-labelledby="titulo-sobre">
     <div class="container sobre-grade">
       <div class="sobre-foto sobre-colagem revelar">
-        <!-- FOTO DO SOBRE: montagem com a foto principal e duas fotos menores (arquivo sobre-colagem.webp) -->
-        <img src="sobre-colagem.webp?v=3" alt="Luana Guimarães sentada, de blusa preta e calça jeans, com duas fotos menores: uma segurando um produto de cabelo e outra com o braço sobre a cabeça" data-i18n-attr="alt:sobre.fotoAlt" loading="lazy" width="1100" height="1226">
+        <!-- FOTO DO SOBRE: montagem em camadas para as duas fotos pequenas flutuarem.
+             sobre-base.webp = foto principal; sobre-foto1/2.webp = fotos pequenas;
+             sobre-frente.webp = mecha de cabelo da foto principal que fica na frente da foto pequena de cima. -->
+        <div class="colagem">
+          <img class="colagem-base" src="sobre-base.webp" alt="Luana Guimarães sentada, de blusa preta e calça jeans, com duas fotos menores: uma segurando um produto de cabelo e outra com o braço sobre a cabeça" data-i18n-attr="alt:sobre.fotoAlt" loading="lazy" width="1100" height="1226">
+          <img class="colagem-foto colagem-foto1" src="sobre-foto1.webp" alt="" aria-hidden="true" loading="lazy" width="461" height="426">
+          <img class="colagem-frente" src="sobre-frente.webp" alt="" aria-hidden="true" loading="lazy" width="87" height="203">
+          <img class="colagem-foto colagem-foto2" src="sobre-foto2.webp" alt="" aria-hidden="true" loading="lazy" width="425" height="374">
+        </div>
       </div>
       <div class="sobre-texto">
         <span class="rotulo revelar" data-i18n="sobre.rotulo">Sobre mim</span>

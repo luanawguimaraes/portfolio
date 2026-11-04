@@ -5,31 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Luana Guimarães | Portfólio UGC Creator</title>
 <meta name="description" content="Portfólio UGC de Luana Guimarães: vídeos autênticos e estratégicos para marcas de beleza, skincare, moda, fitness, pet e tech.">
-<meta name="theme-color" content="#FFFFF6">
+<meta name="theme-color" content="#FEF8E7">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 
   /* ==========================================================
-     DIREÇÃO VISUAL: Editorial amarelo claro & roxo
+     DIREÇÃO VISUAL: Editorial creme & rosa
      Troque as cores aqui e o site inteiro acompanha.
      ========================================================== */
   :root {
-    --creme: #FFFFF6;
-    --creme-2: #f7f4e4;
-    --creme-3: #ece7d4;
-    --tinta: #14110d;
-    --tinta-suave: #4a433b;
-    /* Os nomes "azul" e "laranja" ficaram do modelo original; hoje as duas são o roxo */
-    --azul: #6F5892;
-    --azul-escuro: #5a4778;
-    --azul-claro: #ece5f5;
-    --roxo-claro: #BEABD9;
-    --degrade: linear-gradient(120deg, #6F5892 0%, #BEABD9 100%);
-    --laranja: #6F5892;
-    --laranja-texto: #6F5892;
-    --linha: rgba(20, 17, 13, .12);
+    --creme: #FEF8E7;
+    --creme-2: #F8EED6;
+    --creme-3: #EFE1C2;
+    --tinta: #2B2B2B;
+    --tinta-suave: #555050;
+    /* Os nomes "azul", "laranja" e "roxo" ficaram de versões antigas; hoje são os tons de rosa e o azul claro */
+    --azul: #C72D67;
+    --azul-escuro: #A3204F;
+    --azul-claro: #CFDFFC;
+    --roxo-claro: #EA70A5;
+    --degrade: linear-gradient(120deg, #C72D67 0%, #EA70A5 100%);
+    --laranja: #C72D67;
+    --laranja-texto: #C72D67;
+    --linha: rgba(43, 43, 43, .12);
     --branco: #FFFFFF;
     --raio: 14px;
     --raio-sm: 8px;
@@ -105,9 +105,9 @@
     display: flex; align-items: flex-end;
   }
   .midia img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .midia.quente { background: linear-gradient(160deg, #f6f1fb 0%, #d9cceb 50%, var(--roxo-claro) 100%); }
+  .midia.quente { background: linear-gradient(160deg, #FDEBF2 0%, #F6BFD6 50%, var(--roxo-claro) 100%); }
   .midia.neutra { background: linear-gradient(160deg, var(--creme-2) 0%, var(--creme-3) 55%, #c9bfa0 100%); }
-  .midia.noite { background: linear-gradient(160deg, #3a2d52 0%, var(--azul-escuro) 55%, var(--tinta) 100%); }
+  .midia.noite { background: linear-gradient(160deg, #4A1A2E 0%, var(--azul-escuro) 55%, var(--tinta) 100%); }
   .legenda-midia {
     position: relative; z-index: 1; margin: 14px; padding: 6px 12px; border-radius: 999px;
     background: rgba(255, 253, 250, .88); color: var(--tinta); font-size: 12px; font-weight: 600; letter-spacing: .04em;
@@ -122,7 +122,7 @@
   .topo {
     position: fixed; inset: 0 0 auto 0; z-index: 50; height: var(--topo);
     display: flex; align-items: center;
-    background: rgba(255, 255, 246, .86);
+    background: rgba(254, 248, 231, .88);
     backdrop-filter: saturate(140%) blur(12px); -webkit-backdrop-filter: saturate(140%) blur(12px);
     border-bottom: 1px solid transparent; transition: border-color .3s, box-shadow .3s;
   }
@@ -184,12 +184,12 @@
   .faixa-lista li::after { content: "✦"; font-size: 12px; color: var(--laranja); font-style: normal; }
 
   /* Faixa de temas entre a capa e o Sobre mim */
-  .faixa-temas { background: linear-gradient(110deg, #6F5892 0%, #8C76AE 55%, #BEABD9 100%); padding: 18px 0; overflow: hidden; margin-top: clamp(40px, 5vw, 64px); }
+  .faixa-temas { background: linear-gradient(110deg, #C72D67 0%, #D94C86 55%, #EA70A5 100%); padding: 18px 0; overflow: hidden; margin-top: clamp(40px, 5vw, 64px); }
   .faixa-temas .faixa-trilho { animation-duration: 38s; }
   .faixa-temas .faixa-lista li, .faixa-temas .faixa-lista li:nth-child(even) {
     font-family: var(--serif); font-weight: 800; font-size: 17px; letter-spacing: .06em; text-transform: uppercase;
     font-style: normal; color: var(--branco); background: none; -webkit-background-clip: border-box; background-clip: border-box;
-    text-shadow: 0 1px 2px rgba(58, 40, 88, .35);
+    text-shadow: 0 1px 2px rgba(110, 20, 55, .35);
   }
   .faixa-temas .faixa-lista li::after { content: "✦"; font-size: 13px; color: var(--branco); }
   @keyframes deslizar { to { transform: translateX(-50%); } }
@@ -210,7 +210,7 @@
     padding: 13px 22px; border-radius: 999px; font-size: 15px; font-weight: 600; color: var(--tinta);
     background: var(--creme-2); border: 1px solid var(--linha);
   }
-  .sobre-etiquetas .etiqueta-lilas { background: var(--azul-claro); border-color: rgba(111, 88, 146, .25); color: var(--azul-escuro); }
+  .sobre-etiquetas .etiqueta-lilas { background: var(--azul-claro); border-color: rgba(43, 43, 43, .08); color: var(--tinta); }
   .sobre-texto p.destaque { font-family: var(--serif); font-size: clamp(22px, 2.4vw, 28px); line-height: 1.35; color: var(--tinta); }
   .promessas { list-style: none; padding: 0; margin: 34px 0; display: grid; gap: 0; border-top: 1px solid var(--linha); }
   .promessas li { display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--linha); font-weight: 500; }
@@ -304,13 +304,13 @@
   /* ==========================================================
      7. BORA CRIAR JUNTOS
      ========================================================== */
-  .contato { background: linear-gradient(125deg, #6F5892 0%, #8a74ab 55%, #BEABD9 100%); color: var(--branco); position: relative; overflow: hidden; }
+  .contato { background: linear-gradient(125deg, #C72D67 0%, #D94C86 55%, #EA70A5 100%); color: var(--branco); position: relative; overflow: hidden; }
   .contato::before { content: ""; position: absolute; width: 520px; height: 520px; border-radius: 50%; border: 1px solid rgba(255, 253, 250, .18); right: -160px; top: -160px; }
-  .contato .rotulo { color: #f3edfb; }
-  .contato .rotulo::before { background: #f3edfb; }
-  .contato .titulo-secao em { color: #f3edfb; }
+  .contato .rotulo { color: #FEF8E7; }
+  .contato .rotulo::before { background: #FEF8E7; }
+  .contato .titulo-secao em { color: #FEF8E7; }
   .contato-grade { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 7vw, 100px); position: relative; }
-  .contato-intro p { color: #f3edfb; max-width: 40ch; margin: 26px 0 34px; font-size: 18px; }
+  .contato-intro p { color: #FEF8E7; max-width: 40ch; margin: 26px 0 34px; font-size: 18px; }
   .canais { display: grid; gap: 12px; }
   .canal {
     display: flex; align-items: center; gap: 16px; padding: 16px 20px; border-radius: var(--raio);
@@ -320,7 +320,7 @@
   .canal-icone { width: 44px; height: 44px; border-radius: 50%; background: var(--branco); color: var(--azul); display: grid; place-items: center; flex-shrink: 0; }
   .canal-icone svg { width: 20px; height: 20px; }
   .canal strong { display: block; font-size: 15px; }
-  .canal span { font-size: 14px; color: #f3edfb; word-break: break-word; }
+  .canal span { font-size: 14px; color: #FEF8E7; word-break: break-word; }
   .contato .seta { margin-left: auto; font-size: 20px; }
   .formulario { background: var(--creme); color: var(--tinta); border-radius: var(--raio); padding: clamp(26px, 4vw, 44px); box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .45); }
   .campo { margin-bottom: 20px; }
@@ -330,7 +330,7 @@
     background: var(--branco); transition: border-color .2s, box-shadow .2s; font-size: 16px;
   }
   .campo textarea { min-height: 140px; resize: vertical; }
-  .campo input:focus, .campo textarea:focus { outline: none; border-color: var(--azul); box-shadow: 0 0 0 3px rgba(111, 88, 146, .25); }
+  .campo input:focus, .campo textarea:focus { outline: none; border-color: var(--azul); box-shadow: 0 0 0 3px rgba(199, 45, 103, .22); }
   .formulario .botao { width: 100%; }
   .confirmacao { display: none; text-align: center; padding: 30px 0; }
   .confirmacao.visivel { display: block; animation: surgir .5s ease both; }
@@ -436,7 +436,7 @@
   }
 
   /* ==========================================================
-     DEGRADÊ ROXO NOS DETALHES (#6F5892 até #BEABD9)
+     DEGRADÊ ROSA NOS DETALHES (#C72D67 até #EA70A5)
      ========================================================== */
   h1 em, h2 em, h3 em, .marca-nome em, .capa-numeros strong, .metrica strong, .card-numero,
   .assinatura, .promessas li span, .faixa-lista li:nth-child(even), .depoimento::before {

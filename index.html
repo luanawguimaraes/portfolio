@@ -202,7 +202,7 @@
   /* ==========================================================
      2. SOBRE MIM
      ========================================================== */
-  .sobre-grade { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(40px, 7vw, 110px); align-items: center; }
+  .sobre-grade { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 5vw, 64px); align-items: center; } /* foto do mesmo tamanho do bloco de texto */
   .sobre-foto { position: relative; }
   .sobre-foto::after { content: ""; position: absolute; inset: 22px -22px -22px 22px; border: 1px solid var(--azul); border-radius: var(--raio); z-index: -1; }
   .sobre-colagem::after { display: none; } /* a montagem já tem as próprias molduras */
@@ -548,6 +548,7 @@
     /* no celular o crachá vem antes do texto, com o cordão saindo de baixo do menu */
     .cracha-area { order: -1; margin-top: calc(-1 * clamp(40px, 7vw, 90px)); }
     .cracha { width: min(230px, 66%); }
+    .sobre-colagem { width: 100%; margin-left: auto; margin-right: auto; } /* montagem centralizada no celular */
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -638,7 +639,7 @@
     <div class="container sobre-grade">
       <div class="sobre-foto sobre-colagem revelar">
         <!-- FOTO DO SOBRE: montagem com a foto principal e duas fotos menores (arquivo sobre-colagem.webp) -->
-        <img src="sobre-colagem.webp?v=2" alt="Luana Guimarães sentada, de blusa preta e calça jeans, com duas fotos menores: uma segurando um produto de cabelo e outra com o braço sobre a cabeça" data-i18n-attr="alt:sobre.fotoAlt" loading="lazy" width="1100" height="1226">
+        <img src="sobre-colagem.webp?v=3" alt="Luana Guimarães sentada, de blusa preta e calça jeans, com duas fotos menores: uma segurando um produto de cabelo e outra com o braço sobre a cabeça" data-i18n-attr="alt:sobre.fotoAlt" loading="lazy" width="1100" height="1226">
       </div>
       <div class="sobre-texto">
         <span class="rotulo revelar" data-i18n="sobre.rotulo">Sobre mim</span>

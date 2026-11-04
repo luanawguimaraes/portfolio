@@ -431,6 +431,33 @@
     mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
   }
 
+  /* ==========================================================
+     BOTÃO DE IDIOMA (PT / EN) NO MENU
+     ========================================================== */
+  .topo-acoes { display: flex; align-items: center; gap: clamp(10px, 2vw, 22px); }
+  .idioma { display: inline-flex; padding: 3px; border: 1px solid var(--linha); border-radius: 999px; background: var(--branco); }
+  .idioma button {
+    border: 0; background: transparent; cursor: pointer; padding: 6px 11px; border-radius: 999px;
+    font-size: 12px; font-weight: 700; letter-spacing: .08em; color: var(--tinta-suave); transition: background .25s, color .25s;
+  }
+  .idioma button:hover { color: var(--tinta); }
+  .idioma button[aria-pressed="true"] { background: var(--degrade); color: var(--branco); }
+  @media (max-width: 920px) {
+    .idioma { order: -1; }
+  }
+  @media (max-width: 420px) {
+    .topo .container { gap: 10px; }
+    .marca-nome { font-size: 19px; }
+    .topo-acoes { gap: 8px; }
+    .idioma button { padding: 6px 9px; }
+    .sanduiche { width: 42px; height: 42px; }
+    .sanduiche span { left: 11px; right: 11px; }
+    .sanduiche span:nth-child(1) { top: 15px; }
+    .sanduiche span:nth-child(2) { top: 20px; }
+    .sanduiche span:nth-child(3) { top: 25px; }
+  }
+  .capa-sobrelinha { flex-wrap: nowrap; }
+
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; transition-delay: 0s !important; }
@@ -442,25 +469,32 @@
 </style>
 </head>
 <body>
-<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<a class="pular" href="#conteudo" data-i18n="pular">Pular para o conteúdo</a>
 
 <!-- ============ MENU FIXO ============ -->
 <header class="topo" id="topo">
   <div class="container">
     <a class="marca-nome" href="#inicio">Luana <em>Guimarães</em></a>
-    <nav aria-label="Menu principal">
-      <button class="sanduiche" id="sanduiche" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu">
-        <span></span><span></span><span></span>
-      </button>
-      <ul class="menu" id="menu">
-        <li><a href="#sobre">Sobre</a></li>
-        <li><a href="#destaques">Destaques</a></li>
-        <li><a href="#trabalhos">Trabalhos</a></li>
-        <li><a href="#servicos">Serviços</a></li>
-        <li><a href="#numeros">Números</a></li>
-        <li><a class="menu-cta" href="#contato">Contato</a></li>
-      </ul>
-    </nav>
+    <div class="topo-acoes">
+      <nav aria-label="Menu principal" data-i18n-attr="aria-label:menu.rotulo">
+        <button class="sanduiche" id="sanduiche" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="menu" id="menu">
+          <li><a href="#sobre" data-i18n="menu.sobre">Sobre</a></li>
+          <li><a href="#destaques" data-i18n="menu.destaques">Destaques</a></li>
+          <li><a href="#trabalhos" data-i18n="menu.trabalhos">Trabalhos</a></li>
+          <li><a href="#servicos" data-i18n="menu.servicos">Serviços</a></li>
+          <li><a href="#numeros" data-i18n="menu.numeros">Números</a></li>
+          <li><a class="menu-cta" href="#contato" data-i18n="menu.contato">Contato</a></li>
+        </ul>
+      </nav>
+      <!-- BOTÃO DE IDIOMA: português e inglês -->
+      <div class="idioma" role="group" aria-label="Idioma / Language">
+        <button type="button" data-idioma="pt" aria-pressed="true" lang="pt-BR" title="Ver em português">PT</button>
+        <button type="button" data-idioma="en" aria-pressed="false" lang="en" title="View in English">EN</button>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -471,34 +505,34 @@
     <div class="container">
       <div class="capa-grade">
         <div>
-          <p class="capa-sobrelinha revelar"><span class="ponto" aria-hidden="true"></span> UGC Creator · Alphaville (SP)</p>
+          <p class="capa-sobrelinha revelar"><span class="ponto" aria-hidden="true"></span> <span data-i18n="capa.sobrelinha">UGC Creator · Alphaville (SP)</span></p>
           <h1 id="titulo-capa" class="revelar" data-atraso="1">Luana <em>Guimarães</em></h1>
-          <p class="capa-frase revelar" data-atraso="2">Crio conteúdos autênticos e estratégicos que fazem a sua marca ser vista, lembrada e escolhida.</p>
+          <p class="capa-frase revelar" data-atraso="2" data-i18n="capa.frase">Crio conteúdos autênticos e estratégicos que fazem a sua marca ser vista, lembrada e escolhida.</p>
           <div class="capa-botoes revelar" data-atraso="3">
-            <a class="botao botao-primario" href="#contato">Falar comigo</a>
-            <a class="botao botao-secundario" href="#destaques">Ver os trabalhos</a>
+            <a class="botao botao-primario" href="#contato" data-i18n="capa.falar">Falar comigo</a>
+            <a class="botao botao-secundario" href="#destaques" data-i18n="capa.ver">Ver os trabalhos</a>
           </div>
         </div>
         <div class="capa-foto revelar" data-atraso="2">
-          <span class="selo" aria-hidden="true">conteúdo<br>que<br>converte</span>
+          <span class="selo" aria-hidden="true" data-i18n="capa.selo">conteúdo<br>que<br>converte</span>
           <!-- FOTO DA CAPA: para usar a sua foto, coloque o arquivo na mesma pasta do index.html
                e adicione dentro desta div: <img src="minha-foto.jpg" alt="Luana Guimarães sorrindo"> -->
-          <div class="midia r-4-5" role="img" aria-label="Foto da creator Luana Guimarães">
-            <span class="legenda-midia">foto da creator 4:5</span>
+          <div class="midia r-4-5" role="img" aria-label="Foto da creator Luana Guimarães" data-i18n-attr="aria-label:capa.fotoAlt">
+            <span class="legenda-midia" data-i18n="legenda.creator">foto da creator 4:5</span>
           </div>
         </div>
       </div>
 
       <!-- Números da capa: edite os valores em data-contar. "views somadas" está como placeholder. -->
       <div class="capa-numeros revelar">
-        <div><strong data-contar="90">90</strong><span>vídeos entregues</span></div>
-        <div><strong data-contar="60">60</strong><span>marcas atendidas</span></div>
-        <div><strong>00M</strong><span>views somadas (SEU NÚMERO)</span></div>
+        <div><strong data-contar="90">90</strong><span data-i18n="capa.videos">vídeos entregues</span></div>
+        <div><strong data-contar="60">60</strong><span data-i18n="capa.marcas">marcas atendidas</span></div>
+        <div><strong>00M</strong><span data-i18n="capa.views">views somadas (SEU NÚMERO)</span></div>
       </div>
     </div>
 
     <!-- Faixa de marcas: os nomes vêm do array MARCAS no script -->
-    <div class="faixa-marcas" aria-label="Marcas com quem já trabalhei">
+    <div class="faixa-marcas" aria-label="Marcas com quem já trabalhei" data-i18n-attr="aria-label:capa.faixa">
       <div class="faixa-trilho" id="faixa-trilho"></div>
     </div>
   </section>
@@ -508,19 +542,19 @@
     <div class="container sobre-grade">
       <div class="sobre-foto revelar">
         <!-- FOTO DO SOBRE: troque adicionando dentro desta div: <img src="sobre.jpg" alt="Luana Guimarães gravando conteúdo"> -->
-        <div class="midia quente r-4-5" role="img" aria-label="Foto da Luana Guimarães gravando conteúdo">
-          <span class="legenda-midia">foto da creator 4:5</span>
+        <div class="midia quente r-4-5" role="img" aria-label="Foto da Luana Guimarães gravando conteúdo" data-i18n-attr="aria-label:sobre.fotoAlt">
+          <span class="legenda-midia" data-i18n="legenda.creator">foto da creator 4:5</span>
         </div>
       </div>
       <div class="sobre-texto">
-        <span class="rotulo revelar">Sobre mim</span>
-        <h2 class="titulo-secao revelar" id="titulo-sobre">Prazer, eu sou a <em>Lu</em></h2>
-        <p class="destaque revelar">Tenho 27 anos, moro em Alphaville (SP), sou formada em Marketing e crio conteúdo UGC com carinho de quem ama o que faz.</p>
-        <p class="revelar">Minha experiência no mercado de influência, somada ao desenvolvimento de mais de 90 portfólios UGC, ampliou o meu olhar estratégico sobre posicionamento de creators e criação de conteúdo. Eu uno criatividade, estética e comunicação para entregar vídeos autênticos, estratégicos e alinhados aos objetivos da sua marca.</p>
+        <span class="rotulo revelar" data-i18n="sobre.rotulo">Sobre mim</span>
+        <h2 class="titulo-secao revelar" id="titulo-sobre" data-i18n="sobre.titulo">Prazer, eu sou a <em>Lu</em></h2>
+        <p class="destaque revelar" data-i18n="sobre.destaque">Tenho 27 anos, moro em Alphaville (SP), sou formada em Marketing e crio conteúdo UGC com carinho de quem ama o que faz.</p>
+        <p class="revelar" data-i18n="sobre.texto">Minha experiência no mercado de influência, somada ao desenvolvimento de mais de 90 portfólios UGC, ampliou o meu olhar estratégico sobre posicionamento de creators e criação de conteúdo. Eu uno criatividade, estética e comunicação para entregar vídeos autênticos, estratégicos e alinhados aos objetivos da sua marca.</p>
         <ul class="promessas revelar">
-          <li><span>01</span>Roteiro aprovado por você antes de gravar</li>
-          <li><span>02</span>Uma rodada de ajuste inclusa</li>
-          <li><span>03</span>Entrega em até 72 horas úteis</li>
+          <li data-i18n="sobre.promessa1"><span>01</span>Roteiro aprovado por você antes de gravar</li>
+          <li data-i18n="sobre.promessa2"><span>02</span>Uma rodada de ajuste inclusa</li>
+          <li data-i18n="sobre.promessa3"><span>03</span>Entrega em até 72 horas úteis</li>
         </ul>
         <p class="assinatura revelar">Luana Guimarães<small>UGC Creator</small></p>
       </div>
@@ -532,58 +566,59 @@
     <div class="container">
       <div class="cabecalho-secao">
         <div>
-          <span class="rotulo revelar">Conteúdos de destaque</span>
-          <h2 class="titulo-secao revelar" id="titulo-destaques">Vídeos que <em>falam</em> por mim</h2>
+          <span class="rotulo revelar" data-i18n="dest.rotulo">Conteúdos de destaque</span>
+          <h2 class="titulo-secao revelar" id="titulo-destaques" data-i18n="dest.titulo">Vídeos que <em>falam</em> por mim</h2>
         </div>
-        <p class="revelar">Três conteúdos que mostram o meu jeito de contar a história de uma marca. Toque para assistir.</p>
+        <p class="revelar" data-i18n="dest.texto">Três conteúdos que mostram o meu jeito de contar a história de uma marca. Toque para assistir.</p>
       </div>
 
       <div class="destaques-grade">
         <!-- DESTAQUE 1
              LINK DO VÍDEO: troque o endereço no href abaixo.
              CAPA: troque o bloco com degradê por <img src="capa1.jpg" alt="Descrição da capa"> dentro da div .midia
-             NÚMERO: troque "+0,0M" e o rótulo pelo resultado real deste vídeo. -->
-        <a class="card-video revelar" href="https://youtube.com/shorts/24u26UN8heI" target="_blank" rel="noopener" aria-label="Assistir conteúdo de destaque 1 no YouTube (abre em nova aba)">
+             NÚMERO: troque "+0,0M" e o rótulo pelo resultado real deste vídeo.
+             TEXTOS EM INGLÊS: ficam no objeto TEXTOS_EN do script (chaves que começam com "dest."). -->
+        <a class="card-video revelar" href="https://youtube.com/shorts/24u26UN8heI" target="_blank" rel="noopener" aria-label="Assistir conteúdo de destaque 1 no YouTube (abre em nova aba)" data-i18n-attr="aria-label:dest.aria1">
           <div class="midia r-9-16">
             <span class="indice" aria-hidden="true">01</span>
             <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span>
-            <span class="legenda-midia">capa do vídeo 9:16</span>
+            <span class="legenda-midia" data-i18n="legenda.video">capa do vídeo 9:16</span>
           </div>
           <div class="card-info">
             <div class="card-numero">+0,0M</div>
-            <span class="card-numero-rotulo">views no shorts (SEU NÚMERO)</span>
-            <h3>Título do conteúdo 01</h3>
-            <p>Uma linha de contexto: marca, objetivo e formato.</p>
+            <span class="card-numero-rotulo" data-i18n="dest.numero">views no shorts (SEU NÚMERO)</span>
+            <h3 data-i18n="dest.titulo1">Título do conteúdo 01</h3>
+            <p data-i18n="dest.contexto">Uma linha de contexto: marca, objetivo e formato.</p>
           </div>
         </a>
 
         <!-- DESTAQUE 2: LINK DO VÍDEO no href, CAPA dentro da div .midia -->
-        <a class="card-video revelar" data-atraso="1" href="https://youtube.com/shorts/97-HXwpJuVI" target="_blank" rel="noopener" aria-label="Assistir conteúdo de destaque 2 no YouTube (abre em nova aba)">
+        <a class="card-video revelar" data-atraso="1" href="https://youtube.com/shorts/97-HXwpJuVI" target="_blank" rel="noopener" aria-label="Assistir conteúdo de destaque 2 no YouTube (abre em nova aba)" data-i18n-attr="aria-label:dest.aria2">
           <div class="midia noite r-9-16">
             <span class="indice" aria-hidden="true">02</span>
             <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span>
-            <span class="legenda-midia">capa do vídeo 9:16</span>
+            <span class="legenda-midia" data-i18n="legenda.video">capa do vídeo 9:16</span>
           </div>
           <div class="card-info">
             <div class="card-numero">+0,0M</div>
-            <span class="card-numero-rotulo">views no shorts (SEU NÚMERO)</span>
-            <h3>Título do conteúdo 02</h3>
-            <p>Uma linha de contexto: marca, objetivo e formato.</p>
+            <span class="card-numero-rotulo" data-i18n="dest.numero">views no shorts (SEU NÚMERO)</span>
+            <h3 data-i18n="dest.titulo2">Título do conteúdo 02</h3>
+            <p data-i18n="dest.contexto">Uma linha de contexto: marca, objetivo e formato.</p>
           </div>
         </a>
 
         <!-- DESTAQUE 3: LINK DO VÍDEO no href, CAPA dentro da div .midia -->
-        <a class="card-video revelar" data-atraso="2" href="https://youtube.com/shorts/6Sz8S3cIRu0" target="_blank" rel="noopener" aria-label="Assistir conteúdo de destaque 3 no YouTube (abre em nova aba)">
+        <a class="card-video revelar" data-atraso="2" href="https://youtube.com/shorts/6Sz8S3cIRu0" target="_blank" rel="noopener" aria-label="Assistir conteúdo de destaque 3 no YouTube (abre em nova aba)" data-i18n-attr="aria-label:dest.aria3">
           <div class="midia quente r-9-16">
             <span class="indice" aria-hidden="true">03</span>
             <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span>
-            <span class="legenda-midia">capa do vídeo 9:16</span>
+            <span class="legenda-midia" data-i18n="legenda.video">capa do vídeo 9:16</span>
           </div>
           <div class="card-info">
             <div class="card-numero">+0,0M</div>
-            <span class="card-numero-rotulo">views no shorts (SEU NÚMERO)</span>
-            <h3>Título do conteúdo 03</h3>
-            <p>Uma linha de contexto: marca, objetivo e formato.</p>
+            <span class="card-numero-rotulo" data-i18n="dest.numero">views no shorts (SEU NÚMERO)</span>
+            <h3 data-i18n="dest.titulo3">Título do conteúdo 03</h3>
+            <p data-i18n="dest.contexto">Uma linha de contexto: marca, objetivo e formato.</p>
           </div>
         </a>
       </div>
@@ -595,12 +630,12 @@
     <div class="container">
       <div class="cabecalho-secao">
         <div>
-          <span class="rotulo revelar">Trabalhos por nicho</span>
-          <h2 class="titulo-secao revelar" id="titulo-trabalhos">Um olhar para <em>cada</em> universo</h2>
+          <span class="rotulo revelar" data-i18n="trab.rotulo">Trabalhos por nicho</span>
+          <h2 class="titulo-secao revelar" id="titulo-trabalhos" data-i18n="trab.titulo">Um olhar para <em>cada</em> universo</h2>
         </div>
-        <p class="revelar">Beleza, skincare, moda, fitness, pet e tech. Escolha um nicho e veja como eu adapto a linguagem para cada público.</p>
+        <p class="revelar" data-i18n="trab.texto">Beleza, skincare, moda, fitness, pet e tech. Escolha um nicho e veja como eu adapto a linguagem para cada público.</p>
       </div>
-      <div class="filtros revelar" id="filtros" role="group" aria-label="Filtrar trabalhos por nicho"></div>
+      <div class="filtros revelar" id="filtros" role="group" aria-label="Filtrar trabalhos por nicho" data-i18n-attr="aria-label:trab.filtros"></div>
       <ul class="galeria" id="galeria" aria-live="polite"></ul>
     </div>
   </section>
@@ -610,10 +645,10 @@
     <div class="container">
       <div class="cabecalho-secao">
         <div>
-          <span class="rotulo revelar">Como eu te ajudo</span>
-          <h2 class="titulo-secao revelar" id="titulo-servicos">Serviços pensados para <em>vender</em></h2>
+          <span class="rotulo revelar" data-i18n="serv.rotulo">Como eu te ajudo</span>
+          <h2 class="titulo-secao revelar" id="titulo-servicos" data-i18n="serv.titulo">Serviços pensados para <em>vender</em></h2>
         </div>
-        <p class="revelar">Do roteiro à entrega final, cada formato é pensado para o lugar onde ele vai rodar.</p>
+        <p class="revelar" data-i18n="serv.texto">Do roteiro à entrega final, cada formato é pensado para o lugar onde ele vai rodar.</p>
       </div>
       <ul class="servicos-grade" id="servicos-lista"></ul>
     </div>
@@ -624,16 +659,16 @@
     <div class="container">
       <div class="cabecalho-secao">
         <div>
-          <span class="rotulo revelar">Números e depoimentos</span>
-          <h2 class="titulo-secao revelar" id="titulo-numeros">Resultados que <em>contam</em> a história</h2>
+          <span class="rotulo revelar" data-i18n="num.rotulo">Números e depoimentos</span>
+          <h2 class="titulo-secao revelar" id="titulo-numeros" data-i18n="num.titulo">Resultados que <em>contam</em> a história</h2>
         </div>
       </div>
       <ul class="metricas" id="metricas"></ul>
 
-      <h3 class="subtitulo revelar">Resultados de <em>campanha</em></h3>
+      <h3 class="subtitulo revelar" data-i18n="num.campanhas">Resultados de <em>campanha</em></h3>
       <ul class="resultados" id="resultados"></ul>
 
-      <h3 class="subtitulo revelar">O que dizem as <em>marcas</em></h3>
+      <h3 class="subtitulo revelar" data-i18n="num.depoimentos">O que dizem as <em>marcas</em></h3>
       <ul class="depoimentos" id="depoimentos"></ul>
     </div>
   </section>
@@ -642,9 +677,9 @@
   <section class="secao contato" id="contato" aria-labelledby="titulo-contato">
     <div class="container contato-grade">
       <div class="contato-intro">
-        <span class="rotulo revelar">Contato</span>
-        <h2 class="titulo-secao revelar" id="titulo-contato">Bora criar <em>juntos?</em></h2>
-        <p class="revelar">Me conta sobre a sua marca e o que você precisa. Eu respondo rapidinho com uma proposta pensada para o seu objetivo.</p>
+        <span class="rotulo revelar" data-i18n="cont.rotulo">Contato</span>
+        <h2 class="titulo-secao revelar" id="titulo-contato" data-i18n="cont.titulo">Bora criar <em>juntos?</em></h2>
+        <p class="revelar" data-i18n="cont.texto">Me conta sobre a sua marca e o que você precisa. Eu respondo rapidinho com uma proposta pensada para o seu objetivo.</p>
         <div class="canais revelar">
           <a class="canal" href="https://wa.me/5511963604439" target="_blank" rel="noopener">
             <span class="canal-icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-13.4 7.8L3 21l1.3-4.4A9 9 0 1 1 21 12z"/><path d="M9 9.5c.5 2.2 2.3 4 4.5 4.5l1.2-1.2 2 1-.4 1.6c-3.6.4-8-4-7.6-7.6l1.6-.4 1 2z"/></svg></span>
@@ -653,7 +688,7 @@
           </a>
           <a class="canal" href="mailto:luanawguimaraes@gmail.com">
             <span class="canal-icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
-            <span><strong>E-mail</strong><span>luanawguimaraes@gmail.com</span></span>
+            <span><strong data-i18n="cont.email">E-mail</strong><span>luanawguimaraes@gmail.com</span></span>
             <span class="seta" aria-hidden="true">↗</span>
           </a>
           <a class="canal" href="https://instagram.com/luawiechetek" target="_blank" rel="noopener">
@@ -669,25 +704,25 @@
              conecte um serviço gratuito como o Formspree e coloque o endereço dele em FORM_ENDPOINT no script. -->
         <form id="form-contato" novalidate>
           <div class="campo">
-            <label for="nome">Nome</label>
-            <input id="nome" name="nome" type="text" autocomplete="name" required placeholder="Como posso te chamar?">
+            <label for="nome" data-i18n="form.nome">Nome</label>
+            <input id="nome" name="nome" type="text" autocomplete="name" required placeholder="Como posso te chamar?" data-i18n-attr="placeholder:form.nomePh">
           </div>
           <div class="campo">
-            <label for="email">E-mail</label>
-            <input id="email" name="email" type="email" autocomplete="email" required placeholder="voce@suamarca.com">
+            <label for="email" data-i18n="form.email">E-mail</label>
+            <input id="email" name="email" type="email" autocomplete="email" required placeholder="voce@suamarca.com" data-i18n-attr="placeholder:form.emailPh">
           </div>
           <div class="campo">
-            <label for="mensagem">Mensagem</label>
-            <textarea id="mensagem" name="mensagem" required placeholder="Conte sobre a sua marca, o produto e o objetivo da campanha."></textarea>
+            <label for="mensagem" data-i18n="form.mensagem">Mensagem</label>
+            <textarea id="mensagem" name="mensagem" required placeholder="Conte sobre a sua marca, o produto e o objetivo da campanha." data-i18n-attr="placeholder:form.mensagemPh"></textarea>
           </div>
-          <p class="erro-form" id="erro-form" role="alert" style="color:#a3200e;font-size:14px;margin:-6px 0 14px;display:none">Preencha nome, e-mail válido e mensagem para enviar.</p>
-          <button class="botao botao-primario" type="submit">Enviar mensagem</button>
+          <p class="erro-form" id="erro-form" role="alert" style="color:#a3200e;font-size:14px;margin:-6px 0 14px;display:none" data-i18n="form.erro">Preencha nome, e-mail válido e mensagem para enviar.</p>
+          <button class="botao botao-primario" type="submit" data-i18n="form.enviar">Enviar mensagem</button>
         </form>
         <div class="confirmacao" id="confirmacao" role="status" aria-live="polite" tabindex="-1">
           <div class="check" aria-hidden="true">✓</div>
-          <h3>Mensagem enviada!</h3>
+          <h3 data-i18n="form.enviada">Mensagem enviada!</h3>
           <p id="confirmacao-texto">Obrigada pelo contato. Eu respondo em breve.</p>
-          <button class="link-texto" type="button" id="nova-mensagem">Enviar outra mensagem</button>
+          <button class="link-texto" type="button" id="nova-mensagem" data-i18n="form.outra">Enviar outra mensagem</button>
         </div>
       </div>
     </div>
@@ -699,16 +734,16 @@
   <div class="container">
     <div class="rodape-topo">
       <p class="rodape-nome">Luana <em>Guimarães</em></p>
-      <ul class="redes" aria-label="Minhas redes">
+      <ul class="redes" aria-label="Minhas redes" data-i18n-attr="aria-label:rodape.redes">
         <li><a href="https://instagram.com/luawiechetek" target="_blank" rel="noopener">Instagram</a></li>
         <li><a href="https://wa.me/5511963604439" target="_blank" rel="noopener">WhatsApp</a></li>
-        <li><a href="mailto:luanawguimaraes@gmail.com">E-mail</a></li>
+        <li><a href="mailto:luanawguimaraes@gmail.com" data-i18n="cont.email">E-mail</a></li>
         <!-- Adicione outras redes aqui, por exemplo TikTok: <li><a href="https://tiktok.com/@seuusuario">TikTok</a></li> -->
       </ul>
     </div>
     <div class="rodape-base">
-      <span>© <span id="ano">2026</span> Luana Guimarães. Todos os direitos reservados.</span>
-      <span>UGC Creator · Alphaville (SP)</span>
+      <span>© <span id="ano">2026</span> Luana Guimarães. <span data-i18n="rodape.direitos">Todos os direitos reservados.</span></span>
+      <span data-i18n="capa.sobrelinha">UGC Creator · Alphaville (SP)</span>
     </div>
   </div>
 </footer>
@@ -716,27 +751,27 @@
 <!-- ============ CARD DE CAPTURA: MÍDIA KIT ============ -->
 <div class="modal-fundo" id="modal-fundo" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
-    <button class="modal-fechar" id="modal-fechar" type="button" aria-label="Fechar">×</button>
+    <button class="modal-fechar" id="modal-fechar" type="button" aria-label="Fechar" data-i18n-attr="aria-label:kit.fechar">×</button>
     <div id="modal-conteudo">
-      <span class="rotulo">Mídia kit</span>
-      <h2 id="modal-titulo">Quer meu mídia kit <em>completo?</em></h2>
-      <p>Deixe seu nome e e-mail que eu te envio valores, formatos e resultados.</p>
+      <span class="rotulo" data-i18n="kit.rotulo">Mídia kit</span>
+      <h2 id="modal-titulo" data-i18n="kit.titulo">Quer meu mídia kit <em>completo?</em></h2>
+      <p data-i18n="kit.texto">Deixe seu nome e e-mail que eu te envio valores, formatos e resultados.</p>
       <form id="form-kit" novalidate>
         <div class="campo">
-          <label for="kit-nome">Nome</label>
+          <label for="kit-nome" data-i18n="form.nome">Nome</label>
           <input id="kit-nome" name="nome" type="text" autocomplete="name" required>
         </div>
         <div class="campo">
-          <label for="kit-email">E-mail</label>
+          <label for="kit-email" data-i18n="form.email">E-mail</label>
           <input id="kit-email" name="email" type="email" autocomplete="email" required>
         </div>
-        <button class="botao botao-primario" type="submit" style="width:100%">Quero receber</button>
+        <button class="botao botao-primario" type="submit" style="width:100%" data-i18n="kit.botao">Quero receber</button>
       </form>
     </div>
     <div class="confirmacao" id="kit-confirmacao" role="status" aria-live="polite">
       <div class="check" aria-hidden="true">✓</div>
-      <h3>Prontinho!</h3>
-      <p>Em breve o mídia kit chega no seu e-mail.</p>
+      <h3 data-i18n="kit.ok">Prontinho!</h3>
+      <p data-i18n="kit.okTexto">Em breve o mídia kit chega no seu e-mail.</p>
     </div>
   </div>
 </div>
@@ -744,6 +779,7 @@
 <script>
   /* ==========================================================
      DADOS DO PORTFÓLIO: edite aqui sem mexer no HTML
+     Os campos que terminam em "_en" são a versão em inglês.
      ========================================================== */
 
   // MARCAS: aparecem na faixa que rola no fim da capa
@@ -756,12 +792,12 @@
 
   // NICHOS: botões de filtro da galeria (o "id" precisa ser igual ao "nicho" dos trabalhos)
   const NICHOS = [
-    { id: "beleza", nome: "Beleza" },
-    { id: "skincare", nome: "Skincare" },
-    { id: "moda", nome: "Moda" },
-    { id: "fitness", nome: "Fitness" },
-    { id: "pet", nome: "Pet" },
-    { id: "tech", nome: "Tech" }
+    { id: "beleza",   nome: "Beleza",   nome_en: "Beauty" },
+    { id: "skincare", nome: "Skincare", nome_en: "Skincare" },
+    { id: "moda",     nome: "Moda",     nome_en: "Fashion" },
+    { id: "fitness",  nome: "Fitness",  nome_en: "Fitness" },
+    { id: "pet",      nome: "Pet",      nome_en: "Pet" },
+    { id: "tech",     nome: "Tech",     nome_en: "Tech" }
   ];
 
   // TRABALHOS: galeria por nicho.
@@ -769,52 +805,166 @@
   // Para usar uma foto real, preencha "imagem" com o nome do arquivo (ex.: "trabalho1.jpg") e "alt" com a descrição.
   // "link" é opcional: se preencher, o card vira um link para o vídeo.
   const TRABALHOS = [
-    { nicho: "beleza",   titulo: "Rotina de maquiagem",     marca: "Beauty Vita",          formato: "Vídeo UGC",       imagem: "", alt: "", link: "" },
-    { nicho: "beleza",   titulo: "Resenha honesta",         marca: "Carola Art Piercing",  formato: "Reels",           imagem: "", alt: "", link: "" },
-    { nicho: "skincare", titulo: "Antes e depois",          marca: "Bioderma",             formato: "Vídeo UGC",       imagem: "", alt: "", link: "" },
-    { nicho: "skincare", titulo: "Skincare da noite",       marca: "Creamy",               formato: "Corte para anúncio", imagem: "", alt: "", link: "" },
-    { nicho: "moda",     titulo: "Provador em casa",        marca: "Shop Lumina",          formato: "Unboxing",        imagem: "", alt: "", link: "" },
-    { nicho: "moda",     titulo: "Três looks, uma peça",    marca: "Marca 01",             formato: "Reels",           imagem: "", alt: "", link: "" },
-    { nicho: "fitness",  titulo: "Treino com o look novo",  marca: "Arara Sport",          formato: "Vídeo UGC",       imagem: "", alt: "", link: "" },
-    { nicho: "fitness",  titulo: "Minha rotina de energia", marca: "Marca 02",             formato: "Corte para anúncio", imagem: "", alt: "", link: "" },
-    { nicho: "pet",      titulo: "Hora do petisco",         marca: "Pet Saudável",         formato: "Vídeo UGC",       imagem: "", alt: "", link: "" },
-    { nicho: "pet",      titulo: "Unboxing com ajudante",   marca: "Marca 03",             formato: "Unboxing",        imagem: "", alt: "", link: "" },
-    { nicho: "tech",     titulo: "Pagando em um toque",     marca: "Reven Pay",            formato: "Vídeo UGC",       imagem: "", alt: "", link: "" },
-    { nicho: "tech",     titulo: "Gadget que facilita",     marca: "Marca 04",             formato: "Fotos do produto", imagem: "", alt: "", link: "" }
+    { nicho: "beleza",   titulo: "Rotina de maquiagem",     titulo_en: "Makeup routine",              marca: "Beauty Vita",         formato: "Vídeo UGC",          formato_en: "UGC video",      imagem: "", alt: "", link: "" },
+    { nicho: "beleza",   titulo: "Resenha honesta",         titulo_en: "Honest review",               marca: "Carola Art Piercing", formato: "Reels",              formato_en: "Reels",          imagem: "", alt: "", link: "" },
+    { nicho: "skincare", titulo: "Antes e depois",          titulo_en: "Before and after",            marca: "Bioderma",            formato: "Vídeo UGC",          formato_en: "UGC video",      imagem: "", alt: "", link: "" },
+    { nicho: "skincare", titulo: "Skincare da noite",       titulo_en: "Night skincare",              marca: "Creamy",              formato: "Corte para anúncio", formato_en: "Ad cut",         imagem: "", alt: "", link: "" },
+    { nicho: "moda",     titulo: "Provador em casa",        titulo_en: "Try-on at home",              marca: "Shop Lumina",         formato: "Unboxing",           formato_en: "Unboxing",       imagem: "", alt: "", link: "" },
+    { nicho: "moda",     titulo: "Três looks, uma peça",    titulo_en: "Three looks, one piece",      marca: "Marca 01",            formato: "Reels",              formato_en: "Reels",          imagem: "", alt: "", link: "" },
+    { nicho: "fitness",  titulo: "Treino com o look novo",  titulo_en: "Workout in the new outfit",   marca: "Arara Sport",         formato: "Vídeo UGC",          formato_en: "UGC video",      imagem: "", alt: "", link: "" },
+    { nicho: "fitness",  titulo: "Minha rotina de energia", titulo_en: "My energy routine",           marca: "Marca 02",            formato: "Corte para anúncio", formato_en: "Ad cut",         imagem: "", alt: "", link: "" },
+    { nicho: "pet",      titulo: "Hora do petisco",         titulo_en: "Snack time",                  marca: "Pet Saudável",        formato: "Vídeo UGC",          formato_en: "UGC video",      imagem: "", alt: "", link: "" },
+    { nicho: "pet",      titulo: "Unboxing com ajudante",   titulo_en: "Unboxing with a little helper", marca: "Marca 03",          formato: "Unboxing",           formato_en: "Unboxing",       imagem: "", alt: "", link: "" },
+    { nicho: "tech",     titulo: "Pagando em um toque",     titulo_en: "Paying with one tap",         marca: "Reven Pay",           formato: "Vídeo UGC",          formato_en: "UGC video",      imagem: "", alt: "", link: "" },
+    { nicho: "tech",     titulo: "Gadget que facilita",     titulo_en: "A gadget that makes life easier", marca: "Marca 04",        formato: "Fotos do produto",   formato_en: "Product photos", imagem: "", alt: "", link: "" }
   ];
 
   // SERVIÇOS: seção "Como eu te ajudo"
   const SERVICOS = [
-    { titulo: "Vídeo UGC", descricao: "Vídeo autêntico, gravado do zero com roteiro pensado para o seu público e o seu objetivo." },
-    { titulo: "Corte para anúncio", descricao: "Versões curtas com gancho forte nos primeiros segundos, prontas para rodar como anúncio." },
-    { titulo: "Fotos do produto", descricao: "Fotos com estética cuidada e luz natural para site, redes e e-commerce." },
-    { titulo: "Unboxing", descricao: "A primeira impressão real do produto, do pacote ao uso, com reação espontânea." },
-    { titulo: "Publicação no meu perfil", descricao: "O conteúdo publicado no meu Instagram para gerar alcance e prova social." },
-    { titulo: "Pacote mensal", descricao: "Uma quantidade fixa de conteúdos por mês, com calendário e prioridade na agenda." }
+    { titulo: "Vídeo UGC", descricao: "Vídeo autêntico, gravado do zero com roteiro pensado para o seu público e o seu objetivo.",
+      titulo_en: "UGC video", descricao_en: "An authentic video shot from scratch, with a script built for your audience and your goal." },
+    { titulo: "Corte para anúncio", descricao: "Versões curtas com gancho forte nos primeiros segundos, prontas para rodar como anúncio.",
+      titulo_en: "Ad cuts", descricao_en: "Short versions with a strong hook in the first seconds, ready to run as ads." },
+    { titulo: "Fotos do produto", descricao: "Fotos com estética cuidada e luz natural para site, redes e e-commerce.",
+      titulo_en: "Product photos", descricao_en: "Carefully styled photos in natural light for your website, social media and online store." },
+    { titulo: "Unboxing", descricao: "A primeira impressão real do produto, do pacote ao uso, com reação espontânea.",
+      titulo_en: "Unboxing", descricao_en: "A real first impression of the product, from package to use, with a genuine reaction." },
+    { titulo: "Publicação no meu perfil", descricao: "O conteúdo publicado no meu Instagram para gerar alcance e prova social.",
+      titulo_en: "Post on my profile", descricao_en: "The content published on my Instagram to build reach and social proof." },
+    { titulo: "Pacote mensal", descricao: "Uma quantidade fixa de conteúdos por mês, com calendário e prioridade na agenda.",
+      titulo_en: "Monthly package", descricao_en: "A set number of pieces every month, with a content calendar and priority booking." }
   ];
 
   // MÉTRICAS: os contadores animados. "valor" precisa ser número; "prefixo" e "sufixo" são opcionais.
   const METRICAS = [
-    { valor: 90, prefixo: "",  sufixo: "", rotulo: "vídeos entregues" },
-    { valor: 60, prefixo: "",  sufixo: "", rotulo: "marcas atendidas" },
-    { valor: 90, prefixo: "+", sufixo: "", rotulo: "portfólios UGC desenvolvidos" },
-    { valor: 6,  prefixo: "",  sufixo: "", rotulo: "nichos atendidos" }
+    { valor: 90, prefixo: "",  sufixo: "", rotulo: "vídeos entregues",             rotulo_en: "videos delivered" },
+    { valor: 60, prefixo: "",  sufixo: "", rotulo: "marcas atendidas",             rotulo_en: "brands served" },
+    { valor: 90, prefixo: "+", sufixo: "", rotulo: "portfólios UGC desenvolvidos", rotulo_en: "UGC portfolios developed" },
+    { valor: 6,  prefixo: "",  sufixo: "", rotulo: "nichos atendidos",             rotulo_en: "niches served" }
   ];
 
   // RESULTADOS DE CAMPANHA: troque pelos resultados reais
   const RESULTADOS = [
-    { numero: "+00%", rotulo: "Resultado da campanha 01", descricao: "Descreva aqui o que foi feito e o que mudou para a marca.", marca: "Marca 01" },
-    { numero: "+00%", rotulo: "Resultado da campanha 02", descricao: "Descreva aqui o que foi feito e o que mudou para a marca.", marca: "Marca 02" },
-    { numero: "+00%", rotulo: "Resultado da campanha 03", descricao: "Descreva aqui o que foi feito e o que mudou para a marca.", marca: "Marca 03" }
+    { numero: "+00%", marca: "Marca 01",
+      rotulo: "Resultado da campanha 01", descricao: "Descreva aqui o que foi feito e o que mudou para a marca.",
+      rotulo_en: "Campaign result 01", descricao_en: "Describe here what was done and what changed for the brand." },
+    { numero: "+00%", marca: "Marca 02",
+      rotulo: "Resultado da campanha 02", descricao: "Descreva aqui o que foi feito e o que mudou para a marca.",
+      rotulo_en: "Campaign result 02", descricao_en: "Describe here what was done and what changed for the brand." },
+    { numero: "+00%", marca: "Marca 03",
+      rotulo: "Resultado da campanha 03", descricao: "Descreva aqui o que foi feito e o que mudou para a marca.",
+      rotulo_en: "Campaign result 03", descricao_en: "Describe here what was done and what changed for the brand." }
   ];
 
   // DEPOIMENTOS: troque pelo feedback real dos clientes
   const DEPOIMENTOS = [
-    { texto: "Espaço para o depoimento do cliente. Troque este texto pelo feedback real que você recebeu.", nome: "Cliente 01", empresa: "Empresa 01" },
-    { texto: "Espaço para o depoimento do cliente. Troque este texto pelo feedback real que você recebeu.", nome: "Cliente 02", empresa: "Empresa 02" },
-    { texto: "Espaço para o depoimento do cliente. Troque este texto pelo feedback real que você recebeu.", nome: "Cliente 03", empresa: "Empresa 03" },
-    { texto: "Espaço para o depoimento do cliente. Troque este texto pelo feedback real que você recebeu.", nome: "Cliente 04", empresa: "Empresa 04" }
+    { nome: "Cliente 01", empresa: "Empresa 01", empresa_en: "Company 01",
+      texto: "Espaço para o depoimento do cliente. Troque este texto pelo feedback real que você recebeu.",
+      texto_en: "Space for the client's testimonial. Replace this text with the real feedback you received." },
+    { nome: "Cliente 02", empresa: "Empresa 02", empresa_en: "Company 02",
+      texto: "Espaço para o depoimento do cliente. Troque este texto pelo feedback real que você recebeu.",
+      texto_en: "Space for the client's testimonial. Replace this text with the real feedback you received." },
+    { nome: "Cliente 03", empresa: "Empresa 03", empresa_en: "Company 03",
+      texto: "Espaço para o depoimento do cliente. Troque este texto pelo feedback real que você recebeu.",
+      texto_en: "Space for the client's testimonial. Replace this text with the real feedback you received." },
+    { nome: "Cliente 04", empresa: "Empresa 04", empresa_en: "Company 04",
+      texto: "Espaço para o depoimento do cliente. Troque este texto pelo feedback real que você recebeu.",
+      texto_en: "Space for the client's testimonial. Replace this text with the real feedback you received." }
   ];
+
+  // TEXTOS EM INGLÊS: cada chave corresponde a um data-i18n no HTML.
+  // O português fica no próprio HTML; aqui fica só a tradução.
+  const TEXTOS_EN = {
+    "titulo.pagina": "Luana Guimarães | UGC Creator Portfolio",
+    "descricao.pagina": "UGC portfolio of Luana Guimarães: authentic, strategic videos for beauty, skincare, fashion, fitness, pet and tech brands.",
+    "pular": "Skip to content",
+    "menu.rotulo": "Main menu",
+    "menu.sobre": "About",
+    "menu.destaques": "Highlights",
+    "menu.trabalhos": "Work",
+    "menu.servicos": "Services",
+    "menu.numeros": "Results",
+    "menu.contato": "Contact",
+    "capa.sobrelinha": "UGC Creator · Alphaville (SP), Brazil",
+    "capa.frase": "I create authentic, strategic content that gets your brand seen, remembered and chosen.",
+    "capa.falar": "Let's talk",
+    "capa.ver": "See my work",
+    "capa.selo": "content<br>that<br>converts",
+    "capa.fotoAlt": "Photo of creator Luana Guimarães",
+    "capa.videos": "videos delivered",
+    "capa.marcas": "brands served",
+    "capa.views": "total views (YOUR NUMBER)",
+    "capa.faixa": "Brands I have worked with",
+    "legenda.creator": "creator photo 4:5",
+    "legenda.video": "video cover 9:16",
+    "sobre.fotoAlt": "Photo of Luana Guimarães filming content",
+    "sobre.rotulo": "About me",
+    "sobre.titulo": "Nice to meet you, I'm <em>Lu</em>",
+    "sobre.destaque": "I'm 27, I live in Alphaville (São Paulo, Brazil), I have a degree in Marketing and I create UGC content with the care of someone who truly loves this work.",
+    "sobre.texto": "My experience in the influencer market, combined with developing more than 90 UGC portfolios, sharpened my strategic eye for creator positioning and content creation. I bring together creativity, aesthetics and communication to deliver authentic, strategic videos aligned with your brand's goals.",
+    "sobre.promessa1": "<span>01</span>Script approved by you before filming",
+    "sobre.promessa2": "<span>02</span>One round of revisions included",
+    "sobre.promessa3": "<span>03</span>Delivery within 72 business hours",
+    "dest.rotulo": "Featured content",
+    "dest.titulo": "Videos that <em>speak</em> for me",
+    "dest.texto": "Three pieces that show how I tell a brand's story. Tap to watch.",
+    "dest.aria1": "Watch featured video 1 on YouTube (opens in a new tab)",
+    "dest.aria2": "Watch featured video 2 on YouTube (opens in a new tab)",
+    "dest.aria3": "Watch featured video 3 on YouTube (opens in a new tab)",
+    "dest.numero": "Shorts views (YOUR NUMBER)",
+    "dest.titulo1": "Content title 01",
+    "dest.titulo2": "Content title 02",
+    "dest.titulo3": "Content title 03",
+    "dest.contexto": "One line of context: brand, goal and format.",
+    "trab.rotulo": "Work by niche",
+    "trab.titulo": "A fresh eye for <em>every</em> niche",
+    "trab.texto": "Beauty, skincare, fashion, fitness, pet and tech. Pick a niche and see how I adapt the language to each audience.",
+    "trab.filtros": "Filter work by niche",
+    "serv.rotulo": "How I can help",
+    "serv.titulo": "Services designed to <em>sell</em>",
+    "serv.texto": "From script to final delivery, every format is built for the place where it will run.",
+    "num.rotulo": "Numbers and testimonials",
+    "num.titulo": "Results that <em>tell</em> the story",
+    "num.campanhas": "Campaign <em>results</em>",
+    "num.depoimentos": "What <em>brands</em> say",
+    "cont.rotulo": "Contact",
+    "cont.titulo": "Let's create <em>together</em>",
+    "cont.texto": "Tell me about your brand and what you need. I'll get back to you quickly with a proposal built around your goal.",
+    "cont.email": "Email",
+    "form.nome": "Name",
+    "form.email": "Email",
+    "form.mensagem": "Message",
+    "form.nomePh": "What should I call you?",
+    "form.emailPh": "you@yourbrand.com",
+    "form.mensagemPh": "Tell me about your brand, the product and the campaign goal.",
+    "form.erro": "Please fill in your name, a valid email and a message.",
+    "form.enviar": "Send message",
+    "form.enviada": "Message sent!",
+    "form.outra": "Send another message",
+    "rodape.redes": "My social media",
+    "rodape.direitos": "All rights reserved.",
+    "kit.fechar": "Close",
+    "kit.rotulo": "Media kit",
+    "kit.titulo": "Want my full <em>media kit?</em>",
+    "kit.texto": "Leave your name and email and I'll send you my rates, formats and results.",
+    "kit.botao": "Send it to me",
+    "kit.ok": "All set!",
+    "kit.okTexto": "The media kit will be in your inbox soon."
+  };
+
+  // Textos usados pelo script (filtros, menu, confirmações)
+  const UI = {
+    pt: {
+      todos: "Todos", abrirMenu: "Abrir menu", fecharMenu: "Fechar menu", legendaTrabalho: "foto do trabalho 4:5",
+      fotoTrabalho: (t, m) => `Foto do trabalho ${t} para ${m}`,
+      obrigada: (n) => `Obrigada pelo contato, ${n}! Eu respondo em breve no e-mail que você deixou.`
+    },
+    en: {
+      todos: "All", abrirMenu: "Open menu", fecharMenu: "Close menu", legendaTrabalho: "work photo 4:5",
+      fotoTrabalho: (t, m) => `Photo of the project ${t} for ${m}`,
+      obrigada: (n) => `Thanks for reaching out, ${n}! I'll reply soon to the email you left.`
+    }
+  };
 
   // FORMULÁRIO: deixe vazio para só mostrar a confirmação, ou coloque o endereço do Formspree (ex.: "https://formspree.io/f/xxxx")
   const FORM_ENDPOINT = "";
@@ -831,6 +981,16 @@
   const escapar = (t) => String(t).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const doisDigitos = (n) => String(n).padStart(2, "0");
 
+  // Idioma atual: "pt" ou "en". Fica lembrado no navegador de quem visita.
+  let idioma = "pt";
+  try { if (localStorage.getItem("idioma") === "en") idioma = "en"; } catch (_) {}
+  if (/[?&]lang=en\b/.test(location.search)) idioma = "en";
+  if (/[?&]lang=pt\b/.test(location.search)) idioma = "pt";
+  const ui = () => UI[idioma];
+  const campo = (item, nome) => (idioma === "en" && item[nome + "_en"]) ? item[nome + "_en"] : item[nome];
+  const localidade = () => (idioma === "en" ? "en-US" : "pt-BR");
+  let jaRevelou = false; // depois da primeira vez, os blocos redesenhados aparecem direto
+
   // Ano automático no rodapé
   $("#ano").textContent = new Date().getFullYear();
 
@@ -838,67 +998,113 @@
   const listaMarcas = MARCAS.map((m) => `<li>${escapar(m)}</li>`).join("");
   $("#faixa-trilho").innerHTML = `<ul class="faixa-lista">${listaMarcas}</ul><ul class="faixa-lista" aria-hidden="true">${listaMarcas}</ul>`;
 
-  // Serviços
-  $("#servicos-lista").innerHTML = SERVICOS.map((s, i) => `
-    <li class="servico revelar" data-atraso="${i % 3}">
-      <span class="servico-num">${doisDigitos(i + 1)}</span>
-      <h3>${escapar(s.titulo)}</h3>
-      <p>${escapar(s.descricao)}</p>
-    </li>`).join("");
+  const classeRevelar = () => (jaRevelou ? "revelar visivel" : "revelar");
+  const formatarNumero = (m) => (m.prefixo || "") + Number(m.valor).toLocaleString(localidade()) + (m.sufixo || "");
 
-  // Métricas
-  $("#metricas").innerHTML = METRICAS.map((m, i) => `
-    <li class="metrica revelar" data-atraso="${i % 4}">
-      <strong data-contar="${m.valor}" data-prefixo="${escapar(m.prefixo || "")}" data-sufixo="${escapar(m.sufixo || "")}">${escapar((m.prefixo || "") + m.valor + (m.sufixo || ""))}</strong>
-      <span>${escapar(m.rotulo)}</span>
-    </li>`).join("");
+  function desenharDados() {
+    // Serviços
+    $("#servicos-lista").innerHTML = SERVICOS.map((s, i) => `
+      <li class="servico ${classeRevelar()}" data-atraso="${i % 3}">
+        <span class="servico-num">${doisDigitos(i + 1)}</span>
+        <h3>${escapar(campo(s, "titulo"))}</h3>
+        <p>${escapar(campo(s, "descricao"))}</p>
+      </li>`).join("");
 
-  // Resultados de campanha
-  $("#resultados").innerHTML = RESULTADOS.map((r, i) => `
-    <li class="resultado revelar" data-atraso="${i}">
-      <strong>${escapar(r.numero)}</strong>
-      <span class="r-rotulo">${escapar(r.rotulo)}</span>
-      <p>${escapar(r.descricao)}</p>
-      <span class="r-marca">${escapar(r.marca)}</span>
-    </li>`).join("");
+    // Métricas
+    $("#metricas").innerHTML = METRICAS.map((m, i) => `
+      <li class="metrica ${classeRevelar()}" data-atraso="${i % 4}">
+        <strong data-contar="${m.valor}" data-prefixo="${escapar(m.prefixo || "")}" data-sufixo="${escapar(m.sufixo || "")}">${escapar(formatarNumero(m))}</strong>
+        <span>${escapar(campo(m, "rotulo"))}</span>
+      </li>`).join("");
 
-  // Depoimentos
+    // Resultados de campanha
+    $("#resultados").innerHTML = RESULTADOS.map((r, i) => `
+      <li class="resultado ${classeRevelar()}" data-atraso="${i}">
+        <strong>${escapar(r.numero)}</strong>
+        <span class="r-rotulo">${escapar(campo(r, "rotulo"))}</span>
+        <p>${escapar(campo(r, "descricao"))}</p>
+        <span class="r-marca">${escapar(r.marca)}</span>
+      </li>`).join("");
+
+    // Depoimentos
+    $("#depoimentos").innerHTML = DEPOIMENTOS.map((d, i) => `
+      <li class="${classeRevelar()}" data-atraso="${i % 2}">
+        <figure class="depoimento">
+          <blockquote><p style="margin:0">${escapar(campo(d, "texto"))}</p></blockquote>
+          <figcaption>
+            <span class="avatar" aria-hidden="true">${escapar(iniciais(d.nome))}</span>
+            <span><strong>${escapar(d.nome)}</strong><span>${escapar(campo(d, "empresa"))}</span></span>
+          </figcaption>
+        </figure>
+      </li>`).join("");
+  }
   const iniciais = (nome) => nome.split(" ").filter(Boolean).map((p) => p[0]).slice(0, 2).join("").toUpperCase();
-  $("#depoimentos").innerHTML = DEPOIMENTOS.map((d, i) => `
-    <li class="revelar" data-atraso="${i % 2}">
-      <figure class="depoimento">
-        <blockquote><p style="margin:0">${escapar(d.texto)}</p></blockquote>
-        <figcaption>
-          <span class="avatar" aria-hidden="true">${escapar(iniciais(d.nome))}</span>
-          <span><strong>${escapar(d.nome)}</strong><span>${escapar(d.empresa)}</span></span>
-        </figcaption>
-      </figure>
-    </li>`).join("");
 
   // Galeria por nicho com filtro
   const estilosMidia = ["", "quente", "neutra", "noite"];
-  const nomeNicho = (id) => (NICHOS.find((n) => n.id === id) || { nome: id }).nome;
-  function desenharGaleria(filtro) {
-    const lista = filtro === "todos" ? TRABALHOS : TRABALHOS.filter((t) => t.nicho === filtro);
+  let filtroAtual = "todos";
+  const nomeNicho = (id) => { const n = NICHOS.find((x) => x.id === id); return n ? campo(n, "nome") : id; };
+  function desenharGaleria() {
+    const lista = filtroAtual === "todos" ? TRABALHOS : TRABALHOS.filter((t) => t.nicho === filtroAtual);
     $("#galeria").innerHTML = lista.map((t, i) => {
+      const titulo = campo(t, "titulo");
       const midia = t.imagem
-        ? `<div class="midia r-4-5"><img src="${escapar(t.imagem)}" alt="${escapar(t.alt || t.titulo)}" loading="lazy"></div>`
-        : `<div class="midia ${estilosMidia[i % 4]} r-4-5" role="img" aria-label="Foto do trabalho ${escapar(t.titulo)} para ${escapar(t.marca)}"><span class="legenda-midia">foto do trabalho 4:5</span></div>`;
-      const info = `<div class="trabalho-info"><span class="trabalho-nicho">${escapar(nomeNicho(t.nicho))} · ${escapar(t.formato)}</span><h3>${escapar(t.titulo)}</h3><p>${escapar(t.marca)}</p></div>`;
+        ? `<div class="midia r-4-5"><img src="${escapar(t.imagem)}" alt="${escapar(t.alt || titulo)}" loading="lazy"></div>`
+        : `<div class="midia ${estilosMidia[i % 4]} r-4-5" role="img" aria-label="${escapar(ui().fotoTrabalho(titulo, t.marca))}"><span class="legenda-midia">${escapar(ui().legendaTrabalho)}</span></div>`;
+      const info = `<div class="trabalho-info"><span class="trabalho-nicho">${escapar(nomeNicho(t.nicho))} · ${escapar(campo(t, "formato"))}</span><h3>${escapar(titulo)}</h3><p>${escapar(t.marca)}</p></div>`;
       const corpo = t.link ? `<a href="${escapar(t.link)}" target="_blank" rel="noopener" style="text-decoration:none;display:block">${midia}${info}</a>` : midia + info;
       return `<li class="trabalho" style="animation-delay:${i * 50}ms">${corpo}</li>`;
     }).join("");
   }
-  const filtros = [{ id: "todos", nome: "Todos" }, ...NICHOS];
-  $("#filtros").innerHTML = filtros.map((f, i) =>
-    `<button class="filtro" type="button" data-filtro="${f.id}" aria-pressed="${i === 0}">${escapar(f.nome)}</button>`).join("");
+  function desenharFiltros() {
+    const filtros = [{ id: "todos", nome: ui().todos }, ...NICHOS.map((n) => ({ id: n.id, nome: campo(n, "nome") }))];
+    $("#filtros").innerHTML = filtros.map((f) =>
+      `<button class="filtro" type="button" data-filtro="${f.id}" aria-pressed="${f.id === filtroAtual}">${escapar(f.nome)}</button>`).join("");
+  }
   $("#filtros").addEventListener("click", (e) => {
     const botao = e.target.closest(".filtro");
     if (!botao) return;
+    filtroAtual = botao.dataset.filtro;
     document.querySelectorAll(".filtro").forEach((b) => b.setAttribute("aria-pressed", String(b === botao)));
-    desenharGaleria(botao.dataset.filtro);
+    desenharGaleria();
   });
-  desenharGaleria("todos");
+
+  // Troca de idioma: o português original de cada texto fica guardado para poder voltar
+  const originais = new Map();
+  document.querySelectorAll("[data-i18n]").forEach((el) => originais.set(el, el.innerHTML));
+  const atributosOriginais = new Map();
+  document.querySelectorAll("[data-i18n-attr]").forEach((el) => {
+    const [attr] = el.dataset.i18nAttr.split(":");
+    atributosOriginais.set(el, el.getAttribute(attr));
+  });
+  const tituloOriginal = document.title;
+  const metaDescricao = document.querySelector('meta[name="description"]');
+  const descricaoOriginal = metaDescricao.content;
+
+  function aplicarIdioma(novo) {
+    idioma = novo;
+    const en = idioma === "en";
+    document.documentElement.lang = en ? "en" : "pt-BR";
+    document.title = en ? TEXTOS_EN["titulo.pagina"] : tituloOriginal;
+    metaDescricao.content = en ? TEXTOS_EN["descricao.pagina"] : descricaoOriginal;
+    originais.forEach((pt, el) => {
+      const chave = el.dataset.i18n;
+      el.innerHTML = en && TEXTOS_EN[chave] !== undefined ? TEXTOS_EN[chave] : pt;
+    });
+    atributosOriginais.forEach((pt, el) => {
+      const [attr, chave] = el.dataset.i18nAttr.split(":");
+      el.setAttribute(attr, en && TEXTOS_EN[chave] !== undefined ? TEXTOS_EN[chave] : pt);
+    });
+    document.querySelectorAll("[data-idioma]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.idioma === idioma)));
+    sanduiche.setAttribute("aria-label", sanduiche.getAttribute("aria-expanded") === "true" ? ui().fecharMenu : ui().abrirMenu);
+    desenharDados();
+    desenharFiltros();
+    desenharGaleria();
+    if (confirmacao.classList.contains("visivel") && ultimoNome) $("#confirmacao-texto").textContent = ui().obrigada(ultimoNome);
+    try { localStorage.setItem("idioma", idioma); } catch (_) {}
+  }
+  document.querySelectorAll("[data-idioma]").forEach((b) =>
+    b.addEventListener("click", () => { if (b.dataset.idioma !== idioma) aplicarIdioma(b.dataset.idioma); }));
 
   // Menu: fundo ao rolar e menu-sanduíche no celular
   const topo = $("#topo"), sanduiche = $("#sanduiche"), menu = $("#menu");
@@ -907,7 +1113,7 @@
   aoRolar();
   function alternarMenu(abrir) {
     sanduiche.setAttribute("aria-expanded", String(abrir));
-    sanduiche.setAttribute("aria-label", abrir ? "Fechar menu" : "Abrir menu");
+    sanduiche.setAttribute("aria-label", abrir ? ui().fecharMenu : ui().abrirMenu);
     menu.classList.toggle("aberto", abrir);
   }
   sanduiche.addEventListener("click", () => alternarMenu(sanduiche.getAttribute("aria-expanded") !== "true"));
@@ -917,7 +1123,7 @@
   function animarContador(el) {
     const alvo = Number(el.dataset.contar);
     const prefixo = el.dataset.prefixo || "", sufixo = el.dataset.sufixo || "";
-    const formatar = (n) => prefixo + Math.round(n).toLocaleString("pt-BR") + sufixo;
+    const formatar = (n) => prefixo + Math.round(n).toLocaleString(localidade()) + sufixo;
     if (reduzirMovimento || !alvo) { el.textContent = formatar(alvo); return; }
     const duracao = 1600, inicio = performance.now();
     const passo = (agora) => {
@@ -928,6 +1134,37 @@
     el.textContent = formatar(0);
     requestAnimationFrame(passo);
   }
+
+  // Formulário de contato
+  const form = $("#form-contato"), confirmacao = $("#confirmacao"), erro = $("#erro-form");
+  let ultimoNome = "";
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!form.checkValidity() || !form.nome.value.trim() || !form.mensagem.value.trim()) {
+      erro.style.display = "block";
+      const invalido = form.querySelector(":invalid") || form.nome;
+      invalido.focus();
+      return;
+    }
+    erro.style.display = "none";
+    ultimoNome = form.nome.value.trim().split(" ")[0];
+    if (FORM_ENDPOINT) {
+      try { await fetch(FORM_ENDPOINT, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } }); } catch (_) {}
+    }
+    $("#confirmacao-texto").textContent = ui().obrigada(ultimoNome);
+    form.reset();
+    form.style.display = "none";
+    confirmacao.classList.add("visivel");
+    confirmacao.focus();
+  });
+  $("#nova-mensagem").addEventListener("click", () => {
+    confirmacao.classList.remove("visivel");
+    form.style.display = "";
+    form.nome.focus();
+  });
+
+  // Desenha tudo no idioma escolhido
+  aplicarIdioma(idioma);
 
   // Animação de entrada ao rolar
   if ("IntersectionObserver" in window) {
@@ -944,33 +1181,7 @@
   } else {
     document.querySelectorAll(".revelar").forEach((el) => el.classList.add("visivel"));
   }
-
-  // Formulário de contato
-  const form = $("#form-contato"), confirmacao = $("#confirmacao"), erro = $("#erro-form");
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    if (!form.checkValidity() || !form.nome.value.trim() || !form.mensagem.value.trim()) {
-      erro.style.display = "block";
-      const invalido = form.querySelector(":invalid") || form.nome;
-      invalido.focus();
-      return;
-    }
-    erro.style.display = "none";
-    const nome = form.nome.value.trim().split(" ")[0];
-    if (FORM_ENDPOINT) {
-      try { await fetch(FORM_ENDPOINT, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } }); } catch (_) {}
-    }
-    $("#confirmacao-texto").textContent = `Obrigada pelo contato, ${nome}! Eu respondo em breve no e-mail que você deixou.`;
-    form.reset();
-    form.style.display = "none";
-    confirmacao.classList.add("visivel");
-    confirmacao.focus();
-  });
-  $("#nova-mensagem").addEventListener("click", () => {
-    confirmacao.classList.remove("visivel");
-    form.style.display = "";
-    form.nome.focus();
-  });
+  jaRevelou = true;
 
   // Card de captura do mídia kit (uma vez por visita)
   const fundo = $("#modal-fundo");

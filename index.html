@@ -154,7 +154,7 @@
   .capa-sobrelinha { font-size: 13px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--tinta-suave); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .capa-sobrelinha .ponto { width: 8px; height: 8px; border-radius: 50%; background: var(--laranja); }
   .capa h1 { font-size: clamp(34px, 5vw, 76px); line-height: 1.06; letter-spacing: -.02em; font-weight: 800; }
-  .capa h1 .palavra-final { white-space: nowrap; }
+  .capa h1 .palavra-final { display: block; white-space: nowrap; } /* a palavra digitada fica sempre na linha de baixo */
   .capa h1 .digitando { background: var(--degrade); -webkit-background-clip: text; background-clip: text; color: transparent; }
   .capa h1 .cursor { display: inline-block; width: .07em; height: .9em; margin-left: .05em; vertical-align: -.1em; background: var(--azul); animation: piscar 1s steps(1) infinite; }
   @keyframes piscar { 50% { opacity: 0; } }

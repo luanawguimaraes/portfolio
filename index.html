@@ -461,6 +461,66 @@
   }
   .capa-sobrelinha { flex-wrap: nowrap; }
 
+  /* ==========================================================
+     CRACHÁ DA CAPA
+     A foto cracha.webp tem 1847 x 2000 px. Cada parte abaixo mostra
+     um recorte dela (o cordão, o cartão e o mosquetão por cima do cartão).
+     ========================================================== */
+  .cracha-area {
+    align-self: start; display: flex; justify-content: center;
+    margin-top: calc(-1 * (var(--topo) + clamp(40px, 7vw, 90px))); /* o cordão começa no topo da página */
+  }
+  .cracha { width: min(310px, 100%); transform-origin: 51% 0; will-change: transform; }
+  .cracha-pulo.pulando { animation: pulinho .55s cubic-bezier(.3, .6, .35, 1); }
+  @keyframes pulinho {
+    0% { transform: translateY(0); }
+    38% { transform: translateY(-16px); }
+    72% { transform: translateY(2px); }
+    100% { transform: translateY(0); }
+  }
+  .cracha-cordao {
+    aspect-ratio: 720 / 640;
+    background: url("cracha.webp") 47.738% 0 / 256.53% auto no-repeat;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 16%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 16%);
+  }
+  .cracha-cartao {
+    position: relative; display: block; width: 100%; aspect-ratio: 720 / 1080; margin-top: -1px;
+    padding: 0; border: 0; background: none; cursor: pointer; perspective: 1600px;
+    border-radius: 9.3% / 6.2%; container-type: inline-size;
+  }
+  .cracha-cartao:focus-visible { outline-offset: 6px; }
+  .cracha-giro {
+    position: absolute; inset: 0; transform-style: preserve-3d;
+    transition: transform 1.05s cubic-bezier(.45, .05, .2, 1);
+  }
+  .cracha-cartao.virado .cracha-giro { transform: rotateY(180deg); }
+  .cracha-face {
+    position: absolute; inset: 0; border-radius: 9.3% / 6.2%; /* mesmo arredondado do cartão da foto */
+    -webkit-backface-visibility: hidden; backface-visibility: hidden;
+    filter: drop-shadow(0 1px 1.5px rgba(20, 17, 13, .10)) drop-shadow(0 16px 26px rgba(20, 17, 13, .11));
+  }
+  .cracha-frente { background: url("cracha.webp") 47.738% 69.565% / 256.53% auto no-repeat; }
+  .cracha-verso {
+    transform: rotateY(180deg); display: flex; align-items: flex-end; padding: 0 11% 13%;
+    background: linear-gradient(180deg, #f5f5f5 0%, #f4f4f4 20%, #f2f2f2 100%); /* mesmo tom do cartão da foto */
+  }
+  .cracha-texto {
+    font-family: var(--serif); font-weight: 800; font-size: 10.5cqi; line-height: 1.08;
+    letter-spacing: -.02em; color: var(--tinta); text-align: left;
+  }
+  .cracha-e { background: var(--degrade); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .cracha-gancho {
+    position: absolute; top: 0; left: 43.333%; width: 16.111%; aspect-ratio: 116 / 144; z-index: 2; pointer-events: none;
+    background: url("cracha.webp") 49.104% 34.483% / 1592.24% auto no-repeat;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+  }
+  @media (max-width: 920px) {
+    .cracha-area { margin-top: 8px; }
+    .cracha { width: min(250px, 78%); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; transition-delay: 0s !important; }
@@ -517,12 +577,22 @@
             <a class="botao botao-secundario" href="#destaques" data-i18n="capa.ver">Ver os trabalhos</a>
           </div>
         </div>
-        <div class="capa-foto revelar" data-atraso="2">
-          <span class="selo" aria-hidden="true" data-i18n="capa.selo">conteúdo<br>que<br>converte</span>
-          <!-- FOTO DA CAPA: para usar a sua foto, coloque o arquivo na mesma pasta do index.html
-               e adicione dentro desta div: <img src="minha-foto.jpg" alt="Luana Guimarães sorrindo"> -->
-          <div class="midia r-4-5" role="img" aria-label="Foto da creator Luana Guimarães" data-i18n-attr="aria-label:capa.fotoAlt">
-            <span class="legenda-midia" data-i18n="legenda.creator">foto da creator 4:5</span>
+        <!-- CRACHÁ DA CAPA: usa a foto cracha.webp (na mesma pasta do index.html).
+             Balança com o mouse em cima; ao clicar, dá um pulinho e gira mostrando o verso. -->
+        <div class="capa-foto cracha-area revelar" data-atraso="2">
+          <div class="cracha" id="cracha">
+            <div class="cracha-pulo" id="cracha-pulo">
+              <div class="cracha-cordao" aria-hidden="true"></div>
+              <button class="cracha-cartao" id="cracha-cartao" type="button" aria-pressed="false" aria-label="Virar o crachá" data-i18n-attr="aria-label:cracha.virar">
+                <span class="cracha-giro">
+                  <span class="cracha-face cracha-frente" id="cracha-frente" role="img" aria-label="Luana Guimarães com o crachá de Criadora UGC e Designer" data-i18n-attr="aria-label:cracha.fotoAlt"></span>
+                  <span class="cracha-face cracha-verso" id="cracha-verso" aria-hidden="true">
+                    <span class="cracha-texto" data-i18n="cracha.verso">UGC creator <span class="cracha-e">&amp;</span><br>Designer de<br>portfólios UGC</span>
+                  </span>
+                </span>
+                <span class="cracha-gancho" aria-hidden="true"></span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -900,7 +970,9 @@
     "capa.frase": "I create authentic, strategic content that gets your brand seen, remembered and chosen.",
     "capa.falar": "Let's talk",
     "capa.ver": "See my work",
-    "capa.selo": "content<br>that<br>converts",
+    "cracha.virar": "Flip the badge",
+    "cracha.fotoAlt": "Luana Guimarães wearing her UGC Creator and Designer badge",
+    "cracha.verso": "UGC creator <span class=\"cracha-e\">&amp;</span><br>UGC portfolio<br>designer",
     "capa.fotoAlt": "Photo of creator Luana Guimarães",
     "capa.videos": "videos delivered",
     "capa.marcas": "brands served",
@@ -1200,6 +1272,40 @@
     elDigitando.textContent = "";
     passo();
   }
+
+  // Crachá da capa: balança enquanto o mouse está em cima e gira ao clicar
+  const cracha = $("#cracha"), crachaPulo = $("#cracha-pulo"), crachaCartao = $("#cracha-cartao");
+  let balancoAmp = 0, balancoAlvo = 0, balancoFase = 0, balancoTempo = 0, balancando = false;
+  function balancar(agora) {
+    const dt = Math.min((agora - balancoTempo) / 1000, 0.05);
+    balancoTempo = agora;
+    // A amplitude cresce e diminui aos poucos, para o balanço começar e parar com naturalidade
+    balancoAmp += (balancoAlvo - balancoAmp) * Math.min(dt * (balancoAlvo > balancoAmp ? 1.4 : 1.5), 1);
+    balancoFase += dt * (2 * Math.PI / 2.8);
+    if (balancoAlvo === 0 && balancoAmp < 0.02) {
+      cracha.style.transform = ""; balancoAmp = 0; balancando = false;
+      return;
+    }
+    cracha.style.transform = `rotate(${(balancoAmp * Math.sin(balancoFase)).toFixed(3)}deg)`;
+    requestAnimationFrame(balancar);
+  }
+  cracha.addEventListener("pointerenter", (e) => {
+    if (e.pointerType !== "mouse" || reduzirMovimento) return;
+    balancoAlvo = 3.2;
+    if (!balancando) { balancando = true; balancoFase = 0; balancoTempo = performance.now(); requestAnimationFrame(balancar); }
+  });
+  cracha.addEventListener("pointerleave", () => { balancoAlvo = 0; });
+  crachaCartao.addEventListener("click", () => {
+    const virar = !crachaCartao.classList.contains("virado");
+    crachaPulo.classList.remove("pulando");
+    void crachaPulo.offsetWidth; // reinicia o pulinho a cada clique
+    crachaPulo.classList.add("pulando");
+    setTimeout(() => crachaCartao.classList.toggle("virado", virar), reduzirMovimento ? 0 : 170);
+    crachaCartao.setAttribute("aria-pressed", String(virar));
+    $("#cracha-frente").setAttribute("aria-hidden", String(virar));
+    $("#cracha-verso").setAttribute("aria-hidden", String(!virar));
+  });
+  crachaPulo.addEventListener("animationend", () => crachaPulo.classList.remove("pulando"));
 
   // Desenha tudo no idioma escolhido
   aplicarIdioma(idioma);

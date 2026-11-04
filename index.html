@@ -181,6 +181,16 @@
   .faixa-lista li { font-family: var(--serif); font-size: 22px; white-space: nowrap; display: flex; align-items: center; gap: 44px; }
   .faixa-lista li:nth-child(even) { font-style: italic; color: var(--azul); }
   .faixa-lista li::after { content: "✦"; font-size: 12px; color: var(--laranja); font-style: normal; }
+
+  /* Faixa de temas entre a capa e o Sobre mim */
+  .faixa-temas { background: linear-gradient(110deg, #6F5892 0%, #8C76AE 55%, #BEABD9 100%); padding: 18px 0; overflow: hidden; }
+  .faixa-temas .faixa-trilho { animation-duration: 38s; }
+  .faixa-temas .faixa-lista li, .faixa-temas .faixa-lista li:nth-child(even) {
+    font-family: var(--serif); font-weight: 800; font-size: 17px; letter-spacing: .06em; text-transform: uppercase;
+    font-style: normal; color: var(--branco); background: none; -webkit-background-clip: border-box; background-clip: border-box;
+    text-shadow: 0 1px 2px rgba(58, 40, 88, .35);
+  }
+  .faixa-temas .faixa-lista li::after { content: "•"; font-size: 18px; color: rgba(255, 255, 255, .8); }
   @keyframes deslizar { to { transform: translateX(-50%); } }
 
   /* ==========================================================
@@ -527,7 +537,7 @@
     .js .revelar { opacity: 1; transform: none; }
     .faixa-trilho { animation: none; width: auto; }
     .faixa-lista { flex-wrap: wrap; justify-content: center; row-gap: 10px; }
-    .faixa-lista[aria-hidden="true"] { display: none; }
+    .faixa-lista[aria-hidden="true"], .faixa-temas li[aria-hidden="true"] { display: none; }
   }
 </style>
 </head>
@@ -603,6 +613,11 @@
       <div class="faixa-trilho" id="faixa-trilho"></div>
     </div>
   </section>
+
+  <!-- ============ FAIXA DE TEMAS (os textos vêm do array TEMAS no script) ============ -->
+  <div class="faixa-temas" aria-label="O que eu crio" data-i18n-attr="aria-label:temas.rotulo">
+    <div class="faixa-trilho" id="temas-trilho"></div>
+  </div>
 
   <!-- ============ 2. SOBRE MIM ============ -->
   <section class="secao" id="sobre" aria-labelledby="titulo-sobre">
@@ -853,6 +868,10 @@
   const PALAVRAS_DIGITANDO = ["curiosidade", "interesse", "desejo", "identificação"];
   const PALAVRAS_DIGITANDO_EN = ["curiosity", "interest", "desire", "connection"];
 
+  // TEMAS: aparecem na faixa lilás que rola entre a capa e o Sobre mim
+  const TEMAS = ["UGC Aesthetic", "Ganchos Criativos", "Product Showcase", "Lifestyle Content"];
+  const TEMAS_EN = ["UGC Aesthetic", "Creative Hooks", "Product Showcase", "Lifestyle Content"];
+
   // MARCAS: aparecem na faixa que rola no fim da capa
   const MARCAS = [
     "Creamy", "Aneethun", "Beta", "Bioderma", "Freegells", "Mezzo", "Ráwve", "Memoz",
@@ -963,6 +982,7 @@
     "capa.frase": "Content with a creative eye, aesthetics and a natural feel, made to bring brands closer to real people.",
     "capa.falar": "Let's create",
     "capa.ver": "See my work",
+    "temas.rotulo": "What I create",
     "cracha.virar": "Flip the badge",
     "cracha.fotoAlt": "Luana Guimarães wearing her UGC Creator and Designer badge",
     "cracha.verso": "UGC creator <span class=\"cracha-e\">&amp;</span><br>UGC portfolio<br>designer",
@@ -1074,6 +1094,14 @@
   const listaMarcas = MARCAS.map((m) => `<li>${escapar(m)}</li>`).join("");
   $("#faixa-trilho").innerHTML = `<ul class="faixa-lista">${listaMarcas}</ul><ul class="faixa-lista" aria-hidden="true">${listaMarcas}</ul>`;
 
+  // Faixa de temas: os 4 textos se repetem para encher telas largas
+  function desenharTemas() {
+    const temas = idioma === "en" ? TEMAS_EN : TEMAS;
+    const itens = (oculto) => [0, 1, 2].map((r) => temas.map((t) =>
+      `<li${oculto || r > 0 ? ' aria-hidden="true"' : ""}>${escapar(t)}</li>`).join("")).join("");
+    $("#temas-trilho").innerHTML = `<ul class="faixa-lista">${itens(false)}</ul><ul class="faixa-lista" aria-hidden="true">${itens(true)}</ul>`;
+  }
+
   const classeRevelar = () => (jaRevelou ? "revelar visivel" : "revelar");
   const formatarNumero = (m) => (m.prefixo || "") + Number(m.valor).toLocaleString(localidade()) + (m.sufixo || "");
 
@@ -1177,6 +1205,7 @@
     desenharFiltros();
     desenharGaleria();
     reiniciarDigitacao();
+    desenharTemas();
     if (confirmacao.classList.contains("visivel") && ultimoNome) $("#confirmacao-texto").textContent = ui().obrigada(ultimoNome);
     try { localStorage.setItem("idioma", idioma); } catch (_) {}
   }

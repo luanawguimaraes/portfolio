@@ -501,6 +501,16 @@
   }
   .capa-sobrelinha { flex-wrap: nowrap; }
 
+  /* Estrelas azuis decorativas espalhadas pelo site (configuradas no array ESTRELAS do script) */
+  .tem-estrelas { position: relative; }
+  .tem-estrelas > .container { position: relative; z-index: 1; }
+  .estrela { position: absolute; z-index: 0; width: var(--tam); height: var(--tam); color: var(--azul-claro); pointer-events: none; transform: rotate(var(--giro)); }
+  .estrela path { fill: currentColor; }
+  @media (max-width: 760px) {
+    .estrela { width: calc(var(--tam) * .6); height: calc(var(--tam) * .6); }
+    .estrela.so-computador { display: none; }
+  }
+
   /* ==========================================================
      CRACHÁ DA CAPA
      A foto cracha.webp tem 1847 x 2000 px. Cada parte abaixo mostra
@@ -903,6 +913,21 @@
   // FRASE DA CAPA: a última palavra fica alternando como se estivesse sendo digitada
   const PALAVRAS_DIGITANDO = ["curiosidade", "interesse", "desejo", "identificação"];
   const PALAVRAS_DIGITANDO_EN = ["curiosity", "interest", "desire", "connection"];
+
+  // ESTRELAS: enfeites azuis espalhados pelo site. "secao" é onde a estrela fica,
+  // "pos" é a posição dentro da seção, "tam" o tamanho em px e "giro" a inclinação.
+  // "celular: false" esconde a estrela em telas pequenas, para não ficar cheio demais;
+  // "posCelular" é a posição usada no celular (no espaço livre do topo da seção).
+  const ESTRELAS = [
+    { secao: "#inicio",    pos: { top: "96px", left: "50%" }, tam: 58, giro: 14, posCelular: { top: "84px", right: "6px" } },
+    { secao: "#inicio",    pos: { top: "84%", left: "2%" },   tam: 38, giro: -18, celular: false },
+    { secao: "#sobre",     pos: { top: "7%",  right: "3%" },  tam: 72, giro: 8, posCelular: { top: "18px", right: "8px" } },
+    { secao: "#sobre",     pos: { top: "86%", left: "44%" },  tam: 40, giro: -10, celular: false },
+    { secao: "#destaques", pos: { top: "8%",  left: "2.5%" }, tam: 62, giro: -6, posCelular: { top: "16px", left: "8px" } },
+    { secao: "#trabalhos", pos: { top: "10%", right: "4%" },  tam: 50, giro: 20, celular: false },
+    { secao: "#numeros",   pos: { top: "44%", right: "2%" },  tam: 78, giro: -14, posCelular: { top: "14px", right: "10px" } },
+    { secao: "#contato",   pos: { top: "10%", left: "44%" },  tam: 56, giro: 10, posCelular: { top: "18px", right: "12px" } }
+  ];
 
   // TEMAS: aparecem na faixa lilás que rola entre a capa e o Sobre mim
   const TEMAS = ["UGC Aesthetic", "Ganchos Criativos", "Product Showcase", "Lifestyle Content"];
@@ -1363,6 +1388,43 @@
     $("#cracha-verso").setAttribute("aria-hidden", String(!virar));
   });
   crachaPulo.addEventListener("animationend", () => crachaPulo.classList.remove("pulando"));
+
+  // Estrelas: seis pontas finas e um pouco irregulares, como desenhadas à mão
+  function caminhoEstrela() {
+    const externos = [50, 41, 47, 38, 49, 43], desvio = [0, 6, -4, 5, -6, 3], interno = 15;
+    let d = "";
+    for (let i = 0; i < 6; i++) {
+      const a = (-90 + i * 60 + desvio[i]) * Math.PI / 180, b = (-60 + i * 60) * Math.PI / 180;
+      d += (i ? "L" : "M") + (50 + externos[i] * Math.cos(a)).toFixed(1) + " " + (50 + externos[i] * Math.sin(a)).toFixed(1);
+      d += "L" + (50 + interno * Math.cos(b)).toFixed(1) + " " + (50 + interno * Math.sin(b)).toFixed(1);
+    }
+    return d + "Z";
+  }
+  const formaEstrela = caminhoEstrela();
+  const telaPequena = window.matchMedia("(max-width: 760px)");
+  const estrelasCriadas = ESTRELAS.map((e) => {
+    const secao = document.querySelector(e.secao);
+    if (!secao) return null;
+    secao.classList.add("tem-estrelas");
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 100 100");
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("class", "estrela" + (e.celular === false ? " so-computador" : ""));
+    svg.innerHTML = `<path d="${formaEstrela}"/>`;
+    svg.style.setProperty("--tam", e.tam + "px");
+    svg.style.setProperty("--giro", e.giro + "deg");
+    secao.prepend(svg);
+    return { svg, e };
+  }).filter(Boolean);
+  function posicionarEstrelas() {
+    estrelasCriadas.forEach(({ svg, e }) => {
+      ["top", "left", "right", "bottom"].forEach((k) => { svg.style[k] = ""; });
+      const pos = telaPequena.matches && e.posCelular ? e.posCelular : e.pos;
+      Object.entries(pos).forEach(([k, v]) => { svg.style[k] = v; });
+    });
+  }
+  posicionarEstrelas();
+  telaPequena.addEventListener("change", posicionarEstrelas);
 
   // Desenha tudo no idioma escolhido
   aplicarIdioma(idioma);

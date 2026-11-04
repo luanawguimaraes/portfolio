@@ -201,8 +201,15 @@
   .sobre-foto { position: relative; }
   .sobre-foto::after { content: ""; position: absolute; inset: 22px -22px -22px 22px; border: 1px solid var(--azul); border-radius: var(--raio); z-index: -1; }
   .sobre-img { object-position: 50% 22%; } /* mantém o rosto no enquadramento 4:5 */
-  .sobre-texto .titulo-secao { margin-bottom: 30px; }
-  .sobre-texto p { color: var(--tinta-suave); max-width: 56ch; }
+  .sobre-texto .titulo-secao { margin-bottom: 24px; font-weight: 800; line-height: 1; letter-spacing: -.03em; font-size: clamp(34px, 4vw, 56px); max-width: none; }
+  .sobre-texto p { color: var(--tinta-suave); max-width: 58ch; }
+  .sobre-texto p strong { color: var(--tinta); font-weight: 700; }
+  .sobre-etiquetas { display: flex; flex-wrap: wrap; gap: 12px; list-style: none; padding: 0; margin: 26px 0 0; }
+  .sobre-etiquetas li {
+    padding: 13px 22px; border-radius: 999px; font-size: 15px; font-weight: 600; color: var(--tinta);
+    background: var(--creme-2); border: 1px solid var(--linha);
+  }
+  .sobre-etiquetas .etiqueta-lilas { background: var(--azul-claro); border-color: rgba(111, 88, 146, .25); color: var(--azul-escuro); }
   .sobre-texto p.destaque { font-family: var(--serif); font-size: clamp(22px, 2.4vw, 28px); line-height: 1.35; color: var(--tinta); }
   .promessas { list-style: none; padding: 0; margin: 34px 0; display: grid; gap: 0; border-top: 1px solid var(--linha); }
   .promessas li { display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--linha); font-weight: 500; }
@@ -629,9 +636,12 @@
       <div class="sobre-texto">
         <span class="rotulo revelar" data-i18n="sobre.rotulo">Sobre mim</span>
         <h2 class="titulo-secao revelar" id="titulo-sobre" data-i18n="sobre.titulo">Oie, eu sou a <em>Luana!</em></h2>
-        <p class="destaque revelar" data-i18n="sobre.destaque">Tenho 27 anos, moro em Alphaville (SP), sou formada em Marketing e atuo como criadora de conteúdo UGC.</p>
-        <p class="revelar" data-i18n="sobre.texto">Minha experiência no mercado de influência, aliada ao desenvolvimento de mais de 90 portfólios UGC, ampliou meu olhar estratégico para o posicionamento de creators e a criação de conteúdo.</p>
-        <p class="revelar" data-i18n="sobre.texto2">Uno criatividade, estética e comunicação para desenvolver conteúdos estratégicos.</p>
+        <p class="revelar" data-i18n="sobre.texto">Tenho <strong>27 anos</strong>, sou <strong>formada em Marketing</strong> e atuo no mercado de influência como criadora de conteúdo UGC e estrategista criativa. Ao longo da minha trajetória, <strong>desenvolvi mais de 90 portfólios UGC para creators</strong>, aprofundando minha visão sobre posicionamento, construção de imagem e comunicação estratégica.</p>
+        <p class="revelar" data-i18n="sobre.texto2">Também acumulo experiência na criação de conteúdos para marcas como <strong>Freegells</strong>, <strong>Bioderma</strong> e <strong>Creamy</strong>, além de ter trabalhado com a <strong>influencer Mariana Menezes</strong> no desenvolvimento de roteiros e na direção criativa de produções publicitárias.</p>
+        <ul class="sobre-etiquetas revelar">
+          <li class="etiqueta-lilas" data-i18n="sobre.etiqueta1">Tenho 27 anos</li>
+          <li data-i18n="sobre.etiqueta2">Alphaville - SP</li>
+        </ul>
         <ul class="promessas revelar">
           <li data-i18n="sobre.promessa1"><span>01</span>Roteiro aprovado por você antes de gravar</li>
           <li data-i18n="sobre.promessa2"><span>02</span>Uma rodada de ajuste inclusa</li>
@@ -1000,9 +1010,10 @@
     "sobre.fotoAlt": "Luana Guimarães sitting in a black top and jeans, looking at the camera",
     "sobre.rotulo": "About me",
     "sobre.titulo": "Hi, I'm <em>Luana!</em>",
-    "sobre.destaque": "I'm 27, I live in Alphaville (São Paulo, Brazil), I have a degree in Marketing and I work as a UGC content creator.",
-    "sobre.texto": "My experience in the influencer market, combined with developing more than 90 UGC portfolios, sharpened my strategic eye for creator positioning and content creation.",
-    "sobre.texto2": "I bring together creativity, aesthetics and communication to create strategic content.",
+    "sobre.texto": "I'm <strong>27</strong>, I have a <strong>degree in Marketing</strong> and I work in the influencer market as a UGC content creator and creative strategist. Along the way, I have <strong>developed more than 90 UGC portfolios for creators</strong>, deepening my understanding of positioning, image building and strategic communication.",
+    "sobre.texto2": "I also have experience creating content for brands such as <strong>Freegells</strong>, <strong>Bioderma</strong> and <strong>Creamy</strong>, and I have worked with <strong>influencer Mariana Menezes</strong> on scriptwriting and creative direction for advertising productions.",
+    "sobre.etiqueta1": "27 years old",
+    "sobre.etiqueta2": "Alphaville - SP, Brazil",
     "sobre.promessa1": "<span>01</span>Script approved by you before filming",
     "sobre.promessa2": "<span>02</span>One round of revisions included",
     "sobre.promessa3": "<span>03</span>Delivery within 72 business hours",

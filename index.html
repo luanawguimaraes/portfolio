@@ -153,8 +153,12 @@
   .capa-grade { display: grid; grid-template-columns: 1.25fr .75fr; gap: clamp(32px, 6vw, 88px); align-items: end; }
   .capa-sobrelinha { font-size: 13px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--tinta-suave); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .capa-sobrelinha .ponto { width: 8px; height: 8px; border-radius: 50%; background: var(--laranja); }
-  .capa h1 { font-size: clamp(56px, 11vw, 150px); line-height: .92; letter-spacing: -.03em; font-weight: 800; }
-  .capa h1 em { display: block; }
+  .capa h1 { font-size: clamp(34px, 5vw, 76px); line-height: 1.06; letter-spacing: -.02em; font-weight: 800; }
+  .capa h1 .palavra-final { white-space: nowrap; }
+  .capa h1 .digitando { background: var(--degrade); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .capa h1 .cursor { display: inline-block; width: .07em; height: .9em; margin-left: .05em; vertical-align: -.1em; background: var(--azul); animation: piscar 1s steps(1) infinite; }
+  @keyframes piscar { 50% { opacity: 0; } }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
   .capa-frase { font-size: clamp(18px, 1.8vw, 21px); max-width: 34ch; margin: 32px 0 36px; color: var(--tinta-suave); }
   .capa-botoes { display: flex; gap: 14px; flex-wrap: wrap; }
   .capa-foto { position: relative; }
@@ -419,7 +423,6 @@
     background: var(--degrade); -webkit-background-clip: text; background-clip: text; color: transparent;
     -webkit-box-decoration-break: clone; box-decoration-break: clone;
   }
-  .capa h1 em { width: fit-content; }
   .servicos .titulo-secao em, .contato .titulo-secao em { background: none; }
   .botao-primario, .menu .menu-cta:hover, .card-video:hover .play, .check, .avatar, .menu a::after { background: var(--degrade); }
   .botao-primario { border-color: transparent; }
@@ -506,7 +509,8 @@
       <div class="capa-grade">
         <div>
           <p class="capa-sobrelinha revelar"><span class="ponto" aria-hidden="true"></span> <span data-i18n="capa.sobrelinha">UGC Creator · Alphaville (SP)</span></p>
-          <h1 id="titulo-capa" class="revelar" data-atraso="1">Luana <em>Guimarães</em></h1>
+          <!-- FRASE DA CAPA: as palavras que alternam ficam em PALAVRAS_DIGITANDO no script -->
+          <h1 id="titulo-capa" class="revelar" data-atraso="1"><span data-i18n="capa.titulo">Eu transformo produtos em conteúdos criativos que despertam</span> <span class="palavra-final" aria-hidden="true"><span class="digitando" id="digitando">curiosidade</span><span class="cursor"></span></span><span class="sr-only" data-i18n="capa.palavrasSr">curiosidade, interesse, desejo e identificação</span></h1>
           <p class="capa-frase revelar" data-atraso="2" data-i18n="capa.frase">Crio conteúdos autênticos e estratégicos que fazem a sua marca ser vista, lembrada e escolhida.</p>
           <div class="capa-botoes revelar" data-atraso="3">
             <a class="botao botao-primario" href="#contato" data-i18n="capa.falar">Falar comigo</a>
@@ -782,6 +786,10 @@
      Os campos que terminam em "_en" são a versão em inglês.
      ========================================================== */
 
+  // FRASE DA CAPA: a última palavra fica alternando como se estivesse sendo digitada
+  const PALAVRAS_DIGITANDO = ["curiosidade", "interesse", "desejo", "identificação"];
+  const PALAVRAS_DIGITANDO_EN = ["curiosity", "interest", "desire", "connection"];
+
   // MARCAS: aparecem na faixa que rola no fim da capa
   const MARCAS = [
     "Creamy", "Aneethun", "Beta", "Bioderma", "Freegells", "Mezzo", "Ráwve", "Memoz",
@@ -886,6 +894,8 @@
     "menu.numeros": "Results",
     "menu.contato": "Contact",
     "capa.sobrelinha": "UGC Creator · Alphaville (SP), Brazil",
+    "capa.titulo": "I turn products into creative content that sparks",
+    "capa.palavrasSr": "curiosity, interest, desire and connection",
     "capa.frase": "I create authentic, strategic content that gets your brand seen, remembered and chosen.",
     "capa.falar": "Let's talk",
     "capa.ver": "See my work",
@@ -1100,6 +1110,7 @@
     desenharDados();
     desenharFiltros();
     desenharGaleria();
+    reiniciarDigitacao();
     if (confirmacao.classList.contains("visivel") && ultimoNome) $("#confirmacao-texto").textContent = ui().obrigada(ultimoNome);
     try { localStorage.setItem("idioma", idioma); } catch (_) {}
   }
@@ -1162,6 +1173,32 @@
     form.style.display = "";
     form.nome.focus();
   });
+
+  // Palavra final da capa: digita, espera, apaga e passa para a próxima
+  const elDigitando = $("#digitando");
+  let timerDigitacao = null;
+  function reiniciarDigitacao() {
+    clearTimeout(timerDigitacao);
+    const palavras = idioma === "en" ? PALAVRAS_DIGITANDO_EN : PALAVRAS_DIGITANDO;
+    let i = 0, letras = 0, apagando = false;
+    if (reduzirMovimento) {
+      // Sem animação de digitação: só troca a palavra de tempos em tempos
+      elDigitando.textContent = palavras[0];
+      const trocar = () => { i = (i + 1) % palavras.length; elDigitando.textContent = palavras[i]; timerDigitacao = setTimeout(trocar, 2600); };
+      timerDigitacao = setTimeout(trocar, 2600);
+      return;
+    }
+    const passo = () => {
+      const palavra = palavras[i];
+      letras += apagando ? -1 : 1;
+      elDigitando.textContent = palavra.slice(0, letras);
+      if (!apagando && letras === palavra.length) { apagando = true; timerDigitacao = setTimeout(passo, 1800); return; }
+      if (apagando && letras === 0) { apagando = false; i = (i + 1) % palavras.length; timerDigitacao = setTimeout(passo, 350); return; }
+      timerDigitacao = setTimeout(passo, apagando ? 45 : 95);
+    };
+    elDigitando.textContent = "";
+    passo();
+  }
 
   // Desenha tudo no idioma escolhido
   aplicarIdioma(idioma);

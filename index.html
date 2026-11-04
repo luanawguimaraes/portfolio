@@ -528,8 +528,9 @@
     mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
   }
   @media (max-width: 920px) {
-    .cracha-area { margin-top: 8px; }
-    .cracha { width: min(250px, 78%); }
+    /* no celular o crachá vem antes do texto, com o cordão saindo de baixo do menu */
+    .cracha-area { order: -1; margin-top: calc(-1 * clamp(40px, 7vw, 90px)); }
+    .cracha { width: min(230px, 66%); }
   }
 
   @media (prefers-reduced-motion: reduce) {

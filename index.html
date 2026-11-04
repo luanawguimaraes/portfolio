@@ -174,7 +174,7 @@
   .capa-numeros strong { display: block; font-family: var(--serif); font-weight: 400; font-size: clamp(36px, 4.6vw, 58px); line-height: 1; color: var(--azul); }
   .capa-numeros span { font-size: 14px; color: var(--tinta-suave); }
 
-  .faixa-marcas { border-block: 1px solid var(--linha); padding: 20px 0; overflow: hidden; margin-top: clamp(40px, 5vw, 64px); background: var(--creme-2); }
+  .faixa-marcas { border-block: 1px solid var(--linha); padding: 20px 0; overflow: hidden; background: var(--creme-2); }
   .faixa-trilho { display: flex; width: max-content; animation: deslizar 60s linear infinite; }
   .faixa-marcas:hover .faixa-trilho { animation-play-state: paused; }
   .faixa-lista { display: flex; align-items: center; gap: 44px; padding-right: 44px; list-style: none; margin: 0; }
@@ -183,7 +183,7 @@
   .faixa-lista li::after { content: "✦"; font-size: 12px; color: var(--laranja); font-style: normal; }
 
   /* Faixa de temas entre a capa e o Sobre mim */
-  .faixa-temas { background: linear-gradient(110deg, #6F5892 0%, #8C76AE 55%, #BEABD9 100%); padding: 18px 0; overflow: hidden; }
+  .faixa-temas { background: linear-gradient(110deg, #6F5892 0%, #8C76AE 55%, #BEABD9 100%); padding: 18px 0; overflow: hidden; margin-top: clamp(40px, 5vw, 64px); }
   .faixa-temas .faixa-trilho { animation-duration: 38s; }
   .faixa-temas .faixa-lista li, .faixa-temas .faixa-lista li:nth-child(even) {
     font-family: var(--serif); font-weight: 800; font-size: 17px; letter-spacing: .06em; text-transform: uppercase;
@@ -607,11 +607,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Faixa de marcas: os nomes vêm do array MARCAS no script -->
-    <div class="faixa-marcas" aria-label="Marcas com quem já trabalhei" data-i18n-attr="aria-label:capa.faixa">
-      <div class="faixa-trilho" id="faixa-trilho"></div>
-    </div>
   </section>
 
   <!-- ============ FAIXA DE TEMAS (os textos vêm do array TEMAS no script) ============ -->
@@ -642,6 +637,11 @@
       </div>
     </div>
   </section>
+
+  <!-- ============ FAIXA DE MARCAS (os nomes vêm do array MARCAS no script) ============ -->
+  <div class="faixa-marcas" aria-label="Marcas com quem já trabalhei" data-i18n-attr="aria-label:capa.faixa">
+    <div class="faixa-trilho" id="faixa-trilho"></div>
+  </div>
 
   <!-- ============ 3. CONTEÚDOS DE DESTAQUE ============ -->
   <section class="secao destaques" id="destaques" aria-labelledby="titulo-destaques">

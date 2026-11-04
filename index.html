@@ -46,7 +46,12 @@
   html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
   body {
     margin: 0;
-    background: var(--creme);
+    /* fundo creme com textura quadriculada suave */
+    background-color: var(--creme);
+    background-image:
+      linear-gradient(rgba(43, 43, 43, .045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(43, 43, 43, .045) 1px, transparent 1px);
+    background-size: 36px 36px;
     color: var(--tinta);
     font-family: var(--sans);
     font-size: 17px;
@@ -221,7 +226,7 @@
   /* ==========================================================
      3. CONTEÚDOS DE DESTAQUE
      ========================================================== */
-  .destaques { background: var(--creme); }
+  .destaques { background: transparent; } /* deixa aparecer o quadriculado do fundo */
   .destaques-grade { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(20px, 3vw, 36px); }
   .card-video { text-decoration: none; display: block; border-radius: var(--raio); transition: transform .4s; }
   .card-video:hover { transform: translateY(-6px); }

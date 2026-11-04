@@ -153,8 +153,8 @@
   .capa-grade { display: grid; grid-template-columns: 1.25fr .75fr; gap: clamp(32px, 6vw, 88px); align-items: end; }
   .capa-sobrelinha { font-size: 13px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--tinta-suave); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .capa-sobrelinha .ponto { width: 8px; height: 8px; border-radius: 50%; background: var(--laranja); }
-  .capa h1 { font-size: clamp(56px, 11vw, 150px); line-height: .92; letter-spacing: -.03em; font-weight: 350; }
-  .capa h1 em { display: block; padding-left: .5em; }
+  .capa h1 { font-size: clamp(56px, 11vw, 150px); line-height: .92; letter-spacing: -.03em; font-weight: 800; }
+  .capa h1 em { display: block; }
   .capa-frase { font-size: clamp(18px, 1.8vw, 21px); max-width: 34ch; margin: 32px 0 36px; color: var(--tinta-suave); }
   .capa-botoes { display: flex; gap: 14px; flex-wrap: wrap; }
   .capa-foto { position: relative; }
@@ -398,7 +398,6 @@
   }
   @media (max-width: 560px) {
     body { font-size: 16px; }
-    .capa h1 em { padding-left: .3em; }
     .capa-botoes .botao { flex: 1 1 100%; }
     .capa-numeros div { padding: 20px 10px 22px 0; }
     .capa-numeros div + div { padding-left: 12px; }

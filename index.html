@@ -408,17 +408,18 @@
   /* ==========================================================
      5. COMO EU TE AJUDO
      ========================================================== */
-  .servicos { background: var(--tinta); color: var(--creme); }
-  .servicos .rotulo { color: var(--roxo-claro); }
-  .servicos .rotulo::before { background: var(--roxo-claro); }
-  .servicos .titulo-secao em { color: var(--roxo-claro); }
-  .servicos .cabecalho-secao p { color: #c9c1b6; }
-  .servicos-grade { display: grid; grid-template-columns: repeat(3, 1fr); list-style: none; margin: 0; padding: 0; border-top: 1px solid rgba(243, 238, 233, .16); }
-  .servico { padding: 40px 32px 44px 0; border-bottom: 1px solid rgba(243, 238, 233, .16); transition: background .3s; }
-  .servico:not(:nth-child(3n + 1)) { padding-left: 32px; border-left: 1px solid rgba(243, 238, 233, .16); }
-  .servico-num { font-family: var(--serif); font-style: italic; color: var(--roxo-claro); font-size: 22px; display: block; margin-bottom: 26px; }
+  /* fundo no azul claro da paleta; textos em grafite e destaques em rosa */
+  .servicos { background: var(--azul-claro); color: var(--tinta); }
+  .servicos .rotulo { color: var(--azul); }
+  .servicos .rotulo::before { background: var(--azul); }
+  .servicos .titulo-secao em { color: var(--azul); }
+  .servicos .cabecalho-secao p { color: var(--tinta); }
+  .servicos-grade { display: grid; grid-template-columns: repeat(3, 1fr); list-style: none; margin: 0; padding: 0; border-top: 1px solid rgba(43, 43, 43, .14); }
+  .servico { padding: 40px 32px 44px 0; border-bottom: 1px solid rgba(43, 43, 43, .14); transition: background .3s; }
+  .servico:not(:nth-child(3n + 1)) { padding-left: 32px; border-left: 1px solid rgba(43, 43, 43, .14); }
+  .servico-num { font-family: var(--serif); font-style: italic; color: var(--azul); font-size: 22px; display: block; margin-bottom: 26px; }
   .servico h3 { font-size: 28px; margin-bottom: 12px; }
-  .servico p { color: #c9c1b6; font-size: 15px; margin: 0; max-width: 34ch; }
+  .servico p { color: var(--tinta); font-size: 15px; margin: 0; max-width: 34ch; }
 
   /* ==========================================================
      6. NÚMEROS E DEPOIMENTOS
@@ -556,7 +557,7 @@
     .sobre-foto { max-width: 460px; width: calc(100% - 22px); }
     .servicos-grade { grid-template-columns: repeat(2, 1fr); }
     .servico, .servico:not(:nth-child(3n + 1)) { padding: 36px 24px 40px 0; border-left: 0; }
-    .servico:nth-child(even) { padding-left: 24px; border-left: 1px solid rgba(243, 238, 233, .16); }
+    .servico:nth-child(even) { padding-left: 24px; border-left: 1px solid rgba(43, 43, 43, .14); }
     .metricas { grid-template-columns: repeat(2, 1fr); row-gap: 40px; }
     .metrica:nth-child(3) { padding-left: 0; border-left: 0; }
     .resultados { grid-template-columns: 1fr; }

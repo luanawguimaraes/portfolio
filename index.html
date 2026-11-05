@@ -353,31 +353,66 @@
   .habilidades .cabecalho-secao { flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 18px; margin-bottom: clamp(36px, 4.8vw, 56px); }
   .habilidades .cabecalho-secao p { max-width: 52ch; }
   .habilidades .cabecalho-secao .rotulo { margin-bottom: 0; } /* mesma distância até o título das outras seções */
-  /* 2 cards em cima e 1 centralizado embaixo (grade de 4 colunas, cada card ocupa 2) */
-  .habilidades-grade { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(18px, 2.4vw, 28px); max-width: 1040px; margin: 0 auto; list-style: none; padding: 0; }
-  .habilidades-grade > li { grid-column: span 2; }
-  .habilidades-grade > li:last-child:nth-child(odd) { grid-column: 2 / span 2; }
-  /* cada habilidade é um card branco separado; o cinza escuro fica só no texto */
-  .habilidade {
-    position: relative; background: var(--branco); border-radius: var(--raio); padding: clamp(28px, 3vw, 40px) clamp(26px, 2.8vw, 36px);
-    border: 1px solid rgba(199, 45, 103, .28); box-shadow: 0 14px 30px -18px rgba(199, 45, 103, .35);
-    transition: transform .4s, box-shadow .4s; text-align: center;
+  /* VARAL DE HABILIDADES: cartões pendurados num fio; na frente o título, atrás a descrição.
+     Viram ao passar o mouse (ou ao tocar, no celular) e o verso tem um gradiente furta-cor que segue o mouse. */
+  .varal { position: relative; display: flex; justify-content: center; align-items: flex-start; gap: clamp(18px, 3vw, 44px);
+    max-width: 1080px; margin: 0 auto; padding: 0; list-style: none; }
+  .varal-fio-li { display: contents; }
+  .varal-fio { position: absolute; left: 2%; right: 2%; top: 0; width: 96%; height: 60px; overflow: visible; pointer-events: none; }
+  .varal-fio path { fill: none; stroke: #B9B4BC; stroke-width: 1.6; vector-effect: non-scaling-stroke; }
+  .hab-item { position: relative; padding-top: var(--topo-cartao, 70px); }
+  .hab-cordao { position: absolute; left: 50%; top: var(--fio, 20px); width: 1.6px; height: calc(var(--topo-cartao, 70px) - var(--fio, 20px) + 12px); background: #B9B4BC; transform: translateX(-50%); }
+  .hab-cordao::before { content: ""; position: absolute; left: 50%; top: -4px; width: 8px; height: 8px; border-radius: 50%; background: #A7A1AB; transform: translateX(-50%); }
+  .hab-cartao {
+    position: relative; display: block; width: clamp(230px, 23vw, 272px); aspect-ratio: 3 / 4.15; perspective: 1200px; cursor: pointer;
+    transform: rotate(var(--giro, 0deg)); transform-origin: 50% -20px; transition: transform .5s cubic-bezier(.3, .7, .3, 1);
+    -webkit-tap-highlight-color: transparent; outline: none;
   }
-  .habilidade:hover { transform: translateY(-6px); box-shadow: 0 22px 40px -20px rgba(199, 45, 103, .45); }
-  /* bolinha com a setinha encostada na borda esquerda, na altura do título */
-  .habilidade-num {
-    position: absolute; left: -11px; top: calc(clamp(28px, 3vw, 40px) + 4px); width: 22px; height: 22px; border-radius: 50%;
-    background: var(--branco); border: 1px solid rgba(199, 45, 103, .35); display: grid; place-items: center; color: var(--azul);
+  .hab-cartao:focus-visible .hab-face { box-shadow: 0 0 0 3px var(--azul), 0 22px 40px -22px rgba(43, 43, 43, .4); }
+  /* presilha no topo do cartão */
+  .hab-cartao::before { content: ""; position: absolute; z-index: 3; left: 50%; top: -9px; width: 22px; height: 16px; border-radius: 8px 8px 4px 4px;
+    background: linear-gradient(#E6E2E8, #C9C3CC); box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .08); transform: translateX(-50%); }
+  .hab-giro { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform .75s cubic-bezier(.3, .7, .25, 1); }
+  .hab-cartao.virado .hab-giro { transform: rotateY(180deg); }
+  @media (hover: hover) {
+    .hab-cartao:hover { transform: rotate(0deg) translateY(-4px); }
+    .hab-cartao:hover .hab-giro { transform: rotateY(180deg); }
   }
-  .habilidade-num svg { width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
-  /* título sempre em uma linha: o tamanho acompanha a largura do card (o título mais longo cabe inteiro) */
-  .habilidade { container-type: inline-size; }
-  .habilidade h3 { font-size: min(24px, 4.65cqi); white-space: nowrap; font-weight: 700; line-height: 1.2; color: var(--azul); margin-bottom: 16px; }
-  .habilidade p { color: var(--tinta); font-size: 15px; line-height: 1.7; margin: 0; }
-  .habilidade p strong { font-weight: 500; color: var(--tinta); } /* negrito suave */
-  @media (max-width: 920px) {
-    .habilidades-grade { grid-template-columns: 1fr; max-width: 560px; }
-    .habilidades-grade > li, .habilidades-grade > li:last-child:nth-child(odd) { grid-column: auto; }
+  .hab-face {
+    position: absolute; inset: 0; display: flex; flex-direction: column; padding: 20px 20px 18px; border-radius: 18px;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden;
+    box-shadow: 0 22px 40px -22px rgba(43, 43, 43, .35), 0 2px 6px rgba(43, 43, 43, .06);
+  }
+  .hab-topo { display: flex; justify-content: space-between; font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #8E8792; }
+  /* frente: cartão claro com o título grande */
+  .hab-frente { background: #F7F5F8; border: 1px solid rgba(43, 43, 43, .06); }
+  .hab-frente h3 { margin: auto 0; font-size: clamp(24px, 2.3vw, 30px); font-weight: 800; line-height: 1.08; letter-spacing: -.02em; color: var(--tinta); }
+  .hab-frente h3 em { font-style: normal; }
+  .hab-rodape { display: flex; justify-content: space-between; align-items: center; padding-top: 14px; border-top: 1px solid rgba(43, 43, 43, .1);
+    font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--tinta); }
+  .hab-seta { width: 26px; height: 26px; border-radius: 50%; background: var(--tinta); display: grid; place-items: center; }
+  .hab-seta svg { width: 11px; height: 11px; fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  .dica-toque { display: none; }
+  @media (hover: none) { .dica-mouse { display: none; } .dica-toque { display: inline; } }
+  /* verso: gradiente furta-cor que acompanha o mouse */
+  .hab-verso {
+    transform: rotateY(180deg); justify-content: flex-start; gap: 12px;
+    background: linear-gradient(125deg, #FFD3E6 0%, #DCE6FF 22%, #FFF3C4 44%, #D5F5EA 66%, #F1D6FF 84%, #FFD3E6 100%);
+    background-size: 260% 260%; background-position: var(--mx, 30%) var(--my, 30%); transition: background-position .35s ease-out;
+  }
+  .hab-verso::after { content: ""; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: soft-light;
+    background: radial-gradient(circle at var(--mx, 30%) var(--my, 30%), rgba(255, 255, 255, .85), rgba(255, 255, 255, 0) 55%); }
+  .hab-verso h4 { position: relative; z-index: 1; margin: 6px 0 0; font-family: var(--serif); font-size: 17px; font-weight: 800; line-height: 1.2; color: var(--azul); }
+  .hab-verso p { position: relative; z-index: 1; margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--tinta); }
+  .hab-verso p strong { font-weight: 500; color: var(--tinta); }
+  .hab-verso .hab-topo { position: relative; z-index: 1; color: #6F6873; }
+  @media (prefers-reduced-motion: reduce) { .hab-giro, .hab-cartao { transition-duration: .01s; } }
+  /* celular: um cartão embaixo do outro, cada um com o seu cordão */
+  @media (max-width: 760px) {
+    .varal { flex-direction: column; align-items: center; gap: 26px; }
+    .varal-fio { display: none; }
+    .hab-item { --topo-cartao: 34px !important; --fio: 0px !important; }
+    .hab-cartao { width: min(300px, 82vw); }
   }
 
   /* ==========================================================
@@ -864,7 +899,8 @@
         <h2 class="titulo-secao revelar" id="titulo-habilidades" data-i18n="hab.titulo">O que levo para cada <em>parceria</em></h2>
         <p class="revelar" data-atraso="1" data-i18n="hab.texto">Estratégia, criatividade e sensibilidade visual a serviço de marcas que querem se conectar de verdade.</p>
       </div>
-      <ol class="habilidades-grade" id="habilidades-lista"></ol>
+      <!-- Varal: os cartões vêm da lista HABILIDADES, no começo do script -->
+      <ol class="varal" id="habilidades-lista"></ol>
     </div>
   </section>
 
@@ -1315,11 +1351,13 @@
   // Textos usados pelo script (filtros, menu, confirmações)
   const UI = {
     pt: {
+      habRotulo: "Habilidade", habDicaMouse: "Passe o mouse", habDicaToque: "Toque para virar",
       abrirMenu: "Abrir menu", fecharMenu: "Fechar menu", verVideoMarca: (m) => `Ver o vídeo para ${m}`,
       assistir: (m) => `Assistir o vídeo para ${m}`, videoDe: (m) => `Vídeo para ${m}`,
       obrigada: (n) => `Obrigada pelo contato, ${n}! Eu respondo em breve no e-mail que você deixou.`
     },
     en: {
+      habRotulo: "Skill", habDicaMouse: "Hover me", habDicaToque: "Tap to flip",
       abrirMenu: "Open menu", fecharMenu: "Close menu", verVideoMarca: (m) => `Watch the video for ${m}`,
       assistir: (m) => `Play the video for ${m}`, videoDe: (m) => `Video for ${m}`,
       obrigada: (n) => `Thanks for reaching out, ${n}! I'll reply soon to the email you left.`
@@ -1541,12 +1579,34 @@
 
   function desenharDados() {
     // Habilidades
-    $("#habilidades-lista").innerHTML = HABILIDADES.map((h, i) => `
-      <li class="habilidade ${classeRevelar()}" data-atraso="${i % 3}">
-        <span class="habilidade-num" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3.5 8.5l5-5M4.5 3.5h4v4"/></svg></span>
-        <h3>${escapar(campo(h, "titulo"))}</h3>
-        <p>${negrito(campo(h, "descricao"))}</p>
-      </li>`).join("");
+    // Varal: o fio faz uma curva (mais baixo no meio) e cada cartão tem um cordão até o fio
+    const nHab = HABILIDADES.length, giros = [-3, 2.2, -1.6, 2.8], descidas = [0, 34, 8, 26];
+    $("#habilidades-lista").innerHTML = `<li class="varal-fio-li" aria-hidden="true"><svg class="varal-fio" viewBox="0 0 1000 60" preserveAspectRatio="none"><path d="M0 8Q500 88 1000 8"/></svg></li>` +
+      HABILIDADES.map((h, i) => {
+        const t = (i + .5) / nHab, fio = Math.round(8 + 80 * t * (1 - t)); // altura do fio acima deste cartão
+        const num = doisDigitos(i + 1), titulo = campo(h, "titulo");
+        return `
+      <li class="hab-item ${classeRevelar()}" data-atraso="${i % 3}" style="--giro:${giros[i % 4]}deg; --fio:${fio}px; --topo-cartao:${70 + descidas[i % 4]}px">
+        <span class="hab-cordao" aria-hidden="true"></span>
+        <div class="hab-cartao" tabindex="0" role="button" aria-pressed="false">
+          <div class="hab-giro">
+            <div class="hab-face hab-frente">
+              <div class="hab-topo"><span>${escapar(ui().habRotulo)}</span><span>#${num}</span></div>
+              <h3>${escapar(titulo)}</h3>
+              <div class="hab-rodape">
+                <span><span class="dica-mouse">${escapar(ui().habDicaMouse)}</span><span class="dica-toque">${escapar(ui().habDicaToque)}</span></span>
+                <span class="hab-seta" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3.5 8.5l5-5M4.5 3.5h4v4"/></svg></span>
+              </div>
+            </div>
+            <div class="hab-face hab-verso">
+              <div class="hab-topo"><span>${escapar(ui().habRotulo)} / ${num}</span></div>
+              <h4>${escapar(titulo)}</h4>
+              <p>${negrito(campo(h, "descricao"))}</p>
+            </div>
+          </div>
+        </div>
+      </li>`;
+      }).join("");
 
     // Serviços
     $("#servicos-lista").innerHTML = SERVICOS.map((s, i) => `
@@ -1660,6 +1720,26 @@
       tirarLegendas(caixa.querySelector("iframe"));
       caixa.querySelector("iframe").focus({ preventScroll: true });
     }
+  });
+
+  // Varal de habilidades: o gradiente do verso acompanha o mouse; no celular (sem mouse) e no teclado o cartão vira ao tocar/apertar
+  const listaHab = $("#habilidades-lista");
+  listaHab.addEventListener("pointermove", (e) => {
+    const c = e.target.closest(".hab-cartao");
+    if (!c) return;
+    const r = c.getBoundingClientRect();
+    // o verso está espelhado (girado 180°), por isso o eixo horizontal é invertido
+    c.style.setProperty("--mx", (100 - (e.clientX - r.left) / r.width * 100).toFixed(1) + "%");
+    c.style.setProperty("--my", ((e.clientY - r.top) / r.height * 100).toFixed(1) + "%");
+  });
+  const virarCartao = (c) => { const v = !c.classList.contains("virado"); c.classList.toggle("virado", v); c.setAttribute("aria-pressed", String(v)); };
+  listaHab.addEventListener("click", (e) => {
+    const c = e.target.closest(".hab-cartao");
+    if (c && !window.matchMedia("(hover: hover)").matches) virarCartao(c);
+  });
+  listaHab.addEventListener("keydown", (e) => {
+    const c = e.target.closest(".hab-cartao");
+    if (c && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); virarCartao(c); }
   });
 
   // Clicar num logo da faixa de marcas abre o nicho do vídeo, rola até ele, destaca e começa a tocar

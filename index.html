@@ -256,9 +256,36 @@
      3. CONTEÚDOS DE DESTAQUE
      ========================================================== */
   .destaques { background: transparent; } /* deixa aparecer o quadriculado do fundo */
-  .destaques-grade { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(20px, 3vw, 36px); }
-  .card-video { text-decoration: none; display: block; border-radius: var(--raio); transition: transform .4s; }
+  /* Carrossel: os vídeos andam sozinhos para a esquerda e as setas avançam um por vez */
+  .carrossel { position: relative; }
+  .carrossel-janela {
+    overflow: hidden; padding: 10px 0 8px;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+  }
+  .carrossel-trilho { display: flex; gap: clamp(16px, 2.2vw, 28px); width: max-content; will-change: transform; }
+  .carrossel-trilho .card-video { flex: none; width: clamp(210px, 23vw, 290px); }
+  .carrossel-seta {
+    position: absolute; top: calc(10px + clamp(210px, 23vw, 290px) * 16 / 9 / 2); z-index: 3; transform: translateY(-50%);
+    width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--linha); background: rgba(255, 253, 250, .94);
+    display: grid; place-items: center; cursor: pointer; box-shadow: var(--sombra-leve); transition: background .25s, transform .25s;
+  }
+  .carrossel-seta svg { width: 20px; height: 20px; fill: none; stroke: var(--tinta); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: stroke .25s; }
+  .carrossel-seta:hover { background: var(--azul); transform: translateY(-50%) scale(1.06); }
+  .carrossel-seta:hover svg { stroke: var(--branco); }
+  .carrossel-seta:focus-visible { outline: 3px solid var(--azul); outline-offset: 3px; }
+  .carrossel-seta.anterior { left: 4px; }
+  .carrossel-seta.proxima { right: 4px; }
+  .card-video { display: block; border-radius: var(--raio); transition: transform .4s; }
   .card-video:hover { transform: translateY(-6px); }
+  .card-video:has(.tocando):hover { transform: none; }
+  .card-video .midia.tocando { background: #000; }
+  .card-video .midia iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .video-botao { position: absolute; inset: 0; z-index: 2; width: 100%; padding: 0; border: 0; background: transparent; cursor: pointer; border-radius: inherit; }
+  .video-botao:focus-visible { outline: 3px solid var(--azul); outline-offset: 3px; }
+  .card-video:hover .video-botao .play { transform: translate(-50%, -50%) scale(1.08); }
+  .carrossel .card-info { text-align: center; padding-top: 18px; }
+  .card-formato { display: block; font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--laranja-texto); margin-bottom: 6px; }
   .card-video .midia { box-shadow: var(--sombra); justify-content: space-between; align-items: flex-end; }
   .card-video .play {
     position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2;
@@ -451,7 +478,9 @@
     .galeria { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 760px) {
-    .destaques-grade { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; gap: 56px; }
+    .carrossel-trilho .card-video { width: 62vw; max-width: 290px; }
+    .carrossel-seta { top: calc(10px + min(62vw, 290px) * 16 / 9 / 2); width: 42px; height: 42px; }
+    .carrossel-janela { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%); }
     .depoimentos { grid-template-columns: 1fr; }
   }
   @media (max-width: 560px) {
@@ -719,55 +748,13 @@
         <p class="revelar" data-i18n="dest.texto">Três conteúdos que mostram o meu jeito de contar a história de uma marca. Toque para assistir.</p>
       </div>
 
-      <div class="destaques-grade">
-        <!-- DESTAQUE 1
-             LINK DO VÍDEO: troque o endereço no href abaixo.
-             CAPA: troque o bloco com degradê por <img src="capa1.jpg" alt="Descrição da capa"> dentro da div .midia
-             NÚMERO: troque "+0,0M" e o rótulo pelo resultado real deste vídeo.
-             TEXTOS EM INGLÊS: ficam no objeto TEXTOS_EN do script (chaves que começam com "dest."). -->
-        <a class="card-video revelar" href="https://youtube.com/shorts/24u26UN8heI" target="_blank" rel="noopener" aria-label="Assistir conteúdo de destaque 1 no YouTube (abre em nova aba)" data-i18n-attr="aria-label:dest.aria1">
-          <div class="midia r-9-16">
-            <span class="indice" aria-hidden="true">01</span>
-            <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span>
-            <span class="legenda-midia" data-i18n="legenda.video">capa do vídeo 9:16</span>
-          </div>
-          <div class="card-info">
-            <div class="card-numero">+0,0M</div>
-            <span class="card-numero-rotulo" data-i18n="dest.numero">views no shorts (SEU NÚMERO)</span>
-            <h3 data-i18n="dest.titulo1">Título do conteúdo 01</h3>
-            <p data-i18n="dest.contexto">Uma linha de contexto: marca, objetivo e formato.</p>
-          </div>
-        </a>
-
-        <!-- DESTAQUE 2: LINK DO VÍDEO no href, CAPA dentro da div .midia -->
-        <a class="card-video revelar" data-atraso="1" href="https://youtube.com/shorts/97-HXwpJuVI" target="_blank" rel="noopener" aria-label="Assistir conteúdo de destaque 2 no YouTube (abre em nova aba)" data-i18n-attr="aria-label:dest.aria2">
-          <div class="midia noite r-9-16">
-            <span class="indice" aria-hidden="true">02</span>
-            <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span>
-            <span class="legenda-midia" data-i18n="legenda.video">capa do vídeo 9:16</span>
-          </div>
-          <div class="card-info">
-            <div class="card-numero">+0,0M</div>
-            <span class="card-numero-rotulo" data-i18n="dest.numero">views no shorts (SEU NÚMERO)</span>
-            <h3 data-i18n="dest.titulo2">Título do conteúdo 02</h3>
-            <p data-i18n="dest.contexto">Uma linha de contexto: marca, objetivo e formato.</p>
-          </div>
-        </a>
-
-        <!-- DESTAQUE 3: LINK DO VÍDEO no href, CAPA dentro da div .midia -->
-        <a class="card-video revelar" data-atraso="2" href="https://youtube.com/shorts/6Sz8S3cIRu0" target="_blank" rel="noopener" aria-label="Assistir conteúdo de destaque 3 no YouTube (abre em nova aba)" data-i18n-attr="aria-label:dest.aria3">
-          <div class="midia quente r-9-16">
-            <span class="indice" aria-hidden="true">03</span>
-            <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span>
-            <span class="legenda-midia" data-i18n="legenda.video">capa do vídeo 9:16</span>
-          </div>
-          <div class="card-info">
-            <div class="card-numero">+0,0M</div>
-            <span class="card-numero-rotulo" data-i18n="dest.numero">views no shorts (SEU NÚMERO)</span>
-            <h3 data-i18n="dest.titulo3">Título do conteúdo 03</h3>
-            <p data-i18n="dest.contexto">Uma linha de contexto: marca, objetivo e formato.</p>
-          </div>
-        </a>
+      <!-- Os vídeos ficam na lista DESTAQUES, no começo do script -->
+      <div class="carrossel revelar" role="region" aria-roledescription="carrossel" aria-label="Vídeos de destaque" data-i18n-attr="aria-label:dest.carrossel">
+        <div class="carrossel-janela">
+          <div class="carrossel-trilho" id="destaques-trilho"></div>
+        </div>
+        <button class="carrossel-seta anterior" type="button" id="seta-anterior" aria-label="Vídeo anterior" data-i18n-attr="aria-label:dest.anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button class="carrossel-seta proxima" type="button" id="seta-proxima" aria-label="Próximo vídeo" data-i18n-attr="aria-label:dest.proxima"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
       </div>
     </div>
   </section>
@@ -985,6 +972,15 @@
     { logo: "logo-39.webp", nome: "Marca parceira" }
   ];
 
+  // DESTAQUES: vídeos que tocam aqui no site, na ordem da lista.
+  // "id" é o código do vídeo no YouTube (o trecho depois de /shorts/ no link).
+  // Opcional: "numero" e "rotulo" (ex.: numero: "120 mil", rotulo: "visualizações") só aparecem se você preencher.
+  const DESTAQUES = [
+    { marca: "Hyze Pay",    id: "97-HXwpJuVI" },
+    { marca: "Shop Lumina", id: "6Sz8S3cIRu0" },
+    { marca: "Aneethun",    id: "24u26UN8heI" }
+  ];
+
   // NICHOS: botões de filtro da galeria (o "id" precisa ser igual ao "nicho" dos trabalhos)
   const NICHOS = [
     { id: "beleza",   nome: "Beleza",   nome_en: "Beauty" },
@@ -1098,7 +1094,6 @@
     "capa.faixa": "Brands I have worked with",
     "marcas.titulo": "Brands that trusted my work",
     "legenda.creator": "creator photo 4:5",
-    "legenda.video": "video cover 9:16",
     "sobre.fotoAlt": "Luana Guimarães sitting in a black top and jeans, with two smaller photos: one holding a hair product and one with her arm over her head",
     "sobre.rotulo": "About me",
     "sobre.titulo": "Hi, I'm <em>Luana!</em>",
@@ -1109,14 +1104,10 @@
     "dest.rotulo": "Featured content",
     "dest.titulo": "Videos that <em>speak</em> for me",
     "dest.texto": "Three pieces that show how I tell a brand's story. Tap to watch.",
-    "dest.aria1": "Watch featured video 1 on YouTube (opens in a new tab)",
-    "dest.aria2": "Watch featured video 2 on YouTube (opens in a new tab)",
-    "dest.aria3": "Watch featured video 3 on YouTube (opens in a new tab)",
-    "dest.numero": "Shorts views (YOUR NUMBER)",
-    "dest.titulo1": "Content title 01",
-    "dest.titulo2": "Content title 02",
-    "dest.titulo3": "Content title 03",
-    "dest.contexto": "One line of context: brand, goal and format.",
+    "dest.formato": "UGC video · YouTube Shorts",
+    "dest.carrossel": "Featured videos",
+    "dest.anterior": "Previous video",
+    "dest.proxima": "Next video",
     "trab.rotulo": "Work by niche",
     "trab.titulo": "A fresh eye for <em>every</em> niche",
     "trab.texto": "Beauty, skincare, fashion, fitness, pet and tech. Pick a niche and see how I adapt the language to each audience.",
@@ -1158,11 +1149,13 @@
     pt: {
       todos: "Todos", abrirMenu: "Abrir menu", fecharMenu: "Fechar menu", legendaTrabalho: "foto do trabalho 4:5",
       fotoTrabalho: (t, m) => `Foto do trabalho ${t} para ${m}`,
+      assistir: (m) => `Assistir o vídeo para ${m}`, videoDe: (m) => `Vídeo para ${m}`,
       obrigada: (n) => `Obrigada pelo contato, ${n}! Eu respondo em breve no e-mail que você deixou.`
     },
     en: {
       todos: "All", abrirMenu: "Open menu", fecharMenu: "Close menu", legendaTrabalho: "work photo 4:5",
       fotoTrabalho: (t, m) => `Photo of the project ${t} for ${m}`,
+      assistir: (m) => `Play the video for ${m}`, videoDe: (m) => `Video for ${m}`,
       obrigada: (n) => `Thanks for reaching out, ${n}! I'll reply soon to the email you left.`
     }
   };
@@ -1199,6 +1192,91 @@
   const listaMarcas = (copia) => MARCAS.map((m) =>
     `<li><img src="${escapar(m.logo)}" alt="${copia ? "" : escapar(m.nome)}" width="220" height="220" loading="lazy" decoding="async"></li>`).join("");
   $("#faixa-trilho").innerHTML = `<ul class="logos-lista">${listaMarcas(false)}</ul><ul class="logos-lista" aria-hidden="true">${listaMarcas(true)}</ul>`;
+
+  // Destaques: mostra a capa do vídeo e, ao tocar, troca pelo player do YouTube aqui mesmo
+  const capaDestaque = (d, i, copia) => `
+        <img src="https://i.ytimg.com/vi/${escapar(d.id)}/hqdefault.jpg" alt="" decoding="async">
+        <span class="indice" aria-hidden="true">${doisDigitos(i + 1)}</span>
+        <button class="video-botao" type="button" data-video="${i}"${copia ? ' tabindex="-1"' : ""} aria-label="${escapar(ui().assistir(d.marca))}">
+          <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span>
+        </button>`;
+  // A lista se repete 4 vezes para o carrossel nunca ter buraco; só a primeira cópia é lida por leitores de tela
+  const COPIAS_CARROSSEL = 4;
+  const trilhoVideos = $("#destaques-trilho");
+  trilhoVideos.innerHTML = Array.from({ length: COPIAS_CARROSSEL * DESTAQUES.length }, (_, k) => {
+    const i = k % DESTAQUES.length, d = DESTAQUES[i], copia = k >= DESTAQUES.length;
+    return `
+    <article class="card-video"${copia ? ' aria-hidden="true"' : ""}>
+      <div class="midia noite r-9-16" data-caixa="${k}">${capaDestaque(d, i, copia)}</div>
+      <div class="card-info">
+        ${d.numero ? `<div class="card-numero">${escapar(d.numero)}</div><span class="card-numero-rotulo">${escapar(d.rotulo || "")}</span>` : ""}
+        <span class="card-formato" data-i18n="dest.formato">Vídeo UGC · YouTube Shorts</span>
+        <h3>${escapar(d.marca)}</h3>
+      </div>
+    </article>`;
+  }).join("");
+
+  let videoTocando = null; // número da caixa que está com o player aberto
+  const caixaVideo = (k) => trilhoVideos.querySelector(`[data-caixa="${k}"]`);
+  function pararVideo() {
+    if (videoTocando === null) return;
+    const caixa = caixaVideo(videoTocando), i = videoTocando % DESTAQUES.length;
+    caixa.classList.remove("tocando");
+    caixa.innerHTML = capaDestaque(DESTAQUES[i], i, videoTocando >= DESTAQUES.length);
+    videoTocando = null;
+  }
+  trilhoVideos.addEventListener("click", (e) => {
+    const botao = e.target.closest(".video-botao");
+    if (!botao) return;
+    const caixa = botao.closest("[data-caixa]"), k = Number(caixa.dataset.caixa), d = DESTAQUES[k % DESTAQUES.length];
+    pararVideo(); // só um vídeo toca por vez
+    caixa.classList.add("tocando");
+    caixa.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(d.id)}?autoplay=1&playsinline=1&rel=0" title="${escapar(ui().videoDe(d.marca))}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+    videoTocando = k;
+    caixa.querySelector("iframe").focus({ preventScroll: true });
+  });
+  function atualizarBotoesVideo() {
+    trilhoVideos.querySelectorAll(".video-botao").forEach((b) => b.setAttribute("aria-label", ui().assistir(DESTAQUES[b.dataset.video].marca)));
+    if (videoTocando !== null) caixaVideo(videoTocando).querySelector("iframe").title = ui().videoDe(DESTAQUES[videoTocando % DESTAQUES.length].marca);
+  }
+
+  // Movimento: anda devagar para a esquerda, para quando o mouse está em cima ou um vídeo está tocando
+  const VELOCIDADE_CARROSSEL = 22; // pixels por segundo
+  let posicao = 0, larguraLista = 1, mouseEmCima = false, deslize = null, ultimoQuadro = null;
+  const cards = () => trilhoVideos.children;
+  const passoCarrossel = () => cards()[1].offsetLeft - cards()[0].offsetLeft;
+  const darAVolta = (p) => ((p % larguraLista) + larguraLista) % larguraLista;
+  function medirCarrossel() { larguraLista = cards()[DESTAQUES.length].offsetLeft - cards()[0].offsetLeft || 1; posicao = darAVolta(posicao); }
+  function quadroCarrossel(t) {
+    const dt = ultimoQuadro === null ? 0 : Math.min(t - ultimoQuadro, 50);
+    ultimoQuadro = t;
+    if (deslize) {
+      const p = Math.min((t - deslize.inicio) / deslize.duracao, 1);
+      const suave = 1 - Math.pow(1 - p, 3);
+      posicao = darAVolta(deslize.de + deslize.distancia * suave);
+      if (p === 1) deslize = null;
+    } else if (!reduzirMovimento && !mouseEmCima && videoTocando === null) {
+      posicao = darAVolta(posicao + VELOCIDADE_CARROSSEL * dt / 1000);
+    }
+    trilhoVideos.style.transform = `translate3d(${-posicao}px, 0, 0)`;
+    requestAnimationFrame(quadroCarrossel);
+  }
+  function andarCarrossel(direcao) {
+    pararVideo();
+    const passo = passoCarrossel();
+    // encaixa no próximo card inteiro na direção escolhida
+    const alvo = direcao > 0 ? (Math.floor(posicao / passo + 0.02) + 1) * passo : (Math.ceil(posicao / passo - 0.02) - 1) * passo;
+    deslize = { de: posicao, distancia: alvo - posicao, inicio: performance.now(), duracao: reduzirMovimento ? 1 : 650 };
+  }
+  $("#seta-proxima").addEventListener("click", () => andarCarrossel(1));
+  $("#seta-anterior").addEventListener("click", () => andarCarrossel(-1));
+  const areaCarrossel = $(".carrossel");
+  areaCarrossel.addEventListener("mouseenter", () => { mouseEmCima = true; });
+  areaCarrossel.addEventListener("mouseleave", () => { mouseEmCima = false; });
+  window.addEventListener("resize", medirCarrossel);
+  window.addEventListener("load", medirCarrossel);
+  medirCarrossel();
+  requestAnimationFrame(quadroCarrossel);
 
   // Faixa de temas: os 4 textos se repetem para encher telas largas
   function desenharTemas() {
@@ -1312,6 +1390,7 @@
     desenharGaleria();
     reiniciarDigitacao();
     desenharTemas();
+    atualizarBotoesVideo();
     if (confirmacao.classList.contains("visivel") && ultimoNome) $("#confirmacao-texto").textContent = ui().obrigada(ultimoNome);
     try { localStorage.setItem("idioma", idioma); } catch (_) {}
   }

@@ -733,7 +733,7 @@
      ========================================================== */
   :root {
     --curva: clamp(36px, 6vw, 84px);
-    --onda: clamp(46px, 7vw, 110px);   /* altura das curvas orgânicas */
+    --onda: clamp(28px, 5.5vw, 90px);  /* profundidade dos arcos */
     --ref-rosa: #F9327A;               /* cores da referência */
     --ref-agua: #7FD6DE;
     --ref-creme: #FBF8F1;
@@ -742,15 +742,16 @@
   /* sem o quadriculado no fundo */
   body { background-image: none; background-color: var(--ref-creme); }
 
-  /* Curvas orgânicas: o topo e a base da faixa são desenhados com a cor da seção vizinha */
+  /* Arcos como na referência: a seção de cima entra na faixa colorida com uma curva única e suave
+     (mais funda no meio), e a seção de baixo sobe na faixa do mesmo jeito. */
   .onda { position: relative; padding-top: calc(var(--onda) + clamp(48px, 6vw, 80px)); padding-bottom: calc(var(--onda) + clamp(48px, 6vw, 80px)); }
   .onda::before, .onda::after {
     content: ""; position: absolute; left: 0; right: 0; height: var(--onda); pointer-events: none;
-    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0H1440V40C1340 18 1250 14 1080 52 900 92 720 88 540 50 360 12 180 18 0 66Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0H1440V40C1340 18 1250 14 1080 52 900 92 720 88 540 50 360 12 180 18 0 66Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0H1440Q720 200 0 0Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0H1440Q720 200 0 0Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
   }
   .onda::before { top: -1px; background: var(--cor-acima); }
-  .onda::after { bottom: -1px; background: var(--cor-abaixo); transform: scale(-1, -1); }
+  .onda::after { bottom: -1px; background: var(--cor-abaixo); transform: scaleY(-1); }
 
   /* 1. APRESENTAÇÃO E SOBRE MIM */
   .capa { background: var(--ref-creme); }
@@ -790,17 +791,10 @@
   /* 5. NICHOS: de volta ao fundo branco */
   #trabalhos { background: #fff; padding-top: clamp(56px, 7vw, 96px); }
 
-  /* Serviços: a faixa azul ganha as mesmas bordas curvas */
-  .servicos {
-    border-radius: 50% / var(--curva);
-    margin: clamp(20px, 3vw, 40px) 0;
-  }
-
-  /* Contato: a faixa rosa forte ganha as bordas curvas */
-  .contato {
-    border-radius: 50% / var(--curva);
-    margin-top: clamp(20px, 3vw, 40px);
-  }
+  /* Serviços (azul) e Contato (rosa): os mesmos arcos das outras faixas */
+  .servicos { --cor-acima: #fff; --cor-abaixo: var(--ref-creme); }
+  .contato { --cor-acima: var(--ref-creme); --cor-abaixo: var(--ref-creme); }
+  .contato.onda::before { width: auto; border: 0; border-radius: 0; right: 0; } /* o arco substitui o círculo decorativo */
 
   /* Rodapé: cartão com cantos arredondados em cima, como o "Cadastre-se" da referência */
   .rodape {
@@ -1022,7 +1016,7 @@
   </section>
 
   <!-- ============ 5. COMO EU TE AJUDO ============ -->
-  <section class="secao servicos" id="servicos" aria-labelledby="titulo-servicos">
+  <section class="secao servicos onda" id="servicos" aria-labelledby="titulo-servicos">
     <div class="container">
       <div class="cabecalho-secao">
         <div>
@@ -1055,7 +1049,7 @@
   </section>
 
   <!-- ============ 7. BORA CRIAR JUNTOS ============ -->
-  <section class="secao contato" id="contato" aria-labelledby="titulo-contato">
+  <section class="secao contato onda" id="contato" aria-labelledby="titulo-contato">
     <div class="container contato-grade">
       <div class="contato-intro">
         <span class="rotulo revelar" data-i18n="cont.rotulo">Contato</span>

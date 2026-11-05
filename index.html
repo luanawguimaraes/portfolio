@@ -194,6 +194,11 @@
   .logos-lista li { flex: none; width: clamp(84px, 7.4vw, 104px); aspect-ratio: 1; border-radius: 50%; background: var(--branco);
     border: 1px solid rgba(199, 45, 103, .35); box-shadow: 0 6px 16px rgba(43, 43, 43, .07); overflow: hidden; }
   .logos-lista img { display: block; width: 100%; height: 100%; }
+  /* logos com vídeo: clicáveis, levam até o vídeo da marca */
+  .marca-link { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 50%; transition: transform .3s; }
+  .marca-link:hover { transform: scale(1.06); }
+  .marca-link:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; }
+  .galeria .midia.destacada { box-shadow: 0 0 0 4px var(--roxo-claro), var(--sombra); transition: box-shadow .3s; }
   @media (max-width: 520px) {
     .marcas-titulo { font-size: 10.5px; letter-spacing: .16em; gap: 10px; }
     .marcas-titulo::before, .marcas-titulo::after { width: 12px; }
@@ -1030,26 +1035,28 @@
 
   // MARCAS: logos da faixa que rola entre o Sobre mim e os Destaques.
   // "logo" é o arquivo da imagem; "nome" vira o texto alternativo (troque "Marca parceira" pelo nome real).
+  // "video": nome da marca exatamente como está na lista NICHOS. Clicar no logo leva até o primeiro vídeo dela.
+  // Sem "video", o logo não é clicável.
   const MARCAS = [
-    { logo: "logo-26.webp", nome: "Creamy Skincare" },
-    { logo: "logo-35.webp", nome: "Bioderma" },
-    { logo: "logo-25.webp", nome: "Bearry Derm" },
+    { logo: "logo-26.webp", nome: "Creamy Skincare", video: "Creamy" },
+    { logo: "logo-35.webp", nome: "Bioderma", video: "Bioderma" },
+    { logo: "logo-25.webp", nome: "Bearry Derm", video: "Bearry" },
     { logo: "logo-20.webp", nome: "Dianthus" },
     { logo: "logo-21.webp", nome: "Marca parceira" },
-    { logo: "logo-24.webp", nome: "Donaris" },
+    { logo: "logo-24.webp", nome: "Donaris", video: "Donaris" },
     { logo: "logo-30.webp", nome: "Beauty Vita" },
     { logo: "logo-22.webp", nome: "Marca parceira" },
     { logo: "logo-31.webp", nome: "Mezzo Dermocosméticos" },
-    { logo: "logo-23.webp", nome: "Pet Saudável" },
-    { logo: "logo-34.webp", nome: "Ráwve Wellness Beauty" },
-    { logo: "logo-27.webp", nome: "Beta" },
-    { logo: "logo-32.webp", nome: "Côllum" },
-    { logo: "logo-28.webp", nome: "For You" },
-    { logo: "logo-33.webp", nome: "Aneethun Profissional" },
-    { logo: "logo-29.webp", nome: "Ovacare" },
-    { logo: "logo-37.webp", nome: "Shop Lumina Semijoias" },
-    { logo: "logo-36.webp", nome: "Carola Art Piercing" },
-    { logo: "logo-38.webp", nome: "Arara Sport" },
+    { logo: "logo-23.webp", nome: "Pet Saudável", video: "Pet Saudável" },
+    { logo: "logo-34.webp", nome: "Ráwve Wellness Beauty", video: "Ráwve" },
+    { logo: "logo-27.webp", nome: "Beta", video: "Beta" },
+    { logo: "logo-32.webp", nome: "Côllum", video: "Collum" },
+    { logo: "logo-28.webp", nome: "For You", video: "For You" },
+    { logo: "logo-33.webp", nome: "Aneethun Profissional", video: "Aneethun" },
+    { logo: "logo-29.webp", nome: "Ovacare", video: "Ovacare" },
+    { logo: "logo-37.webp", nome: "Shop Lumina Semijoias", video: "Shop Lumina" },
+    { logo: "logo-36.webp", nome: "Carola Art Piercing", video: "Carla Art Piercing" },
+    { logo: "logo-38.webp", nome: "Arara Sport", video: "Arara Sport" },
     { logo: "logo-39.webp", nome: "Marca parceira" }
   ];
 
@@ -1310,12 +1317,12 @@
   // Textos usados pelo script (filtros, menu, confirmações)
   const UI = {
     pt: {
-      abrirMenu: "Abrir menu", fecharMenu: "Fechar menu",
+      abrirMenu: "Abrir menu", fecharMenu: "Fechar menu", verVideoMarca: (m) => `Ver o vídeo para ${m}`,
       assistir: (m) => `Assistir o vídeo para ${m}`, videoDe: (m) => `Vídeo para ${m}`,
       obrigada: (n) => `Obrigada pelo contato, ${n}! Eu respondo em breve no e-mail que você deixou.`
     },
     en: {
-      abrirMenu: "Open menu", fecharMenu: "Close menu",
+      abrirMenu: "Open menu", fecharMenu: "Close menu", verVideoMarca: (m) => `Watch the video for ${m}`,
       assistir: (m) => `Play the video for ${m}`, videoDe: (m) => `Video for ${m}`,
       obrigada: (n) => `Thanks for reaching out, ${n}! I'll reply soon to the email you left.`
     }
@@ -1350,8 +1357,12 @@
   $("#ano").textContent = new Date().getFullYear();
 
   // Faixa de marcas (duas cópias para o movimento contínuo)
-  const listaMarcas = (copia) => MARCAS.map((m) =>
-    `<li><img src="${escapar(m.logo)}" alt="${copia ? "" : escapar(m.nome)}" width="220" height="220" loading="lazy" decoding="async"></li>`).join("");
+  // Logos com vídeo viram botões que levam até o vídeo da marca em "Trabalhos por nicho"
+  const listaMarcas = (copia) => MARCAS.map((m) => {
+    if (!m.video) return `<li><img src="${escapar(m.logo)}" alt="${copia ? "" : escapar(m.nome)}" width="220" height="220" loading="lazy" decoding="async"></li>`;
+    return `<li><button class="marca-link" type="button" data-video-marca="${escapar(m.video)}" data-nome="${escapar(m.nome)}"${copia ? ' tabindex="-1"' : ` aria-label="${escapar(ui().verVideoMarca(m.nome))}"`}>` +
+      `<img src="${escapar(m.logo)}" alt="" width="220" height="220" loading="lazy" decoding="async"></button></li>`;
+  }).join("");
   $("#faixa-trilho").innerHTML = `<ul class="logos-lista">${listaMarcas(false)}</ul><ul class="logos-lista" aria-hidden="true">${listaMarcas(true)}</ul>`;
 
   // Destaques: mostra a capa do vídeo e, ao tocar, troca pelo player do YouTube aqui mesmo
@@ -1649,6 +1660,27 @@
     }
   });
 
+  // Clicar num logo da faixa de marcas abre o nicho do vídeo, rola até ele, destaca e começa a tocar
+  $("#faixa-trilho").addEventListener("click", (e) => {
+    const botao = e.target.closest(".marca-link");
+    if (!botao) return;
+    const marca = botao.dataset.videoMarca;
+    const nicho = NICHOS.find((n) => n.videos.some((v) => v.marca === marca));
+    if (!nicho) return;
+    const k = nicho.videos.findIndex((v) => v.marca === marca);
+    pararVideoGaleria();
+    filtroAtual = nicho.id;
+    $("#filtros").classList.add("escolheu");
+    desenharFiltros();
+    desenharGaleria();
+    const caixa = $(`#galeria .midia[data-k="${k}"]`);
+    caixa.closest("li").scrollIntoView({ behavior: reduzirMovimento ? "auto" : "smooth", block: "center" });
+    caixa.classList.add("destacada");
+    setTimeout(() => caixa.classList.remove("destacada"), 3000);
+    caixa.querySelector(".video-botao").click();
+  });
+  const atualizarLogosMarcas = () => document.querySelectorAll(".marca-link[aria-label]").forEach((b) => b.setAttribute("aria-label", ui().verVideoMarca(b.dataset.nome)));
+
   // Troca de idioma: o português original de cada texto fica guardado para poder voltar
   const originais = new Map();
   document.querySelectorAll("[data-i18n]").forEach((el) => originais.set(el, el.innerHTML));
@@ -1683,6 +1715,7 @@
     reiniciarDigitacao();
     desenharTemas();
     atualizarBotoesVideo();
+    atualizarLogosMarcas();
     if (confirmacao.classList.contains("visivel") && ultimoNome) $("#confirmacao-texto").textContent = ui().obrigada(ultimoNome);
     try { localStorage.setItem("idioma", idioma); } catch (_) {}
   }

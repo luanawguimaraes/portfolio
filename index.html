@@ -323,7 +323,9 @@
   .habilidades { background: transparent; padding-top: clamp(24px, 4vw, 56px); }
   .habilidades .titulo-secao { font-weight: 800; line-height: 1; letter-spacing: -.03em; font-size: clamp(34px, 4vw, 56px); max-width: none; }
   #titulo-habilidades em { font-style: normal; }
-  .habilidades .cabecalho-secao { margin-bottom: clamp(32px, 4.4vw, 52px); }
+  /* título e frase centralizados, um embaixo do outro */
+  .habilidades .cabecalho-secao { flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 18px; margin-bottom: clamp(36px, 4.8vw, 56px); }
+  .habilidades .cabecalho-secao p { max-width: 52ch; }
   .habilidades-grade { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(18px, 2.4vw, 28px); list-style: none; margin: 0; padding: 0; }
   /* cada habilidade é um card branco separado; o cinza escuro fica só no texto */
   .habilidade {
@@ -1069,9 +1071,9 @@
       titulo_en: "Content strategy and marketing vision",
       descricao_en: "With a degree in Marketing, I combine my experience in the influencer market with the development of more than 90 UGC portfolios to create content that connects strategy, creativity and each brand's goals." },
     { titulo: "Ganchos criativos e retenção",
-      descricao: "Exploro ganchos visuais e narrativos que despertam curiosidade, geram identificação e incentivam o público a continuar assistindo.",
+      descricao: "Exploro ganchos visuais e narrativos que despertam curiosidade, geram identificação e incentivam o público a continuar assistindo. Crio ganchos que prendem desde os primeiros segundos, para prender a atenção e conduzir o público até a mensagem da marca.",
       titulo_en: "Creative hooks and retention",
-      descricao_en: "I explore visual and narrative hooks that spark curiosity, create identification and keep the audience watching." },
+      descricao_en: "I explore visual and narrative hooks that spark curiosity, create identification and keep the audience watching. I create hooks that grab attention from the very first seconds and guide the audience to the brand's message." },
     { titulo: "Olhar estético e direção visual",
       descricao: "Minha experiência com fotografia, modelagem fotográfica e design contribui para composições cuidadosas e conteúdos visualmente atrativos, valorizando a apresentação de cada produto.",
       titulo_en: "Aesthetic eye and visual direction",

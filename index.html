@@ -294,8 +294,9 @@
   .video-botao { position: absolute; inset: 0; z-index: 2; width: 100%; padding: 0; border: 0; background: transparent; cursor: pointer; border-radius: inherit; }
   .video-botao:focus-visible { outline: 3px solid var(--azul); outline-offset: 3px; }
   /* o play só aparece com o mouse em cima do vídeo (ou ao navegar pelo teclado) */
-  .carrossel .video-botao .play { opacity: 0; transition: opacity .3s, transform .35s, background .35s; }
-  .carrossel .video-botao:hover .play, .carrossel .video-botao:focus-visible .play { opacity: 1; }
+  .carrossel .video-botao .play, .galeria .video-botao .play { opacity: 0; transition: opacity .3s, transform .35s, background .35s; }
+  .carrossel .video-botao:hover .play, .carrossel .video-botao:focus-visible .play,
+  .galeria .video-botao:hover .play, .galeria .video-botao:focus-visible .play { opacity: 1; }
   .carrossel .card-info { text-align: center; padding-top: 18px; }
   /* texto rosa sempre em uma linha: a letra se ajusta à largura do card */
   .carrossel-trilho .card-video { container-type: inline-size; }
@@ -360,14 +361,19 @@
   }
   .filtro:hover { border-color: var(--tinta); }
   .filtro[aria-pressed="true"] { background: var(--tinta); color: var(--creme); border-color: var(--tinta); }
-  .galeria { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(16px, 2vw, 26px); list-style: none; margin: 0; padding: 0; }
+  /* texto do nicho escolhido (descrição, medidas e link) */
+  .nicho-info { max-width: 720px; margin-bottom: clamp(26px, 3.4vw, 38px); animation: surgir .5s ease both; }
+  .nicho-info h3 { font-size: clamp(24px, 2.4vw, 30px); font-weight: 800; letter-spacing: -.02em; color: var(--azul); margin-bottom: 8px; }
+  .nicho-info p { color: var(--tinta); margin: 0; }
+  .nicho-medidas { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 14px 0 0; }
+  .nicho-medidas li { padding: 6px 14px; border-radius: 999px; background: var(--branco); border: 1px solid rgba(199, 45, 103, .28); font-size: 14px; color: var(--tinta); }
+  .nicho-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; color: var(--azul); font-weight: 700; text-decoration: none; }
+  .nicho-link svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; }
+  .nicho-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+  /* vídeos do nicho, na ordem da lista */
+  .galeria { display: grid; grid-template-columns: repeat(5, 1fr); gap: clamp(16px, 2vw, 24px); list-style: none; margin: 0; padding: 0; }
   .trabalho { animation: surgir .5s ease both; }
-  .trabalho .midia { box-shadow: var(--sombra-leve); transition: transform .4s; }
-  .trabalho:hover .midia { transform: scale(1.02); }
-  .trabalho-info { padding: 14px 2px 0; }
-  .trabalho-nicho { font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--azul); }
-  .trabalho h3 { font-size: 20px; margin: 4px 0 2px; }
-  .trabalho p { font-size: 14px; color: var(--tinta-suave); margin: 0; }
+  .trabalho-marca { font-size: 15px; font-weight: 700; color: var(--tinta); margin: 12px 2px 0; text-align: center; }
   @keyframes surgir { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 
   /* ==========================================================
@@ -496,7 +502,7 @@
      RESPONSIVO
      ========================================================== */
   @media (max-width: 1080px) {
-    .galeria { grid-template-columns: repeat(3, 1fr); }
+    .galeria { grid-template-columns: repeat(4, 1fr); }
   }
   @media (max-width: 920px) {
     .sanduiche { display: block; }
@@ -523,7 +529,7 @@
     .metricas { grid-template-columns: repeat(2, 1fr); row-gap: 40px; }
     .metrica:nth-child(3) { padding-left: 0; border-left: 0; }
     .resultados { grid-template-columns: 1fr; }
-    .galeria { grid-template-columns: repeat(2, 1fr); }
+    .galeria { grid-template-columns: repeat(3, 1fr); }
   }
   @media (max-width: 760px) {
     .carrossel-trilho .card-video { width: 62vw; max-width: 290px; }
@@ -539,8 +545,7 @@
     .servico, .servico:nth-child(even), .servico:not(:nth-child(3n + 1)) { padding: 32px 0; border-left: 0; }
     .metrica, .metrica + .metrica { padding: 0 10px 0 0; }
     .metrica:nth-child(even) { padding-left: 16px; border-left: 1px solid var(--linha); }
-    .galeria { gap: 14px; }
-    .trabalho h3 { font-size: 17px; }
+    .galeria { grid-template-columns: repeat(2, 1fr); gap: 14px; }
     .faixa-lista li { font-size: 19px; }
   }
 
@@ -824,10 +829,12 @@
           <span class="rotulo revelar" data-i18n="trab.rotulo">Trabalhos por nicho</span>
           <h2 class="titulo-secao revelar" id="titulo-trabalhos" data-i18n="trab.titulo">Um olhar para <em>cada</em> universo</h2>
         </div>
-        <p class="revelar" data-i18n="trab.texto">Beleza, skincare, moda, fitness, pet e tech. Escolha um nicho e veja como eu adapto a linguagem para cada público.</p>
+        <p class="revelar" data-i18n="trab.texto">Escolha um nicho e assista aos vídeos que criei para cada universo.</p>
       </div>
-      <div class="filtros revelar" id="filtros" role="group" aria-label="Filtrar trabalhos por nicho" data-i18n-attr="aria-label:trab.filtros"></div>
-      <ul class="galeria" id="galeria" aria-live="polite"></ul>
+      <!-- Os nichos e os vídeos ficam na lista NICHOS, no começo do script -->
+      <div class="filtros revelar" id="filtros" role="group" aria-label="Escolher o nicho" data-i18n-attr="aria-label:trab.filtros"></div>
+      <div class="nicho-info" id="nicho-info" aria-live="polite"></div>
+      <ul class="galeria" id="galeria"></ul>
     </div>
   </section>
 
@@ -1039,33 +1046,96 @@
     { marca: "Aneethun",    id: "24u26UN8heI", formato: "Storytelling + Product Demo",               formato_en: "Storytelling + Product Demo" }
   ];
 
-  // NICHOS: botões de filtro da galeria (o "id" precisa ser igual ao "nicho" dos trabalhos)
+  // NICHOS: os botões da seção "Trabalhos por nicho", na ordem da lista.
+  // Cada nicho tem um texto ("descricao"), uma lista opcional ("lista", ex.: medidas),
+  // um link opcional ("link" + "linkTexto") e os vídeos, que aparecem na ordem em que estão.
+  // "id" do vídeo é o código do YouTube (o trecho depois de /shorts/ no link).
   const NICHOS = [
-    { id: "beleza",   nome: "Beleza",   nome_en: "Beauty" },
-    { id: "skincare", nome: "Skincare", nome_en: "Skincare" },
-    { id: "moda",     nome: "Moda",     nome_en: "Fashion" },
-    { id: "fitness",  nome: "Fitness",  nome_en: "Fitness" },
-    { id: "pet",      nome: "Pet",      nome_en: "Pet" },
-    { id: "tech",     nome: "Tech",     nome_en: "Tech" }
-  ];
-
-  // TRABALHOS: galeria por nicho.
-  // Confira se a marca está no nicho certo e troque os títulos pelos reais.
-  // Para usar uma foto real, preencha "imagem" com o nome do arquivo (ex.: "trabalho1.jpg") e "alt" com a descrição.
-  // "link" é opcional: se preencher, o card vira um link para o vídeo.
-  const TRABALHOS = [
-    { nicho: "beleza",   titulo: "Rotina de maquiagem",     titulo_en: "Makeup routine",              marca: "Beauty Vita",         formato: "Vídeo UGC",          formato_en: "UGC video",      imagem: "", alt: "", link: "" },
-    { nicho: "beleza",   titulo: "Resenha honesta",         titulo_en: "Honest review",               marca: "Carola Art Piercing", formato: "Reels",              formato_en: "Reels",          imagem: "", alt: "", link: "" },
-    { nicho: "skincare", titulo: "Antes e depois",          titulo_en: "Before and after",            marca: "Bioderma",            formato: "Vídeo UGC",          formato_en: "UGC video",      imagem: "", alt: "", link: "" },
-    { nicho: "skincare", titulo: "Skincare da noite",       titulo_en: "Night skincare",              marca: "Creamy",              formato: "Corte para anúncio", formato_en: "Ad cut",         imagem: "", alt: "", link: "" },
-    { nicho: "moda",     titulo: "Provador em casa",        titulo_en: "Try-on at home",              marca: "Shop Lumina",         formato: "Unboxing",           formato_en: "Unboxing",       imagem: "", alt: "", link: "" },
-    { nicho: "moda",     titulo: "Três looks, uma peça",    titulo_en: "Three looks, one piece",      marca: "Marca 01",            formato: "Reels",              formato_en: "Reels",          imagem: "", alt: "", link: "" },
-    { nicho: "fitness",  titulo: "Treino com o look novo",  titulo_en: "Workout in the new outfit",   marca: "Arara Sport",         formato: "Vídeo UGC",          formato_en: "UGC video",      imagem: "", alt: "", link: "" },
-    { nicho: "fitness",  titulo: "Minha rotina de energia", titulo_en: "My energy routine",           marca: "Marca 02",            formato: "Corte para anúncio", formato_en: "Ad cut",         imagem: "", alt: "", link: "" },
-    { nicho: "pet",      titulo: "Hora do petisco",         titulo_en: "Snack time",                  marca: "Pet Saudável",        formato: "Vídeo UGC",          formato_en: "UGC video",      imagem: "", alt: "", link: "" },
-    { nicho: "pet",      titulo: "Unboxing com ajudante",   titulo_en: "Unboxing with a little helper", marca: "Marca 03",          formato: "Unboxing",           formato_en: "Unboxing",       imagem: "", alt: "", link: "" },
-    { nicho: "tech",     titulo: "Pagando em um toque",     titulo_en: "Paying with one tap",         marca: "Reven Pay",           formato: "Vídeo UGC",          formato_en: "UGC video",      imagem: "", alt: "", link: "" },
-    { nicho: "tech",     titulo: "Gadget que facilita",     titulo_en: "A gadget that makes life easier", marca: "Marca 04",        formato: "Fotos do produto",   formato_en: "Product photos", imagem: "", alt: "", link: "" }
+    { id: "acessorios", nome: "Acessórios", nome_en: "Accessories",
+      descricao: "Tenho vários piercings e adoro explorar combinações.",
+      descricao_en: "I have several piercings and love exploring combinations.",
+      videos: [
+        { marca: "Murano", id: "C_-omdb_ENc" },
+        { marca: "Shop Lumina", id: "W82jO15Etxs" },
+        { marca: "Shop Lumina", id: "6Sz8S3cIRu0" },
+        { marca: "Murano", id: "JzAvji8Ec2Y" },
+        { marca: "Murano", id: "WiEBAE_8pd0" },
+        { marca: "Murano", id: "z-jGkA4PWas" },
+        { marca: "Carla Art Piercing", id: "4LBjncEnFYI" },
+        { marca: "Donaris", id: "0TLwJxj_MzU" },
+        { marca: "Murano", id: "VJIs8eHMzgM" },
+        { marca: "Murano", id: "Bie9VZ0Ea7Y" }
+      ] },
+    { id: "skincare", nome: "Skincare", nome_en: "Skincare",
+      descricao: "Tenho pele sensível, mista a seca e com melasma.",
+      descricao_en: "I have sensitive, combination-to-dry skin with melasma.",
+      videos: [
+        { marca: "Ráwve", id: "a8kUJ7WHUzA" },
+        { marca: "Bioderma", id: "QnsAOmT-FU4" },
+        { marca: "Creamy", id: "wpXdIOL0N7s" },
+        { marca: "Bioderma", id: "A4O_IIyDON0" },
+        { marca: "Bearry", id: "5VCJqJcjFQo" }
+      ] },
+    { id: "haircare", nome: "Haircare", nome_en: "Haircare",
+      descricao: "Tenho cabelos loiros, finos e levemente ondulados, com química e exposição frequente ao calor. Minha rotina exige atenção ao frizz, ao ressecamento e à saúde dos fios.",
+      descricao_en: "I have blonde, fine, slightly wavy hair, chemically treated and often exposed to heat. My routine calls for attention to frizz, dryness and overall hair health.",
+      videos: [
+        { marca: "Aneethun", id: "24u26UN8heI" },
+        { marca: "Alfaparf", id: "x2rx5po9DQE" }
+      ] },
+    { id: "tech", nome: "Tech & App", nome_en: "Tech & Apps",
+      descricao: "Ganchos visuais que despertam curiosidade, ângulos criativos e edições dinâmicas que prendem a atenção desde os primeiros segundos.",
+      descricao_en: "Visual hooks that spark curiosity, creative angles and dynamic edits that hold attention from the very first seconds.",
+      videos: [
+        { marca: "Hyze Pay", id: "97-HXwpJuVI" },
+        { marca: "Memoz", id: "IfGNWQPhmqA" },
+        { marca: "Memoz", id: "V47S1_gikbk" },
+        { marca: "Memoz", id: "pFMRNhcr2wc" },
+        { marca: "Memoz", id: "G_f4moCMrBQ" },
+        { marca: "Memoz", id: "d6QSUycxidY" },
+        { marca: "Memoz", id: "bh_xhiUlMKY" },
+        { marca: "Memoz", id: "iM2SWXuTrrI" },
+        { marca: "Memoz", id: "_3mduJsGbIg" },
+        { marca: "Memoz", id: "Ij1I9w_kUpI" },
+        { marca: "Voltpix", id: "3LGrdFJXsMQ" }
+      ] },
+    { id: "moda", nome: "Moda", nome_en: "Fashion",
+      descricao: "", descricao_en: "",
+      lista: ["Tenho 1,70 m de altura", "Peso aproximadamente 54 kg", "Visto P na parte de cima", "Visto P em roupas de academia", "Visto 38 em calças, saias e shorts", "Calço 39"],
+      lista_en: ["I'm 1.70 m tall", "I weigh about 54 kg", "Size S tops", "Size S activewear", "Size 38 (BR) pants, skirts and shorts", "Shoe size 39 (BR)"],
+      videos: [
+        { marca: "Arara Sport", id: "AVFWwZ8dMkM" },
+        { marca: "Bruna Bohac", id: "qLowoGABsMk" }
+      ] },
+    { id: "saude", nome: "Saúde & bem-estar", nome_en: "Health & wellness",
+      descricao: "Sou vegetariana, gosto de treinar e procuro manter uma rotina de bem-estar equilibrada.",
+      descricao_en: "I'm vegetarian, I love working out and I try to keep a balanced wellness routine.",
+      videos: [
+        { marca: "Ovacare", id: "G_ns3HPGY00" },
+        { marca: "Ráwve", id: "ck4g6Ku2WQw" },
+        { marca: "Ovacare", id: "TC2N_R2qW94" },
+        { marca: "Ovacare", id: "X-HMlbF4vRI" },
+        { marca: "For You", id: "xGkAlX-lO3g" }
+      ] },
+    { id: "pet", nome: "Pet", nome_en: "Pet",
+      descricao: "Sou mãe de três Yorkshire de 1 ano e compartilho uma rotina de cuidados que inclui alimentação natural e suplementação. Minhas meninas também são nano influenciadoras e contam com uma comunidade de mais de 11 mil seguidores no Instagram.",
+      descricao_en: "I'm a mom to three 1-year-old Yorkshire Terriers and share a care routine that includes natural food and supplements. My girls are also nano influencers, with a community of more than 11 thousand followers on Instagram.",
+      link: "https://www.instagram.com/rubiebiju/", linkTexto: "@rubiebiju no Instagram", linkTexto_en: "@rubiebiju on Instagram",
+      videos: [
+        { marca: "Pet Saudável", id: "AAXAckgYRuA" },
+        { marca: "Pet Saudável", id: "MNF-CO2xZe8" },
+        { marca: "Collum", id: "bUwnsSDJgJY" },
+        { marca: "Hydra", id: "sXMb6tnK1ks" }
+      ] },
+    { id: "collab", nome: "Collab", nome_en: "Collab",
+      descricao: "Minha mãe, meu pai, minha irmã e minhas três Yorkshires podem participar de produções que pedem interação, demonstração de uso e situações reais do dia a dia.",
+      descricao_en: "My mom, my dad, my sister and my three Yorkies can join productions that call for interaction, product demos and real everyday situations.",
+      videos: [
+        { marca: "Memoz", id: "GDMQ62FwJoA" },
+        { marca: "Donaris", id: "0TLwJxj_MzU" },
+        { marca: "Donaris", id: "4Q09qW97u7A" },
+        { marca: "Beta", id: "LpdMaae-NLE" }
+      ] }
   ];
 
   // HABILIDADES: seção "Minhas habilidades", logo abaixo dos vídeos em destaque
@@ -1186,8 +1256,8 @@
     "dest.proxima": "Next video",
     "trab.rotulo": "Work by niche",
     "trab.titulo": "A fresh eye for <em>every</em> niche",
-    "trab.texto": "Beauty, skincare, fashion, fitness, pet and tech. Pick a niche and see how I adapt the language to each audience.",
-    "trab.filtros": "Filter work by niche",
+    "trab.texto": "Pick a niche and watch the videos I created for each one.",
+    "trab.filtros": "Choose the niche",
     "serv.rotulo": "How I can help",
     "serv.titulo": "Services designed to <em>sell</em>",
     "serv.texto": "From script to final delivery, every format is built for the place where it will run.",
@@ -1223,14 +1293,12 @@
   // Textos usados pelo script (filtros, menu, confirmações)
   const UI = {
     pt: {
-      todos: "Todos", abrirMenu: "Abrir menu", fecharMenu: "Fechar menu", legendaTrabalho: "foto do trabalho 4:5",
-      fotoTrabalho: (t, m) => `Foto do trabalho ${t} para ${m}`,
+      abrirMenu: "Abrir menu", fecharMenu: "Fechar menu",
       assistir: (m) => `Assistir o vídeo para ${m}`, videoDe: (m) => `Vídeo para ${m}`,
       obrigada: (n) => `Obrigada pelo contato, ${n}! Eu respondo em breve no e-mail que você deixou.`
     },
     en: {
-      todos: "All", abrirMenu: "Open menu", fecharMenu: "Close menu", legendaTrabalho: "work photo 4:5",
-      fotoTrabalho: (t, m) => `Photo of the project ${t} for ${m}`,
+      abrirMenu: "Open menu", fecharMenu: "Close menu",
       assistir: (m) => `Play the video for ${m}`, videoDe: (m) => `Video for ${m}`,
       obrigada: (n) => `Thanks for reaching out, ${n}! I'll reply soon to the email you left.`
     }
@@ -1291,6 +1359,9 @@
     </article>`;
   }).join("");
 
+  // Player do YouTube que toca aqui no site (usado no carrossel e nos trabalhos por nicho)
+  const iframeYouTube = (id, titulo) =>
+    `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&playsinline=1&rel=0&cc_load_policy=0&iv_load_policy=3&enablejsapi=1&origin=${encodeURIComponent(location.origin)}" title="${escapar(titulo)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
   // Desliga as legendas automáticas do YouTube (o player só aceita o pedido depois de carregar, por isso repete algumas vezes)
   function tirarLegendas(iframe) {
     const enviar = () => {
@@ -1316,8 +1387,9 @@
     if (!botao) return;
     const caixa = botao.closest("[data-caixa]"), k = Number(caixa.dataset.caixa), d = DESTAQUES[k % DESTAQUES.length];
     pararVideo(); // só um vídeo toca por vez
+    pararVideoGaleria();
     caixa.classList.add("tocando");
-    caixa.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(d.id)}?autoplay=1&playsinline=1&rel=0&cc_load_policy=0&iv_load_policy=3&enablejsapi=1&origin=${encodeURIComponent(location.origin)}" title="${escapar(ui().videoDe(d.marca))}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+    caixa.innerHTML = iframeYouTube(d.id, ui().videoDe(d.marca));
     tirarLegendas(caixa.querySelector("iframe"));
     videoTocando = k;
     caixa.querySelector("iframe").focus({ preventScroll: true });
@@ -1442,33 +1514,58 @@
   }
   const iniciais = (nome) => nome.split(" ").filter(Boolean).map((p) => p[0]).slice(0, 2).join("").toUpperCase();
 
-  // Galeria por nicho com filtro
-  const estilosMidia = ["", "quente", "neutra", "noite"];
-  let filtroAtual = "todos";
-  const nomeNicho = (id) => { const n = NICHOS.find((x) => x.id === id); return n ? campo(n, "nome") : id; };
+  // Trabalhos por nicho: um botão por nicho; mostra o texto do nicho e os vídeos dele, que tocam aqui no site
+  let filtroAtual = NICHOS[0].id;
+  let videoGaleria = null; // caixa da galeria que está com o player aberto
+  const nichoEscolhido = () => NICHOS.find((n) => n.id === filtroAtual) || NICHOS[0];
+  const capaGaleria = (v, k) => `
+        <img src="https://i.ytimg.com/vi/${escapar(v.id)}/hqdefault.jpg" alt="" loading="lazy" decoding="async">
+        <button class="video-botao" type="button" data-k="${k}" aria-label="${escapar(ui().assistir(v.marca))}">
+          <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span>
+        </button>`;
+  function pararVideoGaleria() {
+    if (!videoGaleria) return;
+    const k = Number(videoGaleria.dataset.k);
+    videoGaleria.classList.remove("tocando");
+    videoGaleria.innerHTML = capaGaleria(nichoEscolhido().videos[k], k);
+    videoGaleria = null;
+  }
   function desenharGaleria() {
-    const lista = filtroAtual === "todos" ? TRABALHOS : TRABALHOS.filter((t) => t.nicho === filtroAtual);
-    $("#galeria").innerHTML = lista.map((t, i) => {
-      const titulo = campo(t, "titulo");
-      const midia = t.imagem
-        ? `<div class="midia r-4-5"><img src="${escapar(t.imagem)}" alt="${escapar(t.alt || titulo)}" loading="lazy"></div>`
-        : `<div class="midia ${estilosMidia[i % 4]} r-4-5" role="img" aria-label="${escapar(ui().fotoTrabalho(titulo, t.marca))}"><span class="legenda-midia">${escapar(ui().legendaTrabalho)}</span></div>`;
-      const info = `<div class="trabalho-info"><span class="trabalho-nicho">${escapar(nomeNicho(t.nicho))} · ${escapar(campo(t, "formato"))}</span><h3>${escapar(titulo)}</h3><p>${escapar(t.marca)}</p></div>`;
-      const corpo = t.link ? `<a href="${escapar(t.link)}" target="_blank" rel="noopener" style="text-decoration:none;display:block">${midia}${info}</a>` : midia + info;
-      return `<li class="trabalho" style="animation-delay:${i * 50}ms">${corpo}</li>`;
-    }).join("");
+    videoGaleria = null;
+    const n = nichoEscolhido(), lista = campo(n, "lista"), descricao = campo(n, "descricao");
+    $("#nicho-info").innerHTML = `
+      <h3>${escapar(campo(n, "nome"))}</h3>
+      ${descricao ? `<p>${escapar(descricao)}</p>` : ""}
+      ${lista ? `<ul class="nicho-medidas">${lista.map((l) => `<li>${escapar(l)}</li>`).join("")}</ul>` : ""}
+      ${n.link ? `<a class="nicho-link" href="${escapar(n.link)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6"/></svg>${escapar(campo(n, "linkTexto"))}</a>` : ""}`;
+    $("#galeria").innerHTML = n.videos.map((v, k) => `
+      <li class="trabalho card-video" style="animation-delay:${Math.min(k, 10) * 40}ms">
+        <div class="midia noite r-9-16" data-k="${k}">${capaGaleria(v, k)}</div>
+        <p class="trabalho-marca">${escapar(v.marca)}</p>
+      </li>`).join("");
   }
   function desenharFiltros() {
-    const filtros = [{ id: "todos", nome: ui().todos }, ...NICHOS.map((n) => ({ id: n.id, nome: campo(n, "nome") }))];
-    $("#filtros").innerHTML = filtros.map((f) =>
-      `<button class="filtro" type="button" data-filtro="${f.id}" aria-pressed="${f.id === filtroAtual}">${escapar(f.nome)}</button>`).join("");
+    $("#filtros").innerHTML = NICHOS.map((n) =>
+      `<button class="filtro" type="button" data-filtro="${n.id}" aria-pressed="${n.id === filtroAtual}">${escapar(campo(n, "nome"))}</button>`).join("");
   }
   $("#filtros").addEventListener("click", (e) => {
     const botao = e.target.closest(".filtro");
-    if (!botao) return;
+    if (!botao || botao.dataset.filtro === filtroAtual) return;
     filtroAtual = botao.dataset.filtro;
     document.querySelectorAll(".filtro").forEach((b) => b.setAttribute("aria-pressed", String(b === botao)));
     desenharGaleria();
+  });
+  $("#galeria").addEventListener("click", (e) => {
+    const botao = e.target.closest(".video-botao");
+    if (!botao) return;
+    const caixa = botao.closest(".midia"), v = nichoEscolhido().videos[Number(caixa.dataset.k)];
+    pararVideoGaleria(); // só um vídeo toca por vez, aqui e no carrossel
+    pararVideo();
+    caixa.classList.add("tocando");
+    caixa.innerHTML = iframeYouTube(v.id, ui().videoDe(v.marca));
+    tirarLegendas(caixa.querySelector("iframe"));
+    videoGaleria = caixa;
+    caixa.querySelector("iframe").focus({ preventScroll: true });
   });
 
   // Troca de idioma: o português original de cada texto fica guardado para poder voltar

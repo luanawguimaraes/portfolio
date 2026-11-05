@@ -1381,7 +1381,7 @@
 
   // Destaques: mostra a capa do vídeo e, ao tocar, troca pelo player do YouTube aqui mesmo
   const capaDestaque = (d, i, copia) => `
-        <img src="https://i.ytimg.com/vi/${escapar(d.id)}/hqdefault.jpg" alt="" decoding="async" crossorigin="anonymous" class="capa-yt">
+        <img src="https://i.ytimg.com/vi/${escapar(d.id)}/oar2.jpg" alt="" decoding="async" crossorigin="anonymous" class="capa-yt" data-id="${escapar(d.id)}">
         <button class="video-botao" type="button" data-video="${i}"${copia ? ' tabindex="-1"' : ""} aria-label="${escapar(ui().assistir(d.marca))}">
           <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span>
         </button>`;
@@ -1401,30 +1401,41 @@
     </article>`;
   }).join("");
 
-  // Capas do YouTube: algumas vêm com faixas pretas em volta do vídeo.
-  // Quando a capa carrega, o site mede essas faixas e aumenta a imagem só o necessário para escondê-las.
+  // Capas do YouTube: o site usa a capa vertical em alta resolução (oar2.jpg, 1080x1920).
+  // Se ela não existir, usa a capa padrão (hqdefault.jpg), que às vezes vem com faixas pretas:
+  // nesse caso o site mede as faixas e aumenta a imagem só o necessário para escondê-las.
   const zoomCapas = new Map();
+  const usarCapaReserva = (img) => {
+    if (img.dataset.reserva) return;
+    img.dataset.reserva = "1";
+    img.src = `https://i.ytimg.com/vi/${img.dataset.id}/hqdefault.jpg`;
+  };
   function ajustarCapa(img) {
+    if (img.naturalWidth <= 120 && !img.dataset.reserva) { usarCapaReserva(img); return; } // capa vertical não existe
     if (zoomCapas.has(img.src)) { img.style.transform = `scale(${zoomCapas.get(img.src)})`; return; }
-    let zoom = 1.03;
+    let zoom = 1.02;
     try {
-      const L = 480, A = 360, c = document.createElement("canvas");
+      // desenha a capa pequena e olha só a parte que aparece no card 9:16
+      const L = 240, A = Math.round(L * img.naturalHeight / img.naturalWidth), c = document.createElement("canvas");
       c.width = L; c.height = A;
       const g = c.getContext("2d");
       g.drawImage(img, 0, 0, L, A);
       const d = g.getImageData(0, 0, L, A).data;
       const escuro = (x, y) => { const k = (y * L + x) * 4; return d[k] + d[k + 1] + d[k + 2] < 50; };
-      const visivel = A * 9 / 16, x0 = Math.round((L - visivel) / 2), x1 = Math.round((L + visivel) / 2); // parte que aparece no card 9:16
-      const coluna = (x) => { let n = 0, t = 0; for (let y = 0; y < A; y += 4) { t++; if (escuro(x, y)) n++; } return n / t > .9; };
-      const linha = (y) => { let n = 0, t = 0; for (let x = x0; x < x1; x += 4) { t++; if (escuro(x, y)) n++; } return n / t > .9; };
-      let lados = 0; while (lados < visivel / 3 && coluna(x0 + lados) && coluna(x1 - 1 - lados)) lados++;
-      let cima = 0; while (cima < A / 3 && linha(cima) && linha(A - 1 - cima)) cima++;
-      if (lados || cima) zoom = Math.max(visivel / (visivel - 2 * lados), A / (A - 2 * cima)) + .03;
+      const largura = Math.min(L, A * 9 / 16), altura = Math.min(A, L * 16 / 9);
+      const x0 = Math.round((L - largura) / 2), x1 = Math.round((L + largura) / 2);
+      const y0 = Math.round((A - altura) / 2), y1 = Math.round((A + altura) / 2);
+      const coluna = (x) => { let n = 0, t = 0; for (let y = y0; y < y1; y += 3) { t++; if (escuro(x, y)) n++; } return n / t > .9; };
+      const linha = (y) => { let n = 0, t = 0; for (let x = x0; x < x1; x += 3) { t++; if (escuro(x, y)) n++; } return n / t > .9; };
+      let lados = 0; while (lados < largura / 3 && coluna(x0 + lados) && coluna(x1 - 1 - lados)) lados++;
+      let cima = 0; while (cima < altura / 3 && linha(y0 + cima) && linha(y1 - 1 - cima)) cima++;
+      if (lados || cima) zoom = Math.max(largura / (largura - 2 * lados), altura / (altura - 2 * cima)) + .03;
     } catch (_) { /* sem acesso aos pixels: fica só o zoom leve */ }
     zoomCapas.set(img.src, zoom);
     img.style.transform = `scale(${zoom})`;
   }
   document.addEventListener("load", (e) => { if (e.target.classList && e.target.classList.contains("capa-yt")) ajustarCapa(e.target); }, true);
+  document.addEventListener("error", (e) => { if (e.target.classList && e.target.classList.contains("capa-yt")) usarCapaReserva(e.target); }, true);
 
   // Player do YouTube que toca aqui no site (usado no carrossel e nos trabalhos por nicho)
   // "previa" = sem som, sem controles e repetindo (usado ao passar o mouse nos trabalhos por nicho)
@@ -1470,7 +1481,7 @@
 
   // Movimento: o vídeo do meio fica parado em destaque e depois o carrossel desliza para o próximo.
   // Para enquanto o mouse está em cima ou um vídeo está tocando.
-  const PERMANENCIA_VIDEO = 5500; // milissegundos que cada vídeo fica no centro
+  const PERMANENCIA_VIDEO = 4000; // milissegundos que cada vídeo fica no centro
   const N_VIDEOS = DESTAQUES.length;
   let atual = N_VIDEOS, mouseEmCima = false, espera = null; // começa na segunda cópia para ter vídeos dos dois lados
   const cards = () => trilhoVideos.children;
@@ -1587,7 +1598,7 @@
   let videoGaleria = null; // caixa da galeria que está com o player aberto
   const nichoEscolhido = () => NICHOS.find((n) => n.id === filtroAtual) || NICHOS[0];
   const capaGaleria = (v, k) => `
-        <img src="https://i.ytimg.com/vi/${escapar(v.id)}/hqdefault.jpg" alt="" loading="lazy" decoding="async" crossorigin="anonymous" class="capa-yt">
+        <img src="https://i.ytimg.com/vi/${escapar(v.id)}/oar2.jpg" alt="" loading="lazy" decoding="async" crossorigin="anonymous" class="capa-yt" data-id="${escapar(v.id)}">
         <span class="selo-marca" aria-hidden="true">${escapar(v.marca)}</span>
         <button class="video-botao" type="button" data-k="${k}" aria-label="${escapar(ui().assistir(v.marca))}">
           <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span>

@@ -779,9 +779,9 @@
   /* 4. HABILIDADES: faixa água com curvas, 2 habilidades de cada lado e o produto no centro */
   .habilidades { background: var(--ref-agua); --cor-acima: #fff; --cor-abaixo: #fff; }
   .habilidades .estrela { display: none; }
-  .hab-composicao { display: grid; grid-template-columns: 1fr minmax(220px, 300px) 1fr; gap: clamp(20px, 3vw, 44px); align-items: center; max-width: 1180px; margin: 0 auto; }
+  .hab-composicao { display: grid; grid-template-columns: 1fr minmax(240px, 340px) 1fr; gap: clamp(20px, 3vw, 44px); align-items: center; max-width: 1180px; margin: 0 auto; }
   .hab-coluna { display: grid; gap: clamp(18px, 2.4vw, 28px); list-style: none; margin: 0; padding: 0; }
-  .hab-produto svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 24px 30px rgba(43, 43, 43, .18)); }
+  .hab-produto img { display: block; width: 100%; height: auto; filter: drop-shadow(0 24px 30px rgba(43, 43, 43, .2)); }
   .hab-coluna .habilidade { border-color: transparent; box-shadow: 0 14px 30px -20px rgba(43, 43, 43, .35); }
   @media (max-width: 920px) {
     .hab-composicao { grid-template-columns: 1fr; max-width: 560px; }
@@ -946,54 +946,8 @@
       <div class="hab-composicao">
         <ol class="hab-coluna" id="habilidades-esq"></ol>
         <div class="hab-produto revelar" aria-hidden="true">
-          <!-- ILUSTRAÇÃO: mão segurando um pote de gominhas (troque por uma foto quando quiser) -->
-          <svg viewBox="0 0 300 440" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <path id="g-coracao" d="M0 6C0-2 10-4 12 3 14-4 24-2 24 6 24 14 13 19 12 22 11 19 0 14 0 6Z"/>
-            </defs>
-            <circle cx="150" cy="200" r="138" fill="#fff" opacity=".35"/>
-            <!-- palma por trás do pote -->
-            <path d="M58 440C46 392 52 338 86 312L222 304C252 304 266 336 256 368 246 402 238 422 238 440Z" fill="#F2C3A3"/>
-            <!-- pote -->
-            <rect x="94" y="84" width="112" height="16" rx="6" fill="#fff" opacity=".9"/>
-            <rect x="62" y="96" width="176" height="236" rx="44" fill="#fff" fill-opacity=".55" stroke="#fff" stroke-width="3"/>
-            <g>
-              <use href="#g-coracao" transform="translate(84 268) scale(1.7) rotate(-12)" fill="#F9327A"/>
-              <use href="#g-coracao" transform="translate(132 276) scale(1.7) rotate(8)" fill="#7FD6DE"/>
-              <use href="#g-coracao" transform="translate(178 266) scale(1.6) rotate(-6)" fill="#FF8DBA"/>
-              <use href="#g-coracao" transform="translate(98 226) scale(1.7) rotate(14)" fill="#5CC3CF"/>
-              <use href="#g-coracao" transform="translate(146 230) scale(1.7) rotate(-10)" fill="#F9327A"/>
-              <use href="#g-coracao" transform="translate(190 222) scale(1.5) rotate(18)" fill="#7FD6DE"/>
-              <use href="#g-coracao" transform="translate(80 184) scale(1.6) rotate(-4)" fill="#FF8DBA"/>
-              <use href="#g-coracao" transform="translate(126 186) scale(1.7) rotate(12)" fill="#7FD6DE"/>
-              <use href="#g-coracao" transform="translate(172 180) scale(1.7) rotate(-14)" fill="#F9327A"/>
-              <use href="#g-coracao" transform="translate(96 142) scale(1.6) rotate(6)" fill="#F9327A"/>
-              <use href="#g-coracao" transform="translate(144 138) scale(1.7) rotate(-8)" fill="#5CC3CF"/>
-              <use href="#g-coracao" transform="translate(186 140) scale(1.4) rotate(10)" fill="#FF8DBA"/>
-              <use href="#g-coracao" transform="translate(116 106) scale(1.4) rotate(-16)" fill="#7FD6DE"/>
-              <use href="#g-coracao" transform="translate(160 104) scale(1.4) rotate(14)" fill="#F9327A"/>
-            </g>
-            <rect x="78" y="122" width="13" height="176" rx="6.5" fill="#fff" opacity=".7"/>
-            <!-- tampa -->
-            <rect x="84" y="38" width="132" height="50" rx="12" fill="#F9327A"/>
-            <path d="M100 46v34M116 46v34M132 46v34M148 46v34M164 46v34M180 46v34M196 46v34" stroke="#fff" stroke-opacity=".35" stroke-width="3" stroke-linecap="round"/>
-            <!-- dedos na frente do pote -->
-            <g fill="#F2C3A3" stroke="#E2A585" stroke-width="2">
-              <rect x="40" y="248" width="176" height="30" rx="15"/>
-              <rect x="36" y="276" width="186" height="30" rx="15"/>
-              <rect x="40" y="304" width="178" height="30" rx="15"/>
-              <rect x="50" y="332" width="150" height="28" rx="14"/>
-            </g>
-            <g fill="#FF8DBA">
-              <ellipse cx="203" cy="263" rx="8" ry="10"/>
-              <ellipse cx="209" cy="291" rx="8" ry="10"/>
-              <ellipse cx="205" cy="319" rx="8" ry="10"/>
-              <ellipse cx="188" cy="346" rx="7" ry="9"/>
-            </g>
-            <!-- polegar -->
-            <rect x="34" y="176" width="34" height="98" rx="17" fill="#F2C3A3" stroke="#E2A585" stroke-width="2" transform="rotate(-8 51 225)"/>
-            <ellipse cx="48" cy="190" rx="9" ry="11" fill="#FF8DBA" transform="rotate(-8 48 190)"/>
-          </svg>
+          <!-- FOTO: mão segurando o pote de gominhas (mao-gummy.webp, sem fundo) -->
+          <img src="mao-gummy.webp" alt="" width="820" height="853" loading="lazy" decoding="async">
         </div>
         <ol class="hab-coluna" id="habilidades-dir" start="3"></ol>
       </div>

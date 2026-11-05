@@ -355,8 +355,8 @@
   .habilidades .cabecalho-secao .rotulo { margin-bottom: 0; } /* mesma distância até o título das outras seções */
   /* VARAL DE HABILIDADES: cartões pendurados num fio; na frente o título, atrás a descrição.
      Viram ao passar o mouse (ou ao tocar, no celular) e o verso tem um gradiente furta-cor que segue o mouse. */
-  .varal { position: relative; display: flex; justify-content: center; align-items: flex-start; gap: clamp(18px, 3vw, 44px);
-    max-width: 1080px; margin: 0 auto; padding: 0; list-style: none; }
+  .varal { position: relative; display: flex; justify-content: center; align-items: flex-start; gap: clamp(16px, 2.4vw, 36px);
+    max-width: 1180px; margin: 0 auto; padding: 0; list-style: none; }
   .varal-fio-li { display: contents; }
   .varal-fio { position: absolute; left: 2%; right: 2%; top: 0; width: 96%; height: 60px; overflow: visible; pointer-events: none; }
   .varal-fio path { fill: none; stroke: #B9B4BC; stroke-width: 1.6; vector-effect: non-scaling-stroke; }
@@ -364,7 +364,7 @@
   .hab-cordao { position: absolute; left: 50%; top: var(--fio, 20px); width: 1.6px; height: calc(var(--topo-cartao, 70px) - var(--fio, 20px) + 12px); background: #B9B4BC; transform: translateX(-50%); }
   .hab-cordao::before { content: ""; position: absolute; left: 50%; top: -4px; width: 8px; height: 8px; border-radius: 50%; background: #A7A1AB; transform: translateX(-50%); }
   .hab-cartao {
-    position: relative; display: block; width: clamp(230px, 23vw, 272px); aspect-ratio: 3 / 4.15; perspective: 1200px; cursor: pointer;
+    position: relative; display: block; width: clamp(236px, 19vw, 252px); aspect-ratio: 3 / 4.15; perspective: 1200px; cursor: pointer;
     transform: rotate(var(--giro, 0deg)); transform-origin: 50% -20px; transition: transform .5s cubic-bezier(.3, .7, .3, 1);
     -webkit-tap-highlight-color: transparent; outline: none;
   }
@@ -407,11 +407,16 @@
   .hab-verso p strong { font-weight: 500; color: var(--tinta); }
   .hab-verso .hab-topo { position: relative; z-index: 1; color: #6F6873; }
   @media (prefers-reduced-motion: reduce) { .hab-giro, .hab-cartao { transition-duration: .01s; } }
-  /* celular: um cartão embaixo do outro, cada um com o seu cordão */
-  @media (max-width: 760px) {
-    .varal { flex-direction: column; align-items: center; gap: 26px; }
+  /* telas médias: 2 cartões por linha, cada um com o seu cordão (o fio comprido só aparece quando cabem os 4) */
+  @media (max-width: 1240px) {
+    .varal { flex-wrap: wrap; row-gap: 26px; max-width: 640px; }
     .varal-fio { display: none; }
     .hab-item { --topo-cartao: 34px !important; --fio: 0px !important; }
+    .hab-cartao { width: min(272px, 40vw); }
+  }
+  /* celular: um cartão embaixo do outro */
+  @media (max-width: 620px) {
+    .varal { flex-direction: column; align-items: center; }
     .hab-cartao { width: min(300px, 82vw); }
   }
 
@@ -1231,7 +1236,11 @@
     { titulo: "Ganchos criativos e retenção",
       descricao: "Crio **ganchos** que funcionam desde os **primeiros segundos**, para **prender a atenção** e conduzir o público até a **mensagem da marca**.",
       titulo_en: "Creative hooks and retention",
-      descricao_en: "I create **hooks** that work from the **very first seconds**, **grabbing attention** and guiding the audience to the **brand's message**." }
+      descricao_en: "I create **hooks** that work from the **very first seconds**, **grabbing attention** and guiding the audience to the **brand's message**." },
+    { titulo: "Versatilidade criativa",
+      descricao: "Uno **diferentes referências visuais e narrativas** para desenvolver conteúdos alinhados à **identidade da marca**, ao produto e à **proposta de cada campanha**.",
+      titulo_en: "Creative versatility",
+      descricao_en: "I combine **different visual and narrative references** to create content aligned with the **brand's identity**, the product and **each campaign's proposal**." }
   ];
 
   // SERVIÇOS: seção "Como eu te ajudo"

@@ -343,6 +343,7 @@
   /* título e frase centralizados, um embaixo do outro */
   .habilidades .cabecalho-secao { flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 18px; margin-bottom: clamp(36px, 4.8vw, 56px); }
   .habilidades .cabecalho-secao p { max-width: 52ch; }
+  .habilidades .cabecalho-secao .rotulo { margin-bottom: 0; } /* mesma distância até o título das outras seções */
   /* 2 cards em cima e 1 centralizado embaixo (grade de 4 colunas, cada card ocupa 2) */
   .habilidades-grade { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(18px, 2.4vw, 28px); max-width: 1040px; margin: 0 auto; list-style: none; padding: 0; }
   .habilidades-grade > li { grid-column: span 2; }
@@ -845,7 +846,8 @@
   <section class="secao habilidades" id="habilidades" aria-labelledby="titulo-habilidades">
     <div class="container">
       <div class="cabecalho-secao">
-        <h2 class="titulo-secao revelar" id="titulo-habilidades" data-i18n="hab.titulo">Minhas <em>habilidades</em></h2>
+        <span class="rotulo revelar" data-i18n="hab.rotulo">Minhas Habilidades</span>
+        <h2 class="titulo-secao revelar" id="titulo-habilidades" data-i18n="hab.titulo">O que levo para cada <em>parceria</em></h2>
         <p class="revelar" data-atraso="1" data-i18n="hab.texto">Estratégia, criatividade e sensibilidade visual a serviço de marcas que querem se conectar de verdade.</p>
       </div>
       <ol class="habilidades-grade" id="habilidades-lista"></ol>
@@ -1282,7 +1284,8 @@
     "dest.titulo": "A sample of my <em>work</em>",
     "dest.texto": "A selection of content that reflects my creativity, versatility and identity as a UGC creator.",
     "dest.carrossel": "Featured videos",
-    "hab.titulo": "My <em>skills</em>",
+    "hab.rotulo": "My Skills",
+    "hab.titulo": "What I bring to every <em>partnership</em>",
     "hab.texto": "Strategy, creativity and visual sensitivity working for brands that want to truly connect.",
     "dest.anterior": "Previous video",
     "dest.proxima": "Next video",

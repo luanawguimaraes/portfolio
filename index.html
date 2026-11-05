@@ -1072,10 +1072,11 @@
 
   // DESTAQUES: vídeos que tocam aqui no site, na ordem da lista.
   // "id" é o código do vídeo no YouTube (o trecho depois de /shorts/ no link).
+  // "capa" (opcional): "maxresdefault" usa a capa principal do YouTube no lugar do frame automático.
   // "formato" é o texto rosa embaixo do vídeo ("formato_en" é a versão em inglês).
   // Opcional: "numero" e "rotulo" (ex.: numero: "120 mil", rotulo: "visualizações") só aparecem se você preencher.
   const DESTAQUES = [
-    { marca: "Hyze Pay",    id: "97-HXwpJuVI", formato: "Explicativo + Demonstração de Plataforma", formato_en: "Explainer + Platform Demo" },
+    { marca: "Hyze Pay",    id: "97-HXwpJuVI", capa: "maxresdefault", formato: "Explicativo + Demonstração de Plataforma", formato_en: "Explainer + Platform Demo" },
     { marca: "Shop Lumina", id: "6Sz8S3cIRu0", formato: "Apresentação com foco em conversão",        formato_en: "Conversion-focused presentation" },
     { marca: "Aneethun",    id: "24u26UN8heI", formato: "Storytelling + Product Demo",               formato_en: "Storytelling + Product Demo" }
   ];
@@ -1121,7 +1122,7 @@
       descricao: "Ganchos visuais que despertam curiosidade, ângulos criativos e edições dinâmicas que prendem a atenção desde os primeiros segundos.",
       descricao_en: "Visual hooks that spark curiosity, creative angles and dynamic edits that hold attention from the very first seconds.",
       videos: [
-        { marca: "Hyze Pay", id: "97-HXwpJuVI" },
+        { marca: "Hyze Pay", id: "97-HXwpJuVI", capa: "maxresdefault" }, // capa = frame da fechadura
         { marca: "Memoz", id: "IfGNWQPhmqA" },
         { marca: "Memoz", id: "V47S1_gikbk" },
         { marca: "Memoz", id: "pFMRNhcr2wc" },
@@ -1379,9 +1380,14 @@
   }).join("");
   $("#faixa-trilho").innerHTML = `<ul class="logos-lista">${listaMarcas(false)}</ul><ul class="logos-lista" aria-hidden="true">${listaMarcas(true)}</ul>`;
 
+  // Imagem da capa: por padrão a capa vertical (oar2). Com "capa" no vídeo, usa outra capa do YouTube
+  // (ex.: capa: "maxresdefault" = capa principal escolhida no YouTube), sem zoom automático.
+  const imgCapa = (v, preguicosa) =>
+    `<img src="https://i.ytimg.com/vi/${escapar(v.id)}/${escapar(v.capa || "oar2")}.jpg" alt=""${preguicosa ? ' loading="lazy"' : ""} decoding="async" crossorigin="anonymous" class="capa-yt" data-id="${escapar(v.id)}"${v.capa ? ' data-fixa="1"' : ""}>`;
+
   // Destaques: mostra a capa do vídeo e, ao tocar, troca pelo player do YouTube aqui mesmo
   const capaDestaque = (d, i, copia) => `
-        <img src="https://i.ytimg.com/vi/${escapar(d.id)}/oar2.jpg" alt="" decoding="async" crossorigin="anonymous" class="capa-yt" data-id="${escapar(d.id)}">
+        ${imgCapa(d, false)}
         <button class="video-botao" type="button" data-video="${i}"${copia ? ' tabindex="-1"' : ""} aria-label="${escapar(ui().assistir(d.marca))}">
           <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span>
         </button>`;
@@ -1412,6 +1418,7 @@
   };
   function ajustarCapa(img) {
     if (img.naturalWidth <= 120 && !img.dataset.reserva) { usarCapaReserva(img); return; } // capa vertical não existe
+    if (img.dataset.fixa) { img.style.transform = "scale(1.02)"; return; } // capa escolhida à mão: mostra como está
     if (zoomCapas.has(img.src)) { img.style.transform = `scale(${zoomCapas.get(img.src)})`; return; }
     let zoom = 1.02;
     try {
@@ -1598,7 +1605,7 @@
   let videoGaleria = null; // caixa da galeria que está com o player aberto
   const nichoEscolhido = () => NICHOS.find((n) => n.id === filtroAtual) || NICHOS[0];
   const capaGaleria = (v, k) => `
-        <img src="https://i.ytimg.com/vi/${escapar(v.id)}/oar2.jpg" alt="" loading="lazy" decoding="async" crossorigin="anonymous" class="capa-yt" data-id="${escapar(v.id)}">
+        ${imgCapa(v, true)}
         <span class="selo-marca" aria-hidden="true">${escapar(v.marca)}</span>
         <button class="video-botao" type="button" data-k="${k}" aria-label="${escapar(ui().assistir(v.marca))}">
           <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span>

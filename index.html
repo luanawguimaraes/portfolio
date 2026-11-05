@@ -1382,8 +1382,9 @@
 
   // Imagem da capa: por padrão a capa vertical (oar2). Com "capa" no vídeo, usa outra capa do YouTube
   // (ex.: capa: "maxresdefault" = capa principal escolhida no YouTube), sem zoom automático.
-  const imgCapa = (v, preguicosa) =>
-    `<img src="https://i.ytimg.com/vi/${escapar(v.id)}/${escapar(v.capa || "oar2")}.jpg" alt=""${preguicosa ? ' loading="lazy"' : ""} decoding="async" crossorigin="anonymous" class="capa-yt" data-id="${escapar(v.id)}"${v.capa ? ' data-fixa="1"' : ""}>`;
+  // "padrao": qual capa usar quando o vídeo não tem "capa" (Destaques: oar2; Trabalhos por nicho: a capa original do YouTube)
+  const imgCapa = (v, preguicosa, padrao = "oar2") =>
+    `<img src="https://i.ytimg.com/vi/${escapar(v.id)}/${escapar(v.capa || padrao)}.jpg" alt=""${preguicosa ? ' loading="lazy"' : ""} decoding="async" crossorigin="anonymous" class="capa-yt" data-id="${escapar(v.id)}"${v.capa ? ' data-fixa="1"' : ""}>`;
 
   // Destaques: mostra a capa do vídeo e, ao tocar, troca pelo player do YouTube aqui mesmo
   const capaDestaque = (d, i, copia) => `
@@ -1605,7 +1606,7 @@
   let videoGaleria = null; // caixa da galeria que está com o player aberto
   const nichoEscolhido = () => NICHOS.find((n) => n.id === filtroAtual) || NICHOS[0];
   const capaGaleria = (v, k) => `
-        ${imgCapa(v, true)}
+        ${imgCapa(v, true, "maxresdefault")}
         <span class="selo-marca" aria-hidden="true">${escapar(v.marca)}</span>
         <button class="video-botao" type="button" data-k="${k}" aria-label="${escapar(ui().assistir(v.marca))}">
           <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span>

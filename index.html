@@ -271,7 +271,7 @@
   .carrossel-janela { overflow: hidden; padding: 10px 0 8px; }
   .carrossel-trilho { display: flex; gap: clamp(16px, 2.2vw, 28px); width: max-content; will-change: transform; transition: transform .9s cubic-bezier(.65, 0, .35, 1); }
   /* vídeo do meio nítido; os dos lados só desfocados (sem transparência) */
-  .carrossel-trilho .card-video { flex: none; width: clamp(210px, 23vw, 290px); filter: blur(3.5px); transition: filter .9s ease, transform .4s; }
+  .carrossel-trilho .card-video { flex: none; width: clamp(210px, 23vw, 290px); filter: blur(2.5px); transition: filter .9s ease, transform .4s; }
   .carrossel-trilho .card-video.foco { filter: blur(0); }
   .carrossel-trilho .card-video:not(.foco):hover { transform: none; }
   .carrossel-trilho.sem-transicao, .carrossel-trilho.sem-transicao .card-video { transition: none; }
@@ -293,6 +293,9 @@
   .card-video .midia iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
   .video-botao { position: absolute; inset: 0; z-index: 2; width: 100%; padding: 0; border: 0; background: transparent; cursor: pointer; border-radius: inherit; }
   .video-botao:focus-visible { outline: 3px solid var(--azul); outline-offset: 3px; }
+  /* o play só aparece com o mouse em cima do vídeo (ou ao navegar pelo teclado) */
+  .carrossel .video-botao .play { opacity: 0; transition: opacity .3s, transform .35s, background .35s; }
+  .carrossel .video-botao:hover .play, .carrossel .video-botao:focus-visible .play { opacity: 1; }
   .carrossel .card-info { text-align: center; padding-top: 18px; }
   /* texto rosa sempre em uma linha: a letra se ajusta à largura do card */
   .carrossel-trilho .card-video { container-type: inline-size; }
@@ -1205,7 +1208,9 @@
   // Destaques: mostra a capa do vídeo e, ao tocar, troca pelo player do YouTube aqui mesmo
   const capaDestaque = (d, i, copia) => `
         <img src="https://i.ytimg.com/vi/${escapar(d.id)}/hqdefault.jpg" alt="" decoding="async">
-        <button class="video-botao" type="button" data-video="${i}"${copia ? ' tabindex="-1"' : ""} aria-label="${escapar(ui().assistir(d.marca))}"></button>`;
+        <button class="video-botao" type="button" data-video="${i}"${copia ? ' tabindex="-1"' : ""} aria-label="${escapar(ui().assistir(d.marca))}">
+          <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span>
+        </button>`;
   // A lista se repete 4 vezes para o carrossel nunca ter buraco; só a primeira cópia é lida por leitores de tela
   const COPIAS_CARROSSEL = 4;
   const trilhoVideos = $("#destaques-trilho");

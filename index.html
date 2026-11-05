@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#FEF8E7">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
 <style>
 
   /* ==========================================================
@@ -55,6 +55,7 @@
     color: var(--tinta);
     font-family: var(--sans);
     font-size: 17px;
+    font-weight: 300; /* texto do corpo mais fino */
     line-height: 1.65;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
@@ -327,7 +328,9 @@
   #trabalhos { padding-top: clamp(16px, 2vw, 28px); }
   /* título em cima e texto embaixo, tudo à esquerda */
   .trabalhos-topo { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 0; }
-  .trabalhos-topo .titulo-secao { max-width: 18ch; }
+  /* título no mesmo formato dos outros (Sobre, Destaques, Habilidades) */
+  .trabalhos-topo .titulo-secao { max-width: 18ch; font-weight: 800; line-height: 1; letter-spacing: -.03em; font-size: clamp(34px, 4vw, 56px); }
+  #titulo-trabalhos em { font-style: normal; }
   .trabalhos-topo p { max-width: 60ch; margin-top: 18px; }
   .habilidades .titulo-secao { font-weight: 800; line-height: 1; letter-spacing: -.03em; font-size: clamp(34px, 4vw, 56px); max-width: none; }
   #titulo-habilidades em { font-style: normal; }

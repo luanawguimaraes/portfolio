@@ -256,8 +256,15 @@
      3. CONTEÚDOS DE DESTAQUE
      ========================================================== */
   .destaques { background: transparent; } /* deixa aparecer o quadriculado do fundo */
+  /* Textos à esquerda e carrossel à direita */
+  .destaques-layout { display: grid; grid-template-columns: minmax(260px, 0.8fr) 1.6fr; gap: clamp(28px, 4vw, 56px); align-items: center; }
+  .destaques-texto p { max-width: 38ch; color: var(--tinta-suave); margin: 18px 0 0; }
+  @media (max-width: 920px) {
+    .destaques-layout { grid-template-columns: 1fr; }
+  }
+
   /* Carrossel: os vídeos andam sozinhos para a esquerda e as setas avançam um por vez */
-  .carrossel { position: relative; }
+  .carrossel { position: relative; min-width: 0; }
   .carrossel-janela {
     overflow: hidden; padding: 10px 0 8px;
     -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
@@ -739,16 +746,15 @@
 
   <!-- ============ 3. CONTEÚDOS DE DESTAQUE ============ -->
   <section class="secao destaques" id="destaques" aria-labelledby="titulo-destaques">
-    <div class="container">
-      <div class="cabecalho-secao">
-        <div>
-          <span class="rotulo revelar" data-i18n="dest.rotulo">Conteúdos de destaque</span>
-          <h2 class="titulo-secao revelar" id="titulo-destaques" data-i18n="dest.titulo">Vídeos que <em>falam</em> por mim</h2>
-        </div>
+    <div class="container destaques-layout">
+      <!-- Lado esquerdo: textos da seção -->
+      <div class="destaques-texto">
+        <span class="rotulo revelar" data-i18n="dest.rotulo">Conteúdos de destaque</span>
+        <h2 class="titulo-secao revelar" id="titulo-destaques" data-i18n="dest.titulo">Vídeos que <em>falam</em> por mim</h2>
         <p class="revelar" data-i18n="dest.texto">Três conteúdos que mostram o meu jeito de contar a história de uma marca. Toque para assistir.</p>
       </div>
 
-      <!-- Os vídeos ficam na lista DESTAQUES, no começo do script -->
+      <!-- Lado direito: carrossel. Os vídeos ficam na lista DESTAQUES, no começo do script -->
       <div class="carrossel revelar" role="region" aria-roledescription="carrossel" aria-label="Vídeos de destaque" data-i18n-attr="aria-label:dest.carrossel">
         <div class="carrossel-janela">
           <div class="carrossel-trilho" id="destaques-trilho"></div>
@@ -974,11 +980,12 @@
 
   // DESTAQUES: vídeos que tocam aqui no site, na ordem da lista.
   // "id" é o código do vídeo no YouTube (o trecho depois de /shorts/ no link).
+  // "formato" é o texto rosa embaixo do vídeo ("formato_en" é a versão em inglês).
   // Opcional: "numero" e "rotulo" (ex.: numero: "120 mil", rotulo: "visualizações") só aparecem se você preencher.
   const DESTAQUES = [
-    { marca: "Hyze Pay",    id: "97-HXwpJuVI" },
-    { marca: "Shop Lumina", id: "6Sz8S3cIRu0" },
-    { marca: "Aneethun",    id: "24u26UN8heI" }
+    { marca: "Hyze Pay",    id: "97-HXwpJuVI", formato: "Explicativo + Demonstração de Plataforma", formato_en: "Explainer + Platform Demo" },
+    { marca: "Shop Lumina", id: "6Sz8S3cIRu0", formato: "Apresentação com foco em conversão",        formato_en: "Conversion-focused presentation" },
+    { marca: "Aneethun",    id: "24u26UN8heI", formato: "Storytelling + Product Demo",               formato_en: "Storytelling + Product Demo" }
   ];
 
   // NICHOS: botões de filtro da galeria (o "id" precisa ser igual ao "nicho" dos trabalhos)
@@ -1104,7 +1111,6 @@
     "dest.rotulo": "Featured content",
     "dest.titulo": "Videos that <em>speak</em> for me",
     "dest.texto": "Three pieces that show how I tell a brand's story. Tap to watch.",
-    "dest.formato": "UGC video · YouTube Shorts",
     "dest.carrossel": "Featured videos",
     "dest.anterior": "Previous video",
     "dest.proxima": "Next video",
@@ -1196,7 +1202,6 @@
   // Destaques: mostra a capa do vídeo e, ao tocar, troca pelo player do YouTube aqui mesmo
   const capaDestaque = (d, i, copia) => `
         <img src="https://i.ytimg.com/vi/${escapar(d.id)}/hqdefault.jpg" alt="" decoding="async">
-        <span class="indice" aria-hidden="true">${doisDigitos(i + 1)}</span>
         <button class="video-botao" type="button" data-video="${i}"${copia ? ' tabindex="-1"' : ""} aria-label="${escapar(ui().assistir(d.marca))}">
           <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span>
         </button>`;
@@ -1210,7 +1215,7 @@
       <div class="midia noite r-9-16" data-caixa="${k}">${capaDestaque(d, i, copia)}</div>
       <div class="card-info">
         ${d.numero ? `<div class="card-numero">${escapar(d.numero)}</div><span class="card-numero-rotulo">${escapar(d.rotulo || "")}</span>` : ""}
-        <span class="card-formato" data-i18n="dest.formato">Vídeo UGC · YouTube Shorts</span>
+        <span class="card-formato" data-formato="${i}">${escapar(campo(d, "formato"))}</span>
         <h3>${escapar(d.marca)}</h3>
       </div>
     </article>`;
@@ -1236,6 +1241,7 @@
     caixa.querySelector("iframe").focus({ preventScroll: true });
   });
   function atualizarBotoesVideo() {
+    trilhoVideos.querySelectorAll("[data-formato]").forEach((s) => { s.textContent = campo(DESTAQUES[s.dataset.formato], "formato"); });
     trilhoVideos.querySelectorAll(".video-botao").forEach((b) => b.setAttribute("aria-label", ui().assistir(DESTAQUES[b.dataset.video].marca)));
     if (videoTocando !== null) caixaVideo(videoTocando).querySelector("iframe").title = ui().videoDe(DESTAQUES[videoTocando % DESTAQUES.length].marca);
   }

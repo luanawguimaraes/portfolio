@@ -318,6 +318,28 @@
   .card-info p { color: var(--tinta-suave); font-size: 15px; margin: 0; }
 
   /* ==========================================================
+     MINHAS HABILIDADES
+     ========================================================== */
+  .habilidades { background: transparent; padding-top: clamp(24px, 4vw, 56px); }
+  .habilidades .titulo-secao { font-weight: 800; line-height: 1; letter-spacing: -.03em; font-size: clamp(34px, 4vw, 56px); max-width: none; }
+  #titulo-habilidades em { font-style: normal; }
+  .habilidades .cabecalho-secao { margin-bottom: clamp(32px, 4.4vw, 52px); }
+  .habilidades-grade { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(18px, 2.4vw, 28px); list-style: none; margin: 0; padding: 0; }
+  /* cada habilidade é um bloco colorido separado: rosa, grafite, rosa */
+  .habilidade {
+    background: var(--azul); color: var(--branco); border-radius: var(--raio); padding: clamp(26px, 2.8vw, 34px);
+    box-shadow: var(--sombra-leve); transition: transform .4s, box-shadow .4s;
+  }
+  .habilidade:nth-child(even) { background: var(--tinta); }
+  .habilidade:hover { transform: translateY(-6px); box-shadow: var(--sombra); }
+  .habilidade-num { display: block; font-family: var(--sans); font-weight: 800; font-size: 15px; letter-spacing: .08em; color: rgba(255, 255, 255, .7); margin-bottom: 14px; }
+  .habilidade h3 { font-family: var(--sans); font-size: clamp(18px, 1.5vw, 20px); font-weight: 800; line-height: 1.2; text-transform: uppercase; letter-spacing: .01em; color: var(--branco); margin-bottom: 12px; }
+  .habilidade p { color: rgba(255, 255, 255, .92); font-size: 15px; line-height: 1.6; margin: 0; }
+  @media (max-width: 920px) {
+    .habilidades-grade { grid-template-columns: 1fr; max-width: 560px; }
+  }
+
+  /* ==========================================================
      4. TRABALHOS POR NICHO
      ========================================================== */
   .filtros { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 40px; }
@@ -771,6 +793,18 @@
     </div>
   </section>
 
+  <!-- ============ MINHAS HABILIDADES ============
+       Os 3 cards ficam na lista HABILIDADES, no começo do script -->
+  <section class="secao habilidades" id="habilidades" aria-labelledby="titulo-habilidades">
+    <div class="container">
+      <div class="cabecalho-secao">
+        <h2 class="titulo-secao revelar" id="titulo-habilidades" data-i18n="hab.titulo">Minhas <em>habilidades</em></h2>
+        <p class="revelar" data-atraso="1" data-i18n="hab.texto">Estratégia, criatividade e sensibilidade visual a serviço de marcas que querem se conectar de verdade.</p>
+      </div>
+      <ol class="habilidades-grade" id="habilidades-lista"></ol>
+    </div>
+  </section>
+
   <!-- ============ 4. TRABALHOS POR NICHO ============ -->
   <section class="secao" id="trabalhos" aria-labelledby="titulo-trabalhos">
     <div class="container">
@@ -1023,6 +1057,22 @@
     { nicho: "tech",     titulo: "Gadget que facilita",     titulo_en: "A gadget that makes life easier", marca: "Marca 04",        formato: "Fotos do produto",   formato_en: "Product photos", imagem: "", alt: "", link: "" }
   ];
 
+  // HABILIDADES: seção "Minhas habilidades", logo abaixo dos vídeos em destaque
+  const HABILIDADES = [
+    { titulo: "Estratégia de conteúdo e visão de marketing",
+      descricao: "Formada em Marketing, uno minha experiência com o mercado de influência ao desenvolvimento de mais de 90 portfólios UGC para criar conteúdos que conectam estratégia, criatividade e os objetivos de cada marca.",
+      titulo_en: "Content strategy and marketing vision",
+      descricao_en: "With a degree in Marketing, I combine my experience in the influencer market with the development of more than 90 UGC portfolios to create content that connects strategy, creativity and each brand's goals." },
+    { titulo: "Ganchos criativos e retenção",
+      descricao: "Exploro ganchos visuais e narrativos que despertam curiosidade, geram identificação e incentivam o público a continuar assistindo.",
+      titulo_en: "Creative hooks and retention",
+      descricao_en: "I explore visual and narrative hooks that spark curiosity, create identification and keep the audience watching." },
+    { titulo: "Olhar estético e direção visual",
+      descricao: "Minha experiência com fotografia, modelagem fotográfica e design contribui para composições cuidadosas e conteúdos visualmente atrativos, valorizando a apresentação de cada produto.",
+      titulo_en: "Aesthetic eye and visual direction",
+      descricao_en: "My background in photography, photo modeling and design brings carefully composed, visually appealing content that showcases each product at its best." }
+  ];
+
   // SERVIÇOS: seção "Como eu te ajudo"
   const SERVICOS = [
     { titulo: "Vídeo UGC", descricao: "Vídeo autêntico, gravado do zero com roteiro pensado para o seu público e o seu objetivo.",
@@ -1118,6 +1168,8 @@
     "dest.titulo": "A sample of my <em>work</em>",
     "dest.texto": "A selection of content that reflects my creativity, versatility and identity as a UGC creator.",
     "dest.carrossel": "Featured videos",
+    "hab.titulo": "My <em>skills</em>",
+    "hab.texto": "Strategy, creativity and visual sensitivity working for brands that want to truly connect.",
     "dest.anterior": "Previous video",
     "dest.proxima": "Next video",
     "trab.rotulo": "Work by niche",
@@ -1332,6 +1384,14 @@
   const formatarNumero = (m) => (m.prefixo || "") + Number(m.valor).toLocaleString(localidade()) + (m.sufixo || "");
 
   function desenharDados() {
+    // Habilidades
+    $("#habilidades-lista").innerHTML = HABILIDADES.map((h, i) => `
+      <li class="habilidade ${classeRevelar()}" data-atraso="${i % 3}">
+        <span class="habilidade-num" aria-hidden="true">${doisDigitos(i + 1)}</span>
+        <h3>${escapar(campo(h, "titulo"))}</h3>
+        <p>${escapar(campo(h, "descricao"))}</p>
+      </li>`).join("");
+
     // Serviços
     $("#servicos-lista").innerHTML = SERVICOS.map((s, i) => `
       <li class="servico ${classeRevelar()}" data-atraso="${i % 3}">

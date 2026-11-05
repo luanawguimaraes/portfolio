@@ -326,7 +326,10 @@
   /* título e frase centralizados, um embaixo do outro */
   .habilidades .cabecalho-secao { flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 18px; margin-bottom: clamp(36px, 4.8vw, 56px); }
   .habilidades .cabecalho-secao p { max-width: 52ch; }
-  .habilidades-grade { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(18px, 2.4vw, 28px); list-style: none; margin: 0; padding: 0; }
+  /* 2 cards em cima e 1 centralizado embaixo (grade de 4 colunas, cada card ocupa 2) */
+  .habilidades-grade { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(18px, 2.4vw, 28px); max-width: 940px; margin: 0 auto; list-style: none; padding: 0; }
+  .habilidades-grade > li { grid-column: span 2; }
+  .habilidades-grade > li:last-child:nth-child(odd) { grid-column: 2 / span 2; }
   /* cada habilidade é um card branco separado; o cinza escuro fica só no texto */
   .habilidade {
     position: relative; background: var(--branco); border-radius: var(--raio); padding: clamp(28px, 3vw, 40px) clamp(26px, 2.8vw, 36px);
@@ -344,6 +347,7 @@
   .habilidade p { color: var(--tinta); font-size: 15px; line-height: 1.7; margin: 0; }
   @media (max-width: 920px) {
     .habilidades-grade { grid-template-columns: 1fr; max-width: 560px; }
+    .habilidades-grade > li, .habilidades-grade > li:last-child:nth-child(odd) { grid-column: auto; }
   }
 
   /* ==========================================================
@@ -1070,14 +1074,15 @@
       descricao: "Formada em Marketing, uno minha experiência com o mercado de influência ao desenvolvimento de mais de 90 portfólios UGC para criar conteúdos que conectam estratégia, criatividade e os objetivos de cada marca.",
       titulo_en: "Content strategy and marketing vision",
       descricao_en: "With a degree in Marketing, I combine my experience in the influencer market with the development of more than 90 UGC portfolios to create content that connects strategy, creativity and each brand's goals." },
-    { titulo: "Ganchos criativos e retenção",
-      descricao: "Crio ganchos que funcionam desde os primeiros segundos, para prender a atenção e conduzir o público até a mensagem da marca.",
-      titulo_en: "Creative hooks and retention",
-      descricao_en: "I create hooks that work from the very first seconds, grabbing attention and guiding the audience to the brand's message." },
     { titulo: "Olhar estético e direção visual",
       descricao: "Minha experiência com fotografia, modelagem fotográfica e design contribui para composições cuidadosas e conteúdos visualmente atrativos, valorizando a apresentação de cada produto.",
       titulo_en: "Aesthetic eye and visual direction",
-      descricao_en: "My background in photography, photo modeling and design brings carefully composed, visually appealing content that showcases each product at its best." }
+      descricao_en: "My background in photography, photo modeling and design brings carefully composed, visually appealing content that showcases each product at its best." },
+    // a última fica sozinha, centralizada embaixo das outras duas
+    { titulo: "Ganchos criativos e retenção",
+      descricao: "Crio ganchos que funcionam desde os primeiros segundos, para prender a atenção e conduzir o público até a mensagem da marca.",
+      titulo_en: "Creative hooks and retention",
+      descricao_en: "I create hooks that work from the very first seconds, grabbing attention and guiding the audience to the brand's message." }
   ];
 
   // SERVIÇOS: seção "Como eu te ajudo"

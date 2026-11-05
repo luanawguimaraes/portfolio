@@ -265,13 +265,13 @@
 
   /* Carrossel: os vídeos andam sozinhos para a esquerda e as setas avançam um por vez */
   .carrossel { position: relative; min-width: 0; }
-  .carrossel-janela {
-    overflow: hidden; padding: 10px 0 8px;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
-            mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
-  }
-  .carrossel-trilho { display: flex; gap: clamp(16px, 2.2vw, 28px); width: max-content; will-change: transform; }
-  .carrossel-trilho .card-video { flex: none; width: clamp(210px, 23vw, 290px); }
+  .carrossel-janela { overflow: hidden; padding: 10px 0 8px; }
+  .carrossel-trilho { display: flex; gap: clamp(16px, 2.2vw, 28px); width: max-content; will-change: transform; transition: transform .9s cubic-bezier(.65, 0, .35, 1); }
+  /* vídeo do meio nítido; os dos lados só desfocados (sem transparência) */
+  .carrossel-trilho .card-video { flex: none; width: clamp(210px, 23vw, 290px); filter: blur(5px); transition: filter .9s ease, transform .4s; }
+  .carrossel-trilho .card-video.foco { filter: blur(0); }
+  .carrossel-trilho .card-video:not(.foco):hover { transform: none; }
+  .carrossel-trilho.sem-transicao, .carrossel-trilho.sem-transicao .card-video { transition: none; }
   .carrossel-seta {
     position: absolute; top: calc(10px + clamp(210px, 23vw, 290px) * 16 / 9 / 2); z-index: 3; transform: translateY(-50%);
     width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--linha); background: rgba(255, 253, 250, .94);
@@ -489,9 +489,7 @@
   }
   @media (max-width: 760px) {
     .carrossel-trilho .card-video { width: 62vw; max-width: 290px; }
-    .carrossel-seta { top: calc(10px + min(62vw, 290px) * 16 / 9 / 2); width: 42px; height: 42px; }
-    .carrossel-janela { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%); }
-    .depoimentos { grid-template-columns: 1fr; }
+    .carrossel-seta { top: calc(10px + min(62vw, 290px) * 16 / 9 / 2); width: 42px; height: 42px; }    .depoimentos { grid-template-columns: 1fr; }
   }
   @media (max-width: 560px) {
     body { font-size: 16px; }
@@ -1249,43 +1247,61 @@
     if (videoTocando !== null) caixaVideo(videoTocando).querySelector("iframe").title = ui().videoDe(DESTAQUES[videoTocando % DESTAQUES.length].marca);
   }
 
-  // Movimento: anda devagar para a esquerda, para quando o mouse está em cima ou um vídeo está tocando
-  const VELOCIDADE_CARROSSEL = 22; // pixels por segundo
-  let posicao = 0, larguraLista = 1, mouseEmCima = false, deslize = null, ultimoQuadro = null;
+  // Movimento: o vídeo do meio fica parado em destaque e depois o carrossel desliza para o próximo.
+  // Para enquanto o mouse está em cima ou um vídeo está tocando.
+  const PERMANENCIA_VIDEO = 5500; // milissegundos que cada vídeo fica no centro
+  const N_VIDEOS = DESTAQUES.length;
+  let atual = N_VIDEOS, mouseEmCima = false, espera = null; // começa na segunda cópia para ter vídeos dos dois lados
   const cards = () => trilhoVideos.children;
-  const passoCarrossel = () => cards()[1].offsetLeft - cards()[0].offsetLeft;
-  const darAVolta = (p) => ((p % larguraLista) + larguraLista) % larguraLista;
-  function medirCarrossel() { larguraLista = cards()[DESTAQUES.length].offsetLeft - cards()[0].offsetLeft || 1; posicao = darAVolta(posicao); }
-  function quadroCarrossel(t) {
-    const dt = ultimoQuadro === null ? 0 : Math.min(t - ultimoQuadro, 50);
-    ultimoQuadro = t;
-    if (deslize) {
-      const p = Math.min((t - deslize.inicio) / deslize.duracao, 1);
-      const suave = 1 - Math.pow(1 - p, 3);
-      posicao = darAVolta(deslize.de + deslize.distancia * suave);
-      if (p === 1) deslize = null;
-    } else if (!reduzirMovimento && !mouseEmCima && videoTocando === null) {
-      posicao = darAVolta(posicao + VELOCIDADE_CARROSSEL * dt / 1000);
-    }
-    trilhoVideos.style.transform = `translate3d(${-posicao}px, 0, 0)`;
-    requestAnimationFrame(quadroCarrossel);
+  const janelaVideos = $(".carrossel-janela");
+  const deslocamento = (k) => { const c = cards()[k]; return c.offsetLeft + c.offsetWidth / 2 - janelaVideos.clientWidth / 2; };
+  function posicionar(semAnimacao) {
+    if (semAnimacao) trilhoVideos.classList.add("sem-transicao");
+    trilhoVideos.style.transform = `translate3d(${-deslocamento(atual)}px, 0, 0)`;
+    [...cards()].forEach((c, k) => c.classList.toggle("foco", k === atual));
+    if (semAnimacao) { void trilhoVideos.offsetWidth; trilhoVideos.classList.remove("sem-transicao"); }
+  }
+  // Troca, sem ninguém ver, para a cópia igual que fica no meio da lista
+  function voltarAoMeio() {
+    if (videoTocando !== null || (atual >= N_VIDEOS && atual < 2 * N_VIDEOS)) return;
+    atual = ((atual % N_VIDEOS) + N_VIDEOS) % N_VIDEOS + N_VIDEOS;
+    posicionar(true);
+  }
+  function agendar() {
+    clearTimeout(espera);
+    if (reduzirMovimento || mouseEmCima || videoTocando !== null) return;
+    espera = setTimeout(() => andarCarrossel(1), PERMANENCIA_VIDEO);
   }
   function andarCarrossel(direcao) {
+    clearTimeout(espera);
     pararVideo();
-    const passo = passoCarrossel();
-    // encaixa no próximo card inteiro na direção escolhida
-    const alvo = direcao > 0 ? (Math.floor(posicao / passo + 0.02) + 1) * passo : (Math.ceil(posicao / passo - 0.02) - 1) * passo;
-    deslize = { de: posicao, distancia: alvo - posicao, inicio: performance.now(), duracao: reduzirMovimento ? 1 : 650 };
+    voltarAoMeio();
+    atual += direcao;
+    posicionar(reduzirMovimento);
+    if (reduzirMovimento) agendar();
   }
+  trilhoVideos.addEventListener("transitionend", (e) => {
+    if (e.target !== trilhoVideos || e.propertyName !== "transform") return;
+    voltarAoMeio();
+    agendar();
+  });
+  // Tocar num vídeo do lado traz ele para o centro
+  trilhoVideos.addEventListener("click", (e) => {
+    const caixa = e.target.closest(".video-botao") && e.target.closest("[data-caixa]");
+    if (!caixa) return;
+    clearTimeout(espera);
+    const k = Number(caixa.dataset.caixa);
+    if (k !== atual) { atual = k; posicionar(reduzirMovimento); }
+  }, true);
   $("#seta-proxima").addEventListener("click", () => andarCarrossel(1));
   $("#seta-anterior").addEventListener("click", () => andarCarrossel(-1));
   const areaCarrossel = $(".carrossel");
-  areaCarrossel.addEventListener("mouseenter", () => { mouseEmCima = true; });
-  areaCarrossel.addEventListener("mouseleave", () => { mouseEmCima = false; });
-  window.addEventListener("resize", medirCarrossel);
-  window.addEventListener("load", medirCarrossel);
-  medirCarrossel();
-  requestAnimationFrame(quadroCarrossel);
+  areaCarrossel.addEventListener("mouseenter", () => { mouseEmCima = true; clearTimeout(espera); });
+  areaCarrossel.addEventListener("mouseleave", () => { mouseEmCima = false; agendar(); });
+  window.addEventListener("resize", () => posicionar(true));
+  window.addEventListener("load", () => posicionar(true));
+  posicionar(true);
+  agendar();
 
   // Faixa de temas: os 4 textos se repetem para encher telas largas
   function desenharTemas() {

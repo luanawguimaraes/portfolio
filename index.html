@@ -211,8 +211,8 @@
   .colagem-base { width: 100%; }
   .colagem-foto, .colagem-frente { position: absolute; }
   /* posições medidas na própria montagem (em % da imagem de 1100 x 1226 px) */
-  .colagem-foto1 { left: .818%; top: .897%; width: 41.909%; --amp: 1.55%; animation: flutuar 5.6s ease-in-out infinite; }
-  .colagem-foto2 { left: 59.818%; top: 68.026%; width: 38.636%; --amp: 1.77%; animation: flutuar 6.4s ease-in-out -3.2s infinite; }
+  .colagem-foto1 { left: .818%; top: .897%; width: 41.909%; --amp: 2.6%; animation: flutuar 5.6s ease-in-out infinite; }
+  .colagem-foto2 { left: 59.818%; top: 68.026%; width: 38.636%; --amp: 3%; animation: flutuar 6.4s ease-in-out -3.2s infinite; }
   .colagem-frente { left: 34.636%; top: 16.884%; width: 7.909%; }
   @keyframes flutuar {
     0%, 100% { transform: translateY(calc(var(--amp) * -1)); }
@@ -926,7 +926,15 @@
     { secao: "#destaques", pos: { top: "8%",  left: "2.5%" }, tam: 84, giro: -6, posCelular: { top: "16px", left: "8px" } },
     { secao: "#trabalhos", pos: { top: "34px", right: "3%" },  tam: 68, giro: 20, celular: false },
     { secao: "#numeros",   pos: { top: "5%",  right: "3%" },  tam: 104, giro: -14, posCelular: { top: "14px", right: "10px" } },
-    { secao: "#contato",   pos: { top: "10%", left: "44%" },  tam: 76, giro: 10, posCelular: { top: "18px", right: "12px" } }
+    { secao: "#contato",   pos: { top: "10%", left: "44%" },  tam: 76, giro: 10, posCelular: { top: "18px", right: "12px" } },
+    // mais algumas, em tamanhos variados
+    { secao: "#inicio",    pos: { top: "88%", left: "57%" },  tam: 34, giro: 22, celular: false },
+    { secao: "#sobre",     pos: { top: "46%", left: "1%" },   tam: 30, giro: -24, celular: false },
+    { secao: "#destaques", pos: { top: "10px", left: "45%" }, tam: 110, giro: 12, celular: false },
+    { secao: "#trabalhos", pos: { top: "88%", left: "2%" },   tam: 42, giro: -8, celular: false },
+    { secao: "#servicos",  pos: { top: "7%",  right: "6%" },  tam: 92, giro: 16, posCelular: { top: "16px", right: "10px" } },
+    { secao: "#numeros",   pos: { top: "62%", left: "1.5%" }, tam: 46, giro: 6, celular: false },
+    { secao: "#contato",   pos: { top: "5%",  right: "4%" },  tam: 36, giro: -20, celular: false }
   ];
 
   // TEMAS: aparecem na faixa lilás que rola entre a capa e o Sobre mim

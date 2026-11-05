@@ -373,7 +373,14 @@
   /* vídeos do nicho, na ordem da lista */
   .galeria { display: grid; grid-template-columns: repeat(5, 1fr); gap: clamp(16px, 2vw, 24px); list-style: none; margin: 0; padding: 0; }
   .trabalho { animation: surgir .5s ease both; }
-  .trabalho-marca { font-size: 15px; font-weight: 700; color: var(--tinta); margin: 12px 2px 0; text-align: center; }
+  /* nome da marca numa etiqueta no topo do vídeo */
+  .selo-marca {
+    position: absolute; top: 12px; left: 12px; z-index: 3; max-width: calc(100% - 24px); padding: 5px 11px; border-radius: 999px;
+    background: rgba(255, 253, 250, .94); color: var(--tinta); font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none; box-shadow: 0 2px 8px rgba(43, 43, 43, .12);
+  }
+  .galeria .midia iframe.previa { pointer-events: none; } /* a prévia sem som não recebe cliques; o clique liga o som */
+  .galeria .midia.tocando .video-botao { display: none; }
   @keyframes surgir { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 
   /* ==========================================================
@@ -1360,8 +1367,9 @@
   }).join("");
 
   // Player do YouTube que toca aqui no site (usado no carrossel e nos trabalhos por nicho)
-  const iframeYouTube = (id, titulo) =>
-    `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&playsinline=1&rel=0&cc_load_policy=0&iv_load_policy=3&enablejsapi=1&origin=${encodeURIComponent(location.origin)}" title="${escapar(titulo)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+  // "previa" = sem som, sem controles e repetindo (usado ao passar o mouse nos trabalhos por nicho)
+  const iframeYouTube = (id, titulo, previa) =>
+    `<iframe${previa ? ' class="previa" tabindex="-1" aria-hidden="true"' : ""} src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&playsinline=1&rel=0&cc_load_policy=0&iv_load_policy=3&enablejsapi=1&origin=${encodeURIComponent(location.origin)}${previa ? `&mute=1&controls=0&loop=1&playlist=${encodeURIComponent(id)}` : ""}" title="${escapar(titulo)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
   // Desliga as legendas automáticas do YouTube (o player só aceita o pedido depois de carregar, por isso repete algumas vezes)
   function tirarLegendas(iframe) {
     const enviar = () => {
@@ -1520,6 +1528,7 @@
   const nichoEscolhido = () => NICHOS.find((n) => n.id === filtroAtual) || NICHOS[0];
   const capaGaleria = (v, k) => `
         <img src="https://i.ytimg.com/vi/${escapar(v.id)}/hqdefault.jpg" alt="" loading="lazy" decoding="async">
+        <span class="selo-marca" aria-hidden="true">${escapar(v.marca)}</span>
         <button class="video-botao" type="button" data-k="${k}" aria-label="${escapar(ui().assistir(v.marca))}">
           <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span>
         </button>`;
@@ -1541,9 +1550,32 @@
     $("#galeria").innerHTML = n.videos.map((v, k) => `
       <li class="trabalho card-video" style="animation-delay:${Math.min(k, 10) * 40}ms">
         <div class="midia noite r-9-16" data-k="${k}">${capaGaleria(v, k)}</div>
-        <p class="trabalho-marca">${escapar(v.marca)}</p>
       </li>`).join("");
+    if (podePrevia) $("#galeria").querySelectorAll(".midia").forEach((caixa) => {
+      caixa.addEventListener("mouseenter", () => mostrarPrevia(caixa));
+      caixa.addEventListener("mouseleave", () => tirarPrevia(caixa));
+    });
   }
+  // Prévia: com o mouse em cima o vídeo roda sem som (só em computador e se a pessoa não pediu menos movimento)
+  const podePrevia = window.matchMedia("(hover: hover) and (pointer: fine)").matches && !reduzirMovimento;
+  let esperaPrevia = null;
+  function mostrarPrevia(caixa) {
+    clearTimeout(esperaPrevia);
+    esperaPrevia = setTimeout(() => {
+      if (caixa.classList.contains("tocando") || caixa.querySelector("iframe")) return;
+      const v = nichoEscolhido().videos[Number(caixa.dataset.k)];
+      caixa.querySelector("img").insertAdjacentHTML("afterend", iframeYouTube(v.id, "", true));
+      tirarLegendas(caixa.querySelector("iframe"));
+    }, 180);
+  }
+  function tirarPrevia(caixa) {
+    clearTimeout(esperaPrevia);
+    if (!caixa.classList.contains("tocando")) caixa.querySelectorAll("iframe.previa").forEach((f) => f.remove());
+  }
+  const comandoYouTube = (iframe, func) => {
+    if (!iframe.isConnected) return;
+    iframe.contentWindow.postMessage(JSON.stringify({ event: "command", func, args: [] }), "https://www.youtube-nocookie.com");
+  };
   function desenharFiltros() {
     $("#filtros").innerHTML = NICHOS.map((n) =>
       `<button class="filtro" type="button" data-filtro="${n.id}" aria-pressed="${n.id === filtroAtual}">${escapar(campo(n, "nome"))}</button>`).join("");
@@ -1559,13 +1591,25 @@
     const botao = e.target.closest(".video-botao");
     if (!botao) return;
     const caixa = botao.closest(".midia"), v = nichoEscolhido().videos[Number(caixa.dataset.k)];
+    clearTimeout(esperaPrevia);
     pararVideoGaleria(); // só um vídeo toca por vez, aqui e no carrossel
     pararVideo();
     caixa.classList.add("tocando");
-    caixa.innerHTML = iframeYouTube(v.id, ui().videoDe(v.marca));
-    tirarLegendas(caixa.querySelector("iframe"));
     videoGaleria = caixa;
-    caixa.querySelector("iframe").focus({ preventScroll: true });
+    const previa = caixa.querySelector("iframe.previa");
+    if (previa) {
+      // a prévia já está rodando: só liga o som e deixa o vídeo clicável, sem recomeçar
+      previa.classList.remove("previa");
+      previa.removeAttribute("tabindex");
+      previa.removeAttribute("aria-hidden");
+      previa.title = ui().videoDe(v.marca);
+      [0, 300, 800, 1500].forEach((t) => setTimeout(() => { comandoYouTube(previa, "unMute"); comandoYouTube(previa, "playVideo"); }, t));
+      previa.focus({ preventScroll: true });
+    } else {
+      caixa.querySelector("img").insertAdjacentHTML("afterend", iframeYouTube(v.id, ui().videoDe(v.marca)));
+      tirarLegendas(caixa.querySelector("iframe"));
+      caixa.querySelector("iframe").focus({ preventScroll: true });
+    }
   });
 
   // Troca de idioma: o português original de cada texto fica guardado para poder voltar

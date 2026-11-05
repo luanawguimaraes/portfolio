@@ -292,6 +292,9 @@
   .video-botao:focus-visible { outline: 3px solid var(--azul); outline-offset: 3px; }
   .card-video:hover .video-botao .play { transform: translate(-50%, -50%) scale(1.08); }
   .carrossel .card-info { text-align: center; padding-top: 18px; }
+  /* texto rosa sempre em uma linha: a letra se ajusta à largura do card */
+  .carrossel-trilho .card-video { container-type: inline-size; }
+  .carrossel .card-formato { white-space: nowrap; font-size: min(11px, 3.75cqi); letter-spacing: .02em; }
   .card-formato { display: block; font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--laranja-texto); margin-bottom: 6px; }
   .card-video .midia { box-shadow: var(--sombra); justify-content: space-between; align-items: flex-end; }
   .card-video .play {

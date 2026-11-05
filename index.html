@@ -293,7 +293,6 @@
   .card-video .midia iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
   .video-botao { position: absolute; inset: 0; z-index: 2; width: 100%; padding: 0; border: 0; background: transparent; cursor: pointer; border-radius: inherit; }
   .video-botao:focus-visible { outline: 3px solid var(--azul); outline-offset: 3px; }
-  .card-video:hover .video-botao .play { transform: translate(-50%, -50%) scale(1.08); }
   .carrossel .card-info { text-align: center; padding-top: 18px; }
   /* texto rosa sempre em uma linha: a letra se ajusta à largura do card */
   .carrossel-trilho .card-video { container-type: inline-size; }
@@ -1206,9 +1205,7 @@
   // Destaques: mostra a capa do vídeo e, ao tocar, troca pelo player do YouTube aqui mesmo
   const capaDestaque = (d, i, copia) => `
         <img src="https://i.ytimg.com/vi/${escapar(d.id)}/hqdefault.jpg" alt="" decoding="async">
-        <button class="video-botao" type="button" data-video="${i}"${copia ? ' tabindex="-1"' : ""} aria-label="${escapar(ui().assistir(d.marca))}">
-          <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span>
-        </button>`;
+        <button class="video-botao" type="button" data-video="${i}"${copia ? ' tabindex="-1"' : ""} aria-label="${escapar(ui().assistir(d.marca))}"></button>`;
   // A lista se repete 4 vezes para o carrossel nunca ter buraco; só a primeira cópia é lida por leitores de tela
   const COPIAS_CARROSSEL = 4;
   const trilhoVideos = $("#destaques-trilho");
@@ -1225,6 +1222,17 @@
     </article>`;
   }).join("");
 
+  // Desliga as legendas automáticas do YouTube (o player só aceita o pedido depois de carregar, por isso repete algumas vezes)
+  function tirarLegendas(iframe) {
+    const enviar = () => {
+      if (!iframe.isConnected) return;
+      const alvo = iframe.contentWindow;
+      alvo.postMessage(JSON.stringify({ event: "listening", id: 1 }), "https://www.youtube-nocookie.com");
+      alvo.postMessage(JSON.stringify({ event: "command", func: "unloadModule", args: ["captions"] }), "https://www.youtube-nocookie.com");
+      alvo.postMessage(JSON.stringify({ event: "command", func: "unloadModule", args: ["cc"] }), "https://www.youtube-nocookie.com");
+    };
+    iframe.addEventListener("load", () => [300, 1000, 2000, 3500, 6000].forEach((t) => setTimeout(enviar, t)));
+  }
   let videoTocando = null; // número da caixa que está com o player aberto
   const caixaVideo = (k) => trilhoVideos.querySelector(`[data-caixa="${k}"]`);
   function pararVideo() {
@@ -1240,7 +1248,8 @@
     const caixa = botao.closest("[data-caixa]"), k = Number(caixa.dataset.caixa), d = DESTAQUES[k % DESTAQUES.length];
     pararVideo(); // só um vídeo toca por vez
     caixa.classList.add("tocando");
-    caixa.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(d.id)}?autoplay=1&playsinline=1&rel=0" title="${escapar(ui().videoDe(d.marca))}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+    caixa.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(d.id)}?autoplay=1&playsinline=1&rel=0&cc_load_policy=0&iv_load_policy=3&enablejsapi=1&origin=${encodeURIComponent(location.origin)}" title="${escapar(ui().videoDe(d.marca))}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+    tirarLegendas(caixa.querySelector("iframe"));
     videoTocando = k;
     caixa.querySelector("iframe").focus({ preventScroll: true });
   });

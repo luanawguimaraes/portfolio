@@ -196,9 +196,18 @@
     border: 1px solid rgba(199, 45, 103, .35); box-shadow: 0 6px 16px rgba(43, 43, 43, .07); overflow: hidden; }
   .logos-lista img { display: block; width: 100%; height: 100%; }
   /* logos com vídeo: clicáveis, levam até o vídeo da marca */
-  .marca-link { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 50%; transition: transform .3s; }
-  .marca-link:hover { transform: scale(1.06); }
+  .marca-link { position: relative; display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 50%; }
   .marca-link:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; }
+  /* destaque ao passar o mouse: o logo sobe, ganha borda e brilho rosa e mostra um botão de play */
+  .logos-lista li.tem-video { transition: transform .3s, border-color .3s, box-shadow .3s; }
+  .logos-lista li.tem-video:hover, .logos-lista li.tem-video:focus-within {
+    transform: translateY(-4px) scale(1.08); border: 2px solid var(--azul); box-shadow: 0 10px 22px rgba(199, 45, 103, .3);
+  }
+  .marca-link::after {
+    content: ""; position: absolute; inset: 0; border-radius: 50%; opacity: 0; transition: opacity .25s;
+    background: rgba(199, 45, 103, .72) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='M8 5l11 7-11 7z'/%3E%3C/svg%3E") center / 34% no-repeat;
+  }
+  .marca-link:hover::after, .marca-link:focus-visible::after { opacity: 1; }
   .galeria .midia.destacada { box-shadow: 0 0 0 4px var(--roxo-claro), var(--sombra); transition: box-shadow .3s; }
   @media (max-width: 520px) {
     .marcas-titulo { font-size: 10.5px; letter-spacing: .16em; gap: 10px; }
@@ -1379,7 +1388,7 @@
   // Logos com vídeo viram botões que levam até o vídeo da marca em "Trabalhos por nicho"
   const listaMarcas = (copia) => MARCAS.map((m) => {
     if (!m.video) return `<li><img src="${escapar(m.logo)}" alt="${copia ? "" : escapar(m.nome)}" width="220" height="220" loading="lazy" decoding="async"></li>`;
-    return `<li><button class="marca-link" type="button" data-video-marca="${escapar(m.video)}" data-nome="${escapar(m.nome)}"${copia ? ' tabindex="-1"' : ` aria-label="${escapar(ui().verVideoMarca(m.nome))}"`}>` +
+    return `<li class="tem-video"><button class="marca-link" type="button" data-video-marca="${escapar(m.video)}" data-nome="${escapar(m.nome)}" title="${escapar(ui().verVideoMarca(m.nome))}"${copia ? ' tabindex="-1"' : ` aria-label="${escapar(ui().verVideoMarca(m.nome))}"`}>` +
       `<img src="${escapar(m.logo)}" alt="" width="220" height="220" loading="lazy" decoding="async"></button></li>`;
   }).join("");
   $("#faixa-trilho").innerHTML = `<ul class="logos-lista">${listaMarcas(false)}</ul><ul class="logos-lista" aria-hidden="true">${listaMarcas(true)}</ul>`;
@@ -1716,7 +1725,10 @@
     setTimeout(() => caixa.classList.remove("destacada"), 3000);
     caixa.querySelector(".video-botao").click();
   });
-  const atualizarLogosMarcas = () => document.querySelectorAll(".marca-link[aria-label]").forEach((b) => b.setAttribute("aria-label", ui().verVideoMarca(b.dataset.nome)));
+  const atualizarLogosMarcas = () => document.querySelectorAll(".marca-link").forEach((b) => {
+    b.title = ui().verVideoMarca(b.dataset.nome);
+    if (b.hasAttribute("aria-label")) b.setAttribute("aria-label", ui().verVideoMarca(b.dataset.nome));
+  });
 
   // Troca de idioma: o português original de cada texto fica guardado para poder voltar
   const originais = new Map();

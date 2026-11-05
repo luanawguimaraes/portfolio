@@ -325,6 +325,10 @@
   /* Destaques, Habilidades e Trabalhos ficam mais próximos entre si */
   .destaques { padding-bottom: clamp(36px, 4.4vw, 60px); }
   #trabalhos { padding-top: clamp(16px, 2vw, 28px); }
+  /* título em cima e texto embaixo, tudo à esquerda */
+  .trabalhos-topo { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 0; }
+  .trabalhos-topo .titulo-secao { max-width: 18ch; }
+  .trabalhos-topo p { max-width: 60ch; margin-top: 18px; }
   .habilidades .titulo-secao { font-weight: 800; line-height: 1; letter-spacing: -.03em; font-size: clamp(34px, 4vw, 56px); max-width: none; }
   #titulo-habilidades em { font-style: normal; }
   /* título e frase centralizados, um embaixo do outro */
@@ -367,7 +371,7 @@
   .filtro[aria-pressed="true"] { background: var(--azul-claro); color: var(--tinta); border-color: var(--azul-claro); font-weight: 700; }
   /* texto do nicho escolhido (descrição, medidas e link) */
   .nicho-info { max-width: 720px; margin-bottom: clamp(26px, 3.4vw, 38px); animation: surgir .5s ease both; }
-  .nicho-info h3 { font-size: clamp(24px, 2.4vw, 30px); font-weight: 800; letter-spacing: -.02em; color: var(--azul); margin-bottom: 8px; }
+  .nicho-info h3 { font-size: clamp(24px, 2.4vw, 30px); font-weight: 800; letter-spacing: -.02em; color: var(--roxo-claro); margin-bottom: 8px; } /* rosa mais claro da paleta (#EA70A5) */
   .nicho-info p { color: var(--tinta); margin: 0; }
   .nicho-medidas { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 14px 0 0; }
   .nicho-medidas li { padding: 6px 14px; border-radius: 999px; background: var(--branco); border: 1px solid rgba(199, 45, 103, .28); font-size: 14px; color: var(--tinta); }
@@ -835,12 +839,10 @@
   <!-- ============ 4. TRABALHOS POR NICHO ============ -->
   <section class="secao" id="trabalhos" aria-labelledby="titulo-trabalhos">
     <div class="container">
-      <div class="cabecalho-secao">
-        <div>
-          <span class="rotulo revelar" data-i18n="trab.rotulo">Trabalhos por nicho</span>
-          <h2 class="titulo-secao revelar" id="titulo-trabalhos" data-i18n="trab.titulo">Um olhar para <em>cada</em> universo</h2>
-        </div>
-        <p class="revelar" data-i18n="trab.texto">Escolha um nicho e assista aos vídeos que criei para cada universo.</p>
+      <div class="cabecalho-secao trabalhos-topo">
+        <span class="rotulo revelar" data-i18n="trab.rotulo">Trabalhos por nicho</span>
+        <h2 class="titulo-secao revelar" id="titulo-trabalhos" data-i18n="trab.titulo">Que tipo de <em>conteúdo</em> você procura?</h2>
+        <p class="revelar" data-i18n="trab.texto">Explore meus vídeos por nicho e descubra diferentes formatos, estilos e possibilidades de criação. Deslize para o lado e confira!</p>
       </div>
       <!-- Os nichos e os vídeos ficam na lista NICHOS, no começo do script -->
       <div class="filtros revelar" id="filtros" role="group" aria-label="Escolher o nicho" data-i18n-attr="aria-label:trab.filtros"></div>
@@ -1266,8 +1268,8 @@
     "dest.anterior": "Previous video",
     "dest.proxima": "Next video",
     "trab.rotulo": "Work by niche",
-    "trab.titulo": "A fresh eye for <em>every</em> niche",
-    "trab.texto": "Pick a niche and watch the videos I created for each one.",
+    "trab.titulo": "What kind of <em>content</em> are you looking for?",
+    "trab.texto": "Explore my videos by niche and discover different formats, styles and creative possibilities. Swipe sideways and take a look!",
     "trab.filtros": "Choose the niche",
     "serv.rotulo": "How I can help",
     "serv.titulo": "Services designed to <em>sell</em>",

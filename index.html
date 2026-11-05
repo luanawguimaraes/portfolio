@@ -180,9 +180,26 @@
   .capa-numeros strong { display: block; font-family: var(--serif); font-weight: 400; font-size: clamp(36px, 4.6vw, 58px); line-height: 1; color: var(--azul); }
   .capa-numeros span { font-size: 14px; color: var(--tinta-suave); }
 
-  .faixa-marcas { border-block: 1px solid var(--linha); padding: 20px 0; overflow: hidden; background: var(--creme-2); }
   .faixa-trilho { display: flex; width: max-content; animation: deslizar 60s linear infinite; }
+
+  /* Faixa de logos das marcas (entre o Sobre mim e os Destaques) */
+  .faixa-marcas { border-block: 1px solid var(--linha); padding: clamp(28px, 4vw, 40px) 0 clamp(30px, 4.4vw, 44px); overflow: hidden; }
+  .faixa-marcas .faixa-trilho { animation-duration: 55s; }
   .faixa-marcas:hover .faixa-trilho { animation-play-state: paused; }
+  .marcas-titulo { display: flex; align-items: center; justify-content: center; gap: 18px; margin: 0 auto clamp(20px, 2.6vw, 28px); padding: 0 16px;
+    font-family: var(--sans); font-size: 13px; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; color: var(--tinta-suave); text-align: center; }
+  .marcas-titulo::before, .marcas-titulo::after { content: ""; width: clamp(24px, 4vw, 52px); height: 1px; background: currentColor; opacity: .45; flex: none; }
+  .logos-lista { display: flex; align-items: center; gap: clamp(14px, 1.6vw, 20px); padding: 6px clamp(14px, 1.6vw, 20px) 10px 0; list-style: none; margin: 0; }
+  .logos-lista li { flex: none; width: clamp(84px, 7.4vw, 104px); aspect-ratio: 1; border-radius: 50%; background: var(--branco);
+    border: 1px solid rgba(199, 45, 103, .35); box-shadow: 0 6px 16px rgba(43, 43, 43, .07); overflow: hidden; }
+  .logos-lista img { display: block; width: 100%; height: 100%; }
+  @media (max-width: 520px) {
+    .marcas-titulo { font-size: 10.5px; letter-spacing: .16em; gap: 10px; }
+    .marcas-titulo::before, .marcas-titulo::after { width: 12px; }
+  }
+  @media (max-width: 400px) {
+    .marcas-titulo { letter-spacing: .1em; gap: 8px; }
+  }
   .faixa-lista { display: flex; align-items: center; gap: 44px; padding-right: 44px; list-style: none; margin: 0; }
   .faixa-lista li { font-family: var(--serif); font-size: 22px; white-space: nowrap; display: flex; align-items: center; gap: 44px; }
   .faixa-lista li:nth-child(even) { font-style: italic; color: var(--azul); }
@@ -579,7 +596,8 @@
     .js .revelar { opacity: 1; transform: none; }
     .faixa-trilho { animation: none; width: auto; }
     .faixa-lista { flex-wrap: wrap; justify-content: center; row-gap: 10px; }
-    .faixa-lista[aria-hidden="true"], .faixa-temas li[aria-hidden="true"] { display: none; }
+    .faixa-lista[aria-hidden="true"], .faixa-temas li[aria-hidden="true"], .logos-lista[aria-hidden="true"] { display: none; }
+    .logos-lista { flex-wrap: wrap; justify-content: center; row-gap: 14px; padding: 6px 16px; }
     .colagem-foto { animation: none; }
   }
 </style>
@@ -684,8 +702,9 @@
     </div>
   </section>
 
-  <!-- ============ FAIXA DE MARCAS (os nomes vêm do array MARCAS no script) ============ -->
-  <div class="faixa-marcas" aria-label="Marcas com quem já trabalhei" data-i18n-attr="aria-label:capa.faixa">
+  <!-- ============ FAIXA DE LOGOS (os logos vêm do array MARCAS no script) ============ -->
+  <div class="faixa-marcas" role="region" aria-labelledby="titulo-marcas">
+    <p class="marcas-titulo" id="titulo-marcas" data-i18n="marcas.titulo">Marcas que confiaram no meu trabalho</p>
     <div class="faixa-trilho" id="faixa-trilho"></div>
   </div>
 
@@ -941,12 +960,29 @@
   const TEMAS = ["UGC Aesthetic", "Ganchos Criativos", "Product Showcase", "Lifestyle Content"];
   const TEMAS_EN = ["UGC Aesthetic", "Creative Hooks", "Product Showcase", "Lifestyle Content"];
 
-  // MARCAS: aparecem na faixa que rola no fim da capa
+  // MARCAS: logos da faixa que rola entre o Sobre mim e os Destaques.
+  // "logo" é o arquivo da imagem; "nome" vira o texto alternativo (troque "Marca parceira" pelo nome real).
   const MARCAS = [
-    "Creamy", "Aneethun", "Beta", "Bioderma", "Freegells", "Mezzo", "Ráwve", "Memoz",
-    "Arara Sport", "Bearry", "Ovacare", "Beauty Vita", "Dianthus", "Donaris", "Hyze",
-    "Murano", "For You", "Pet Saudável", "Reven Pay", "Shop Lumina", "Volpix", "Smart GR",
-    "Carola Art Piercing"
+    { logo: "logo-26.webp", nome: "Creamy Skincare" },
+    { logo: "logo-35.webp", nome: "Bioderma" },
+    { logo: "logo-25.webp", nome: "Bearry Derm" },
+    { logo: "logo-20.webp", nome: "Dianthus" },
+    { logo: "logo-21.webp", nome: "Marca parceira" },
+    { logo: "logo-24.webp", nome: "Donaris" },
+    { logo: "logo-30.webp", nome: "Beauty Vita" },
+    { logo: "logo-22.webp", nome: "Marca parceira" },
+    { logo: "logo-31.webp", nome: "Mezzo Dermocosméticos" },
+    { logo: "logo-23.webp", nome: "Pet Saudável" },
+    { logo: "logo-34.webp", nome: "Ráwve Wellness Beauty" },
+    { logo: "logo-27.webp", nome: "Beta" },
+    { logo: "logo-32.webp", nome: "Côllum" },
+    { logo: "logo-28.webp", nome: "For You" },
+    { logo: "logo-33.webp", nome: "Aneethun Profissional" },
+    { logo: "logo-29.webp", nome: "Ovacare" },
+    { logo: "logo-37.webp", nome: "Shop Lumina Semijoias" },
+    { logo: "logo-36.webp", nome: "Carola Art Piercing" },
+    { logo: "logo-38.webp", nome: "Arara Sport" },
+    { logo: "logo-39.webp", nome: "Marca parceira" }
   ];
 
   // NICHOS: botões de filtro da galeria (o "id" precisa ser igual ao "nicho" dos trabalhos)
@@ -1060,6 +1096,7 @@
     "capa.marcas": "brands served",
     "capa.views": "total views (YOUR NUMBER)",
     "capa.faixa": "Brands I have worked with",
+    "marcas.titulo": "Brands that trusted my work",
     "legenda.creator": "creator photo 4:5",
     "legenda.video": "video cover 9:16",
     "sobre.fotoAlt": "Luana Guimarães sitting in a black top and jeans, with two smaller photos: one holding a hair product and one with her arm over her head",
@@ -1159,8 +1196,9 @@
   $("#ano").textContent = new Date().getFullYear();
 
   // Faixa de marcas (duas cópias para o movimento contínuo)
-  const listaMarcas = MARCAS.map((m) => `<li>${escapar(m)}</li>`).join("");
-  $("#faixa-trilho").innerHTML = `<ul class="faixa-lista">${listaMarcas}</ul><ul class="faixa-lista" aria-hidden="true">${listaMarcas}</ul>`;
+  const listaMarcas = (copia) => MARCAS.map((m) =>
+    `<li><img src="${escapar(m.logo)}" alt="${copia ? "" : escapar(m.nome)}" width="220" height="220" loading="lazy" decoding="async"></li>`).join("");
+  $("#faixa-trilho").innerHTML = `<ul class="logos-lista">${listaMarcas(false)}</ul><ul class="logos-lista" aria-hidden="true">${listaMarcas(true)}</ul>`;
 
   // Faixa de temas: os 4 textos se repetem para encher telas largas
   function desenharTemas() {

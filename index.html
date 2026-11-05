@@ -649,7 +649,9 @@
     align-self: start; display: flex; justify-content: center;
     margin-top: calc(-1 * (var(--topo) + clamp(40px, 7vw, 90px))); /* o cordão começa no topo da página */
   }
-  .cracha { width: min(310px, 100%); transform-origin: 50.6% 0; will-change: transform; }
+  .cracha-entrada { width: min(310px, 100%); transform-origin: 50.6% 0; will-change: transform; }
+  .cracha-entrada.esperando { visibility: hidden; } /* escondido só até a foto carregar e a queda começar */
+  .cracha { width: 100%; transform-origin: 50.6% 0; will-change: transform; }
   .cracha-pulo.pulando { animation: pulinho .55s cubic-bezier(.3, .6, .35, 1); }
   @keyframes pulinho {
     0% { transform: translateY(0); }
@@ -698,7 +700,7 @@
   @media (max-width: 920px) {
     /* no celular o crachá vem antes do texto, com o cordão saindo de baixo do menu */
     .cracha-area { order: -1; margin-top: calc(-1 * clamp(40px, 7vw, 90px)); }
-    .cracha { width: min(230px, 66%); }
+    .cracha-entrada { width: min(230px, 66%); }
     .sobre-colagem { width: 100%; margin-left: auto; margin-right: auto; } /* montagem centralizada no celular */
   }
 
@@ -763,7 +765,8 @@
         </div>
         <!-- CRACHÁ DA CAPA: usa a foto cracha.webp (na mesma pasta do index.html).
              Balança com o mouse em cima; ao clicar, dá um pulinho e gira mostrando o verso. -->
-        <div class="capa-foto cracha-area revelar" data-atraso="2">
+        <div class="capa-foto cracha-area">
+          <div class="cracha-entrada" id="cracha-entrada"><!-- faz a entrada: cai do alto à esquerda e balança até parar -->
           <div class="cracha" id="cracha">
             <div class="cracha-pulo" id="cracha-pulo">
               <div class="cracha-cordao" aria-hidden="true"></div>
@@ -777,6 +780,7 @@
                 <span class="cracha-gancho" aria-hidden="true"></span>
               </button>
             </div>
+          </div>
           </div>
         </div>
       </div>
@@ -1871,6 +1875,38 @@
     $("#cracha-verso").setAttribute("aria-hidden", String(!virar));
   });
   crachaPulo.addEventListener("animationend", () => crachaPulo.classList.remove("pulando"));
+
+  // Entrada do crachá: cai do alto, vindo da esquerda, e vai balançando até parar no lugar dele.
+  // Depois fica parado e só balança com o mouse em cima.
+  (function entradaCracha() {
+    const caixa = $("#cracha-entrada");
+    if (reduzirMovimento || window.scrollY > 200) return; // quem pediu menos movimento, ou já abriu no meio da página, vê o crachá parado
+    caixa.classList.add("esperando");
+    let comecou = false;
+    const comecar = () => {
+      if (comecou) return;
+      comecou = true;
+      const r = caixa.getBoundingClientRect();
+      const lado = Math.max(0, r.left + r.width / 2 - window.innerWidth * 0.12); // distância até o lado esquerdo da tela
+      const altura = r.bottom + 60;                                              // começa inteiro acima da tela
+      caixa.classList.remove("esperando");
+      const inicio = performance.now();
+      const quadro = (agora) => {
+        const t = (agora - inicio) / 1000;
+        const queda = Math.min(t / 0.95, 1), andar = Math.min(t / 1.8, 1);
+        const y = -altura * Math.pow(1 - queda, 3);
+        const x = -lado * Math.pow(1 - andar, 3);
+        const giro = 24 * Math.exp(-t / 0.9) * Math.cos(2 * Math.PI * t / 1.4); // balanço que vai diminuindo
+        caixa.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) rotate(${giro.toFixed(2)}deg)`;
+        if (t < 4.6) requestAnimationFrame(quadro); else caixa.style.transform = "";
+      };
+      requestAnimationFrame(quadro);
+    };
+    const foto = new Image();
+    foto.src = "cracha.webp?v=3";
+    (foto.decode ? foto.decode() : Promise.resolve()).then(comecar, comecar);
+    setTimeout(comecar, 1500); // se a foto demorar, começa assim mesmo
+  })();
 
   // Estrelas: seis pontas finas e um pouco irregulares, como desenhadas à mão
   function caminhoEstrela() {

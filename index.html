@@ -258,6 +258,9 @@
   .destaques { background: transparent; } /* deixa aparecer o quadriculado do fundo */
   /* Textos à esquerda e carrossel à direita */
   .destaques-layout { display: grid; grid-template-columns: minmax(260px, 0.8fr) 1.6fr; gap: clamp(28px, 4vw, 56px); align-items: center; }
+  /* título no mesmo estilo do "Oie, eu sou a Luana!" */
+  .destaques-texto .titulo-secao { font-weight: 800; line-height: 1; letter-spacing: -.03em; font-size: clamp(34px, 4vw, 56px); }
+  #titulo-destaques em { font-style: normal; }
   .destaques-texto p { max-width: 38ch; color: var(--tinta-suave); margin: 18px 0 0; }
   @media (max-width: 920px) {
     .destaques-layout { grid-template-columns: 1fr; }

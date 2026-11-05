@@ -138,7 +138,7 @@
   .marca-nome { font-family: var(--serif); font-size: 22px; text-decoration: none; white-space: nowrap; }
   .marca-nome em { color: var(--azul); }
   .menu { display: flex; align-items: center; gap: clamp(16px, 2.4vw, 34px); list-style: none; margin: 0; padding: 0; }
-  .menu a { text-decoration: none; font-size: 14px; font-weight: 500; position: relative; padding: 6px 0; }
+  .menu a { text-decoration: none; font-size: 14px; font-weight: 500; position: relative; padding: 6px 0; white-space: nowrap; }
   .menu a::after { content: ""; position: absolute; left: 0; bottom: 0; width: 100%; height: 1px; background: var(--azul); transform: scaleX(0); transform-origin: left; transition: transform .3s; }
   .menu a:hover::after { transform: scaleX(1); }
   .menu .menu-cta { padding: 9px 18px; border-radius: 999px; background: var(--tinta); color: var(--creme); }
@@ -532,7 +532,8 @@
   @media (max-width: 1080px) {
     .galeria { grid-template-columns: repeat(4, 1fr); }
   }
-  @media (max-width: 920px) {
+  /* menu do topo: com 6 itens, vira menu-sanduíche antes de faltar espaço */
+  @media (max-width: 1180px) {
     .sanduiche { display: block; }
     .menu {
       position: fixed; top: var(--topo); left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 0;
@@ -546,7 +547,8 @@
     .menu a { display: block; padding: 15px 0; font-size: 18px; font-family: var(--serif); }
     .menu a::after { display: none; }
     .menu .menu-cta { text-align: center; font-family: var(--sans); font-size: 16px; padding: 14px; }
-
+  }
+  @media (max-width: 920px) {
     .capa-grade, .sobre-grade, .contato-grade { grid-template-columns: 1fr; }
     .capa-foto { max-width: 420px; width: 100%; margin-left: auto; margin-right: auto; }
     .capa-foto .selo { left: -8px; }
@@ -723,11 +725,12 @@
           <span></span><span></span><span></span>
         </button>
         <ul class="menu" id="menu">
-          <li><a href="#sobre" data-i18n="menu.sobre">Sobre</a></li>
-          <li><a href="#destaques" data-i18n="menu.destaques">Destaques</a></li>
-          <li><a href="#trabalhos" data-i18n="menu.trabalhos">Trabalhos</a></li>
-          <li><a href="#servicos" data-i18n="menu.servicos">Serviços</a></li>
-          <li><a href="#numeros" data-i18n="menu.numeros">Números</a></li>
+          <li><a href="#inicio" data-i18n="menu.inicio">Página Inicial</a></li>
+          <li><a href="#sobre" data-i18n="menu.sobre">Sobre Mim</a></li>
+          <li><a href="#marcas" data-i18n="menu.marcas">Marcas Trabalhadas</a></li>
+          <li><a href="#destaques" data-i18n="menu.destaques">Destaque</a></li>
+          <li><a href="#habilidades" data-i18n="menu.habilidades">Habilidades</a></li>
+          <li><a href="#trabalhos" data-i18n="menu.trabalhos">Nichos</a></li>
           <li><a class="menu-cta" href="#contato" data-i18n="menu.contato">Contato</a></li>
         </ul>
       </nav>
@@ -811,7 +814,7 @@
   </section>
 
   <!-- ============ FAIXA DE LOGOS (os logos vêm do array MARCAS no script) ============ -->
-  <div class="faixa-marcas" role="region" aria-labelledby="titulo-marcas">
+  <div class="faixa-marcas" id="marcas" role="region" aria-labelledby="titulo-marcas">
     <p class="marcas-titulo" id="titulo-marcas" data-i18n="marcas.titulo">Marcas que confiaram no meu trabalho</p>
     <div class="faixa-trilho" id="faixa-trilho"></div>
   </div>
@@ -1243,11 +1246,12 @@
     "descricao.pagina": "UGC portfolio of Luana Guimarães: authentic, strategic videos for beauty, skincare, fashion, fitness, pet and tech brands.",
     "pular": "Skip to content",
     "menu.rotulo": "Main menu",
-    "menu.sobre": "About",
+    "menu.inicio": "Home",
+    "menu.sobre": "About Me",
+    "menu.marcas": "Brands",
     "menu.destaques": "Highlights",
-    "menu.trabalhos": "Work",
-    "menu.servicos": "Services",
-    "menu.numeros": "Results",
+    "menu.habilidades": "Skills",
+    "menu.trabalhos": "Niches",
     "menu.contato": "Contact",
     "capa.sobrelinha": "27 years old • Alphaville (SP), Brazil",
     "rodape.local": "UGC Creator · Alphaville (SP), Brazil",

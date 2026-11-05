@@ -366,12 +366,13 @@
      ========================================================== */
   .filtros { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 40px; }
   .filtro {
-    padding: 10px 20px; border-radius: 999px; border: 1px solid var(--linha); background: transparent; cursor: pointer;
+    padding: 10px 20px; border-radius: 999px; border: 1px solid var(--linha); background: rgba(255, 255, 255, .7); color: var(--tinta); cursor: pointer;
     font-size: 14px; font-weight: 500; transition: background .25s, color .25s, border-color .25s;
   }
-  /* botões dos nichos: azul da cartela com texto grafite ao passar o mouse e no nicho escolhido */
-  .filtro:hover { background: var(--azul-claro); border-color: var(--azul-claro); color: var(--tinta); }
-  .filtro[aria-pressed="true"] { background: var(--azul-claro); color: var(--tinta); border-color: var(--azul-claro); font-weight: 700; }
+  /* botões dos nichos: neutros; ficam no azul da cartela ao passar o mouse e no nicho que a pessoa clicou
+     (antes do primeiro clique nenhum fica azul, mesmo com Acessórios aberto) */
+  .filtro:hover, .filtros.escolheu .filtro[aria-pressed="true"] { background: var(--azul-claro); border-color: var(--azul-claro); color: var(--tinta); }
+  .filtros.escolheu .filtro[aria-pressed="true"] { font-weight: 700; }
   /* texto do nicho escolhido (descrição, medidas e link) */
   .nicho-info { max-width: 720px; margin-bottom: clamp(26px, 3.4vw, 38px); animation: surgir .5s ease both; }
   .nicho-info h3 { font-size: clamp(24px, 2.4vw, 30px); font-weight: 800; letter-spacing: -.02em; color: var(--roxo-claro); margin-bottom: 8px; } /* rosa mais claro da paleta (#EA70A5) */
@@ -1616,7 +1617,9 @@
   }
   $("#filtros").addEventListener("click", (e) => {
     const botao = e.target.closest(".filtro");
-    if (!botao || botao.dataset.filtro === filtroAtual) return;
+    if (!botao) return;
+    $("#filtros").classList.add("escolheu");
+    if (botao.dataset.filtro === filtroAtual) return;
     filtroAtual = botao.dataset.filtro;
     document.querySelectorAll(".filtro").forEach((b) => b.setAttribute("aria-pressed", String(b === botao)));
     desenharGaleria();

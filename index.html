@@ -325,16 +325,21 @@
   #titulo-habilidades em { font-style: normal; }
   .habilidades .cabecalho-secao { margin-bottom: clamp(32px, 4.4vw, 52px); }
   .habilidades-grade { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(18px, 2.4vw, 28px); list-style: none; margin: 0; padding: 0; }
-  /* cada habilidade é um bloco colorido separado: rosa, grafite, rosa */
+  /* cada habilidade é um card branco separado; o cinza escuro fica só no texto */
   .habilidade {
-    background: var(--azul); color: var(--branco); border-radius: var(--raio); padding: clamp(26px, 2.8vw, 34px);
-    box-shadow: var(--sombra-leve); transition: transform .4s, box-shadow .4s;
+    position: relative; background: var(--branco); border-radius: var(--raio); padding: clamp(28px, 3vw, 40px) clamp(26px, 2.8vw, 36px);
+    border: 1px solid rgba(199, 45, 103, .28); box-shadow: 0 14px 30px -18px rgba(199, 45, 103, .35);
+    transition: transform .4s, box-shadow .4s;
   }
-  .habilidade:nth-child(even) { background: var(--tinta); }
-  .habilidade:hover { transform: translateY(-6px); box-shadow: var(--sombra); }
-  .habilidade-num { display: block; font-family: var(--sans); font-weight: 800; font-size: 15px; letter-spacing: .08em; color: rgba(255, 255, 255, .7); margin-bottom: 14px; }
-  .habilidade h3 { font-family: var(--sans); font-size: clamp(18px, 1.5vw, 20px); font-weight: 800; line-height: 1.2; text-transform: uppercase; letter-spacing: .01em; color: var(--branco); margin-bottom: 12px; }
-  .habilidade p { color: rgba(255, 255, 255, .92); font-size: 15px; line-height: 1.6; margin: 0; }
+  .habilidade:hover { transform: translateY(-6px); box-shadow: 0 22px 40px -20px rgba(199, 45, 103, .45); }
+  /* bolinha com a setinha encostada na borda esquerda, na altura do título */
+  .habilidade-num {
+    position: absolute; left: -11px; top: calc(clamp(28px, 3vw, 40px) + 4px); width: 22px; height: 22px; border-radius: 50%;
+    background: var(--branco); border: 1px solid rgba(199, 45, 103, .35); display: grid; place-items: center; color: var(--azul);
+  }
+  .habilidade-num svg { width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  .habilidade h3 { font-size: clamp(21px, 1.8vw, 25px); font-weight: 700; line-height: 1.2; color: var(--azul); margin-bottom: 16px; }
+  .habilidade p { color: var(--tinta); font-size: 15px; line-height: 1.7; margin: 0; }
   @media (max-width: 920px) {
     .habilidades-grade { grid-template-columns: 1fr; max-width: 560px; }
   }
@@ -1387,7 +1392,7 @@
     // Habilidades
     $("#habilidades-lista").innerHTML = HABILIDADES.map((h, i) => `
       <li class="habilidade ${classeRevelar()}" data-atraso="${i % 3}">
-        <span class="habilidade-num" aria-hidden="true">${doisDigitos(i + 1)}</span>
+        <span class="habilidade-num" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3.5 8.5l5-5M4.5 3.5h4v4"/></svg></span>
         <h3>${escapar(campo(h, "titulo"))}</h3>
         <p>${escapar(campo(h, "descricao"))}</p>
       </li>`).join("");

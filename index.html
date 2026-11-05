@@ -362,8 +362,9 @@
     padding: 10px 20px; border-radius: 999px; border: 1px solid var(--linha); background: transparent; cursor: pointer;
     font-size: 14px; font-weight: 500; transition: background .25s, color .25s, border-color .25s;
   }
-  .filtro:hover { border-color: var(--tinta); }
-  .filtro[aria-pressed="true"] { background: var(--tinta); color: var(--creme); border-color: var(--tinta); }
+  /* botões dos nichos: azul da cartela com texto grafite ao passar o mouse e no nicho escolhido */
+  .filtro:hover { background: var(--azul-claro); border-color: var(--azul-claro); color: var(--tinta); }
+  .filtro[aria-pressed="true"] { background: var(--azul-claro); color: var(--tinta); border-color: var(--azul-claro); font-weight: 700; }
   /* texto do nicho escolhido (descrição, medidas e link) */
   .nicho-info { max-width: 720px; margin-bottom: clamp(26px, 3.4vw, 38px); animation: surgir .5s ease both; }
   .nicho-info h3 { font-size: clamp(24px, 2.4vw, 30px); font-weight: 800; letter-spacing: -.02em; color: var(--azul); margin-bottom: 8px; }
@@ -379,8 +380,7 @@
   /* nome da marca numa etiqueta no topo do vídeo */
   .selo-marca {
     position: absolute; top: 10px; left: 10px; z-index: 3; max-width: calc(100% - 20px); padding: 4px 9px; border-radius: 999px;
-    background: var(--azul-claro); color: var(--branco); font-size: 9.5px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase;
-    text-shadow: 0 1px 2px rgba(43, 43, 43, .35);
+    background: var(--azul-claro); color: var(--tinta); font-size: 9.5px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none; box-shadow: 0 2px 8px rgba(43, 43, 43, .12);
   }
   .galeria .midia iframe.previa { pointer-events: none; } /* a prévia sem som não recebe cliques; o clique liga o som */

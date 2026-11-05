@@ -344,7 +344,7 @@
   .habilidades .cabecalho-secao { flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 18px; margin-bottom: clamp(36px, 4.8vw, 56px); }
   .habilidades .cabecalho-secao p { max-width: 52ch; }
   /* 2 cards em cima e 1 centralizado embaixo (grade de 4 colunas, cada card ocupa 2) */
-  .habilidades-grade { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(18px, 2.4vw, 28px); max-width: 940px; margin: 0 auto; list-style: none; padding: 0; }
+  .habilidades-grade { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(18px, 2.4vw, 28px); max-width: 1040px; margin: 0 auto; list-style: none; padding: 0; }
   .habilidades-grade > li { grid-column: span 2; }
   .habilidades-grade > li:last-child:nth-child(odd) { grid-column: 2 / span 2; }
   /* cada habilidade é um card branco separado; o cinza escuro fica só no texto */
@@ -360,8 +360,11 @@
     background: var(--branco); border: 1px solid rgba(199, 45, 103, .35); display: grid; place-items: center; color: var(--azul);
   }
   .habilidade-num svg { width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
-  .habilidade h3 { font-size: clamp(21px, 1.8vw, 25px); font-weight: 700; line-height: 1.2; color: var(--azul); margin-bottom: 16px; }
+  /* título sempre em uma linha: o tamanho acompanha a largura do card (o título mais longo cabe inteiro) */
+  .habilidade { container-type: inline-size; }
+  .habilidade h3 { font-size: min(24px, 4.65cqi); white-space: nowrap; font-weight: 700; line-height: 1.2; color: var(--azul); margin-bottom: 16px; }
   .habilidade p { color: var(--tinta); font-size: 15px; line-height: 1.7; margin: 0; }
+  .habilidade p strong { font-weight: 700; color: var(--tinta); }
   @media (max-width: 920px) {
     .habilidades-grade { grid-template-columns: 1fr; max-width: 560px; }
     .habilidades-grade > li, .habilidades-grade > li:last-child:nth-child(odd) { grid-column: auto; }
@@ -1166,18 +1169,18 @@
   // HABILIDADES: seção "Minhas habilidades", logo abaixo dos vídeos em destaque
   const HABILIDADES = [
     { titulo: "Estratégia de conteúdo e visão de marketing",
-      descricao: "Formada em Marketing, uno minha experiência com o mercado de influência ao desenvolvimento de mais de 90 portfólios UGC para criar conteúdos que conectam estratégia, criatividade e os objetivos de cada marca.",
+      descricao: "Formada em **Marketing**, uno minha experiência com o **mercado de influência** ao desenvolvimento de **mais de 90 portfólios UGC** para criar conteúdos que conectam **estratégia, criatividade** e os **objetivos de cada marca**.",
       titulo_en: "Content strategy and marketing vision",
-      descricao_en: "With a degree in Marketing, I combine my experience in the influencer market with the development of more than 90 UGC portfolios to create content that connects strategy, creativity and each brand's goals." },
+      descricao_en: "With a degree in **Marketing**, I combine my experience in the **influencer market** with the development of **more than 90 UGC portfolios** to create content that connects **strategy, creativity** and **each brand's goals**." },
     { titulo: "Olhar estético e direção visual",
-      descricao: "Minha experiência com fotografia, modelagem fotográfica e design contribui para composições cuidadosas e conteúdos visualmente atrativos, valorizando a apresentação de cada produto.",
+      descricao: "Minha experiência com **fotografia, modelagem fotográfica e design** contribui para **composições cuidadosas** e conteúdos **visualmente atrativos**, valorizando a apresentação de cada produto.",
       titulo_en: "Aesthetic eye and visual direction",
-      descricao_en: "My background in photography, photo modeling and design brings carefully composed, visually appealing content that showcases each product at its best." },
+      descricao_en: "My background in **photography, photo modeling and design** brings **carefully composed**, **visually appealing** content that showcases each product at its best." },
     // a última fica sozinha, centralizada embaixo das outras duas
     { titulo: "Ganchos criativos e retenção",
-      descricao: "Crio ganchos que funcionam desde os primeiros segundos, para prender a atenção e conduzir o público até a mensagem da marca.",
+      descricao: "Crio **ganchos** que funcionam desde os **primeiros segundos**, para **prender a atenção** e conduzir o público até a **mensagem da marca**.",
       titulo_en: "Creative hooks and retention",
-      descricao_en: "I create hooks that work from the very first seconds, grabbing attention and guiding the audience to the brand's message." }
+      descricao_en: "I create **hooks** that work from the **very first seconds**, **grabbing attention** and guiding the audience to the **brand's message**." }
   ];
 
   // SERVIÇOS: seção "Como eu te ajudo"
@@ -1343,6 +1346,8 @@
   const $ = (sel) => document.querySelector(sel);
   const escapar = (t) => String(t).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const doisDigitos = (n) => String(n).padStart(2, "0");
+  // Texto entre **asteriscos duplos** nas listas aparece em negrito
+  const negrito = (t) => escapar(t).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
 
   // Idioma atual: "pt" ou "en". Fica lembrado no navegador de quem visita.
   let idioma = "pt";
@@ -1528,7 +1533,7 @@
       <li class="habilidade ${classeRevelar()}" data-atraso="${i % 3}">
         <span class="habilidade-num" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3.5 8.5l5-5M4.5 3.5h4v4"/></svg></span>
         <h3>${escapar(campo(h, "titulo"))}</h3>
-        <p>${escapar(campo(h, "descricao"))}</p>
+        <p>${negrito(campo(h, "descricao"))}</p>
       </li>`).join("");
 
     // Serviços

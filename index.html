@@ -897,21 +897,16 @@
     </div>
   </section>
 
-  <!-- ============ 6. NÚMEROS E DEPOIMENTOS ============ -->
+  <!-- ============ 6. DEPOIMENTOS ============
+       (as partes "Resultados que contam a história" e "Resultados de campanha" foram retiradas) -->
   <section class="secao" id="numeros" aria-labelledby="titulo-numeros">
     <div class="container">
       <div class="cabecalho-secao">
         <div>
-          <span class="rotulo revelar" data-i18n="num.rotulo">Números e depoimentos</span>
-          <h2 class="titulo-secao revelar" id="titulo-numeros" data-i18n="num.titulo">Resultados que <em>contam</em> a história</h2>
+          <span class="rotulo revelar" data-i18n="num.rotulo">Depoimentos</span>
+          <h2 class="titulo-secao revelar" id="titulo-numeros" data-i18n="num.titulo">O que dizem as <em>marcas</em></h2>
         </div>
       </div>
-      <ul class="metricas" id="metricas"></ul>
-
-      <h3 class="subtitulo revelar" data-i18n="num.campanhas">Resultados de <em>campanha</em></h3>
-      <ul class="resultados" id="resultados"></ul>
-
-      <h3 class="subtitulo revelar" data-i18n="num.depoimentos">O que dizem as <em>marcas</em></h3>
       <ul class="depoimentos" id="depoimentos"></ul>
     </div>
   </section>
@@ -1219,27 +1214,6 @@
       titulo_en: "Monthly package", descricao_en: "A set number of pieces every month, with a content calendar and priority booking." }
   ];
 
-  // MÉTRICAS: os contadores animados. "valor" precisa ser número; "prefixo" e "sufixo" são opcionais.
-  const METRICAS = [
-    { valor: 90, prefixo: "",  sufixo: "", rotulo: "vídeos entregues",             rotulo_en: "videos delivered" },
-    { valor: 60, prefixo: "",  sufixo: "", rotulo: "marcas atendidas",             rotulo_en: "brands served" },
-    { valor: 90, prefixo: "+", sufixo: "", rotulo: "portfólios UGC desenvolvidos", rotulo_en: "UGC portfolios developed" },
-    { valor: 6,  prefixo: "",  sufixo: "", rotulo: "nichos atendidos",             rotulo_en: "niches served" }
-  ];
-
-  // RESULTADOS DE CAMPANHA: troque pelos resultados reais
-  const RESULTADOS = [
-    { numero: "+00%", marca: "Marca 01",
-      rotulo: "Resultado da campanha 01", descricao: "Descreva aqui o que foi feito e o que mudou para a marca.",
-      rotulo_en: "Campaign result 01", descricao_en: "Describe here what was done and what changed for the brand." },
-    { numero: "+00%", marca: "Marca 02",
-      rotulo: "Resultado da campanha 02", descricao: "Descreva aqui o que foi feito e o que mudou para a marca.",
-      rotulo_en: "Campaign result 02", descricao_en: "Describe here what was done and what changed for the brand." },
-    { numero: "+00%", marca: "Marca 03",
-      rotulo: "Resultado da campanha 03", descricao: "Descreva aqui o que foi feito e o que mudou para a marca.",
-      rotulo_en: "Campaign result 03", descricao_en: "Describe here what was done and what changed for the brand." }
-  ];
-
   // DEPOIMENTOS: troque pelo feedback real dos clientes
   const DEPOIMENTOS = [
     { nome: "Cliente 01", empresa: "Empresa 01", empresa_en: "Company 01",
@@ -1311,10 +1285,8 @@
     "serv.rotulo": "How I can help",
     "serv.titulo": "Services designed to <em>sell</em>",
     "serv.texto": "From script to final delivery, every format is built for the place where it will run.",
-    "num.rotulo": "Numbers and testimonials",
-    "num.titulo": "Results that <em>tell</em> the story",
-    "num.campanhas": "Campaign <em>results</em>",
-    "num.depoimentos": "What <em>brands</em> say",
+    "num.rotulo": "Testimonials",
+    "num.titulo": "What <em>brands</em> say",
     "cont.rotulo": "Contact",
     "cont.titulo": "Let's create <em>together</em>",
     "cont.texto": "Tell me about your brand and what you need. I'll get back to you quickly with a proposal built around your goal.",
@@ -1582,22 +1554,6 @@
         <span class="servico-num">${doisDigitos(i + 1)}</span>
         <h3>${escapar(campo(s, "titulo"))}</h3>
         <p>${escapar(campo(s, "descricao"))}</p>
-      </li>`).join("");
-
-    // Métricas
-    $("#metricas").innerHTML = METRICAS.map((m, i) => `
-      <li class="metrica ${classeRevelar()}" data-atraso="${i % 4}">
-        <strong data-contar="${m.valor}" data-prefixo="${escapar(m.prefixo || "")}" data-sufixo="${escapar(m.sufixo || "")}">${escapar(formatarNumero(m))}</strong>
-        <span>${escapar(campo(m, "rotulo"))}</span>
-      </li>`).join("");
-
-    // Resultados de campanha
-    $("#resultados").innerHTML = RESULTADOS.map((r, i) => `
-      <li class="resultado ${classeRevelar()}" data-atraso="${i}">
-        <strong>${escapar(r.numero)}</strong>
-        <span class="r-rotulo">${escapar(campo(r, "rotulo"))}</span>
-        <p>${escapar(campo(r, "descricao"))}</p>
-        <span class="r-marca">${escapar(r.marca)}</span>
       </li>`).join("");
 
     // Depoimentos

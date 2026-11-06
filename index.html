@@ -369,6 +369,7 @@
   .processo-topo .titulo-secao { font-weight: 800; line-height: 1; letter-spacing: -.03em; font-size: clamp(34px, 4vw, 56px); max-width: none; }
   #titulo-processo em { font-style: normal; }
   .processo-topo p { max-width: 60ch; text-wrap: balance; }
+  @media (min-width: 1000px) { .processo-topo p { max-width: 90ch; } } /* texto em 2 linhas no computador */
   .proc-palco { --pw: clamp(190px, 18vw, 240px); --vao: calc(var(--pw) * .56); position: relative; height: calc(var(--pw) * 2.8); perspective: 1800px; }
   .proc-pilha { position: absolute; left: 66%; top: 50%; width: var(--pw); height: calc(var(--pw) * 16 / 9);
     margin: calc(var(--pw) * -8 / 9) 0 0 calc(var(--pw) / -2); transform-style: preserve-3d;

@@ -247,13 +247,16 @@
   .colagem-foto1 { left: .818%; top: .897%; width: 41.909%; --amp: 2.6%; animation: flutuar 5.6s ease-in-out infinite; }
   .colagem-foto2 { left: 59.818%; top: 68.026%; width: 38.636%; --amp: 3%; animation: flutuar 6.4s ease-in-out -3.2s infinite; }
   .colagem-frente { left: 34.636%; top: 16.884%; width: 7.909%; }
-  /* degradê rosa que desliza no fundo rosa da foto quando o mouse passa por cima */
+  /* luz suave que passeia pelo fundo rosa da foto acompanhando o mouse (só clareia e escurece o próprio rosa) */
   .colagem-brilho {
-    position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .5s, background-position .7s ease-out;
-    -webkit-mask: url("sobre-mascara.png") 0 0 / 100% 100% no-repeat; mask: url("sobre-mascara.png") 0 0 / 100% 100% no-repeat;
-    background: linear-gradient(115deg, #C72D67 0%, #EA70A5 22%, #FFC4DC 42%, #EA70A5 62%, #C72D67 80%, #EA70A5 100%) var(--gx, 50%) var(--gy, 50%) / 300% 300%;
+    position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .8s ease;
+    -webkit-mask: url("sobre-mascara.png?v=2") 0 0 / 100% 100% no-repeat; mask: url("sobre-mascara.png?v=2") 0 0 / 100% 100% no-repeat;
+    mix-blend-mode: soft-light;
+    background:
+      radial-gradient(circle at var(--gx, 50%) var(--gy, 40%), rgba(255, 255, 255, .9) 0%, rgba(255, 255, 255, .35) 22%, rgba(255, 255, 255, 0) 48%),
+      radial-gradient(circle at calc(100% - var(--gx, 50%)) calc(100% - var(--gy, 40%)), rgba(150, 20, 70, .35) 0%, rgba(150, 20, 70, 0) 50%);
   }
-  .colagem:hover .colagem-brilho { opacity: .7; }
+  .colagem:hover .colagem-brilho { opacity: 1; }
   @keyframes flutuar {
     0%, 100% { transform: translateY(calc(var(--amp) * -1)); }
     50% { transform: translateY(var(--amp)); }

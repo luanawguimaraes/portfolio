@@ -730,7 +730,7 @@
     -webkit-backface-visibility: hidden; backface-visibility: hidden;
     filter: drop-shadow(0 1px 1.5px rgba(20, 17, 13, .10)) drop-shadow(0 16px 26px rgba(20, 17, 13, .11));
   }
-  .cracha-frente { background: url("cracha.webp?v=4") 47.842% 70.523% / 251.29% auto no-repeat; }
+  .cracha-frente { background: url("cracha.webp?v=4") 47.842% 70.523% / 251.29% auto no-repeat; background-color: #F6F6F6; } /* a cor de fundo fecha o furo do gancho com o mesmo branco do cartão */
   /* brilho furta-cor que acompanha o mouse (o mesmo dos cartões de habilidades) */
   /* camada de cor (multiplicar: tinge o branco do cartão e não clareia o preto do texto) */
   .cracha-face::after {
@@ -762,6 +762,7 @@
     -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
     mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
     mix-blend-mode: multiply; /* o branco em volta do mosquetão some e pega a cor do cartão (inclusive com o brilho) */
+    filter: brightness(1.045); /* leva o branco do recorte a branco puro, para não escurecer o cartão por baixo */
   }
   @media (max-width: 920px) {
     /* no celular o crachá vem antes do texto, com o cordão saindo de baixo do menu */

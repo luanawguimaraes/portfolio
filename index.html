@@ -1670,27 +1670,31 @@
   // As fotos andam devagar da direita para a esquerda; ao passar o mouse, param.
   let arcoDeslocamento = 0, arcoPausado = false, arcoUltimo = 0;
   const ARCO_VELOCIDADE = 0.12; // fotos por segundo
+  const ARCO = { largura: 0.09, raio: 0.3, perspectiva: 0.36, altura: 2.3 }; // medidas em relação à largura da tela
   function arrumarArco() {
     const arco = $("#fotos-arco");
     if (!arco) return;
     const cartoes = [...arco.children], n = cartoes.length;
     if (!n) return;
     const L = arco.clientWidth, celular = L < 700;
-    const largura = celular ? L * 0.36 : Math.min(Math.max(L * 0.13, 120), 200);
-    const raio = L * (celular ? 0.8 : 0.6);
-    const passo = (largura * 1.1) / raio; // ângulo entre uma foto e a próxima
-    const limite = Math.PI / 2.4; // depois desse ângulo a foto some
+    // ARCO: quanto menor o raio e a perspectiva, mais curvo o arco e maiores as fotos das laterais
+    const largura = celular ? L * 0.3 : Math.min(Math.max(L * ARCO.largura, 100), 170);
+    const raio = L * (celular ? 0.6 : ARCO.raio);
+    const passo = (largura * 1.08) / raio; // ângulo entre uma foto e a próxima
+    const limite = Math.PI / 2.2; // depois desse ângulo a foto some
+    const perspectiva = L * (celular ? 0.7 : ARCO.perspectiva);
     arco.style.setProperty("--foto-l", largura + "px");
-    arco.style.setProperty("--arco-perspectiva", Math.round(L * 0.95) + "px");
-    arco.style.setProperty("--arco-altura", Math.round(largura * (4 / 3) * 1.55 + 20) + "px");
+    arco.style.setProperty("--arco-perspectiva", Math.round(perspectiva) + "px");
+    arco.style.setProperty("--arco-altura", Math.round(largura * (4 / 3) * ARCO.altura + 20) + "px");
     cartoes.forEach((c, i) => {
       // posição da foto no arco (0 = centro), dando a volta quando passa do fim da lista
       let p = ((i - arcoDeslocamento) % n + n) % n;
       if (p > n / 2) p -= n;
       const a = p * passo;
-      if (Math.abs(a) > limite) { c.style.visibility = "hidden"; return; }
-      c.style.visibility = "visible";
       const x = raio * Math.sin(a), z = raio * (1 - Math.cos(a));
+      // some quando sai da curva ou quando ficaria perto demais da tela (enorme)
+      if (Math.abs(a) > limite || z > perspectiva * 0.62) { c.style.visibility = "hidden"; return; }
+      c.style.visibility = "visible";
       c.style.transform = `translate(-50%, -50%) translate3d(${x.toFixed(1)}px, 0, ${z.toFixed(1)}px) rotateY(${(-a).toFixed(4)}rad)`;
       c.style.zIndex = String(100 - Math.round(Math.abs(p)));
     });

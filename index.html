@@ -351,7 +351,7 @@
   #titulo-habilidades em { font-style: normal; }
   /* FOTOS UGC: fotos em arco, como se estivessem por dentro de um cilindro (as das pontas ficam maiores e viradas para o centro) */
   .fotos { padding-top: clamp(24px, 3vw, 44px); overflow: hidden; }
-  .fotos-topo { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px; margin-bottom: clamp(20px, 3vw, 40px); }
+  .fotos-topo { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px; margin-bottom: clamp(4px, 1vw, 12px); }
   .fotos-topo .rotulo { margin-bottom: 0; }
   .fotos-topo .titulo-secao { font-weight: 800; line-height: 1; letter-spacing: -.03em; font-size: clamp(34px, 4vw, 56px); max-width: none; }
   #titulo-fotos em { font-style: normal; }
@@ -360,6 +360,8 @@
     perspective: var(--arco-perspectiva, 1200px); transform-style: preserve-3d;
     -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
             mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 88%, transparent 100%); }
+  /* no computador, as fotos maiores das pontas sobem ao lado do texto e o arco fica mais perto dele */
+  @media (min-width: 900px) { .fotos-arco { margin-top: calc(var(--foto-l, 180px) * -0.4); } }
   .foto-card { position: absolute; left: 50%; top: 50%; width: var(--foto-l, 180px); aspect-ratio: 3 / 4; border-radius: 16px; overflow: hidden;
     background: #EDE6DC; box-shadow: 0 18px 36px -20px rgba(43, 43, 43, .45); backface-visibility: hidden; }
   .foto-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
@@ -1670,7 +1672,7 @@
   // As fotos andam devagar da direita para a esquerda; ao passar o mouse, param.
   let arcoDeslocamento = 0, arcoPausado = false, arcoUltimo = 0;
   const ARCO_VELOCIDADE = 0.12; // fotos por segundo
-  const ARCO = { largura: 0.09, raio: 0.3, perspectiva: 0.36, altura: 2.3 }; // medidas em relação à largura da tela
+  const ARCO = { largura: 0.09, raio: 0.3, perspectiva: 0.36, altura: 1.9 }; // medidas em relação à largura da tela
   function arrumarArco() {
     const arco = $("#fotos-arco");
     if (!arco) return;

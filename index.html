@@ -600,6 +600,38 @@
   .resultado .r-rotulo { display: block; font-weight: 600; margin: 10px 0 14px; }
   .resultado p { color: var(--tinta-suave); font-size: 15px; margin: 0 0 18px; }
   .resultado .r-marca { font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--azul); }
+  /* DEPOIMENTOS: cartões que passam sozinhos devagar, com setas para avançar e voltar */
+  .dep-topo { align-items: flex-end; }
+  .dep-topo p { max-width: 34ch; margin: 0; color: var(--tinta-suave); }
+  .dep-carrossel { --dep-gap: clamp(16px, 2vw, 26px); --dep-l: calc((100% - 2 * var(--dep-gap)) / 3); position: relative; }
+  .dep-janela { overflow: hidden; padding: 46px 2px 6px;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 3%, #000 97%, transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0, #000 3%, #000 97%, transparent 100%); }
+  .dep-trilho { display: flex; gap: var(--dep-gap); list-style: none; margin: 0; padding: 0; will-change: transform; }
+  .dep-cartao { flex: 0 0 calc((100% - 2 * var(--dep-gap)) / 3); display: flex; }
+  .dep-cartao figure { position: relative; flex: 1; margin: 0; padding: 54px clamp(18px, 2vw, 28px) 28px; text-align: center;
+    background: rgba(255, 255, 255, .55); border: 1px solid var(--linha); border-radius: 18px; display: flex; flex-direction: column; align-items: center; }
+  .dep-logo { position: absolute; top: -40px; left: 50%; width: 80px; height: 80px; transform: translateX(-50%); border-radius: 50%; overflow: hidden;
+    background: #fff; box-shadow: 0 0 0 5px var(--fundo), 0 10px 22px -12px rgba(43, 43, 43, .35); }
+  .dep-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .dep-cartao figcaption { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .dep-marca { font-family: var(--serif); font-size: 16px; font-weight: 800; color: var(--tinta); }
+  .dep-estrelas { font-size: 14px; letter-spacing: 3px; color: var(--roxo-claro); line-height: 1; }
+  .dep-produto { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--tinta-suave); }
+  .dep-cartao blockquote { margin: 16px 0 0; }
+  .dep-cartao blockquote p { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--tinta-suave); }
+  .dep-resultado { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--linha); width: 100%; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--tinta-suave); }
+  .dep-resultado strong { display: block; font-family: var(--serif); font-size: 18px; color: var(--azul); letter-spacing: 0; }
+  .dep-seta { position: absolute; top: calc(50% + 20px); margin-top: -23px; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--linha);
+    background: #fff; display: grid; place-items: center; cursor: pointer; box-shadow: 0 8px 20px -12px rgba(43, 43, 43, .4); transition: background .2s, transform .2s; z-index: 2; }
+  .dep-seta svg { width: 18px; height: 18px; fill: none; stroke: var(--tinta); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .dep-seta:hover, .dep-seta:focus-visible { background: var(--azul-claro); transform: scale(1.06); }
+  .dep-seta.anterior { left: -10px; } .dep-seta.proxima { right: -10px; }
+  @media (max-width: 999px) { .dep-cartao { flex-basis: calc((100% - var(--dep-gap)) / 2); } }
+  @media (max-width: 640px) {
+    .dep-cartao { flex-basis: 82%; }
+    .dep-seta.anterior { left: -4px; } .dep-seta.proxima { right: -4px; }
+  }
   .depoimentos { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(16px, 2.4vw, 28px); list-style: none; margin: 0; padding: 0; }
   .depoimento { margin: 0; padding: clamp(28px, 3.4vw, 44px); border: 1px solid var(--linha); border-radius: var(--raio); position: relative; background: var(--creme); }
   .depoimento::before { content: "\201C"; position: absolute; top: 4px; right: 28px; font-family: var(--serif); font-size: 110px; line-height: 1; color: var(--azul); opacity: .18; }
@@ -1094,13 +1126,19 @@
        (as partes "Resultados que contam a história" e "Resultados de campanha" foram retiradas) -->
   <section class="secao" id="numeros" aria-labelledby="titulo-numeros">
     <div class="container">
-      <div class="cabecalho-secao">
+      <div class="cabecalho-secao dep-topo">
         <div>
           <span class="rotulo revelar" data-i18n="num.rotulo">Depoimentos</span>
           <h2 class="titulo-secao revelar" id="titulo-numeros" data-i18n="num.titulo">O que dizem as <em>marcas</em></h2>
         </div>
+        <p class="revelar" data-atraso="1" data-i18n="num.texto">Feedbacks reais de marcas que confiaram no meu trabalho.</p>
       </div>
-      <ul class="depoimentos" id="depoimentos"></ul>
+      <!-- Os cartões vêm da lista DEPOIMENTOS, no começo do script -->
+      <div class="dep-carrossel revelar" role="region" aria-roledescription="carrossel" aria-label="Depoimentos das marcas" data-i18n-attr="aria-label:num.carrossel">
+        <div class="dep-janela"><ul class="dep-trilho" id="depoimentos"></ul></div>
+        <button class="dep-seta anterior" type="button" id="dep-anterior" aria-label="Depoimento anterior" data-i18n-attr="aria-label:num.anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button class="dep-seta proxima" type="button" id="dep-proxima" aria-label="Próximo depoimento" data-i18n-attr="aria-label:num.proxima"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
     </div>
   </section>
 
@@ -1463,20 +1501,43 @@
       titulo_en: "Monthly package", descricao_en: "A set number of pieces every month, with a content calendar and priority booking." }
   ];
 
-  // DEPOIMENTOS: troque pelo feedback real dos clientes
+  // DEPOIMENTOS: feedbacks reais das marcas. Os cartões passam sozinhos e as setas avançam/voltam.
+  // "logo": arquivo do logo (os mesmos de Marcas trabalhadas). "produto": linha pequena embaixo das estrelas.
+  // "estrelas" (opcional): nota que a marca deu; sem ela, o cartão fica sem estrelas.
+  // "resultado" e "resultadoRotulo" (opcionais): só preencha com números reais.
   const DEPOIMENTOS = [
-    { nome: "Cliente 01", empresa: "Empresa 01", empresa_en: "Company 01",
-      texto: "Espaço para o depoimento do cliente. Troque este texto pelo feedback real que você recebeu.",
-      texto_en: "Space for the client's testimonial. Replace this text with the real feedback you received." },
-    { nome: "Cliente 02", empresa: "Empresa 02", empresa_en: "Company 02",
-      texto: "Espaço para o depoimento do cliente. Troque este texto pelo feedback real que você recebeu.",
-      texto_en: "Space for the client's testimonial. Replace this text with the real feedback you received." },
-    { nome: "Cliente 03", empresa: "Empresa 03", empresa_en: "Company 03",
-      texto: "Espaço para o depoimento do cliente. Troque este texto pelo feedback real que você recebeu.",
-      texto_en: "Space for the client's testimonial. Replace this text with the real feedback you received." },
-    { nome: "Cliente 04", empresa: "Empresa 04", empresa_en: "Company 04",
-      texto: "Espaço para o depoimento do cliente. Troque este texto pelo feedback real que você recebeu.",
-      texto_en: "Space for the client's testimonial. Replace this text with the real feedback you received." }
+    { marca: "Shop Lumina", logo: "logo-37.webp",
+      produto: "Semijoias", produto_en: "Semi-fine jewelry",
+      texto: "Ual, Lu, ficou perfeito! A iluminação, as roupas, e achei que a escolha das peças foi muito certeira também, porque fez bem o seu estilo. Adorei o resultado final e não quero alterar nada!",
+      texto_en: "Wow, Lu, it turned out perfect! The lighting, the outfits, and I think the choice of pieces was spot on too, because it really matched your style. I loved the final result and don't want to change a thing!" },
+    { marca: "Ráwve", logo: "logo-34.webp", estrelas: 5,
+      produto: "Sérum Mush Drops e Cleansing Balm Melty", produto_en: "Mush Drops Serum and Melty Cleansing Balm",
+      texto: "Luana como sempre entregando conteúdos incríveis, com muita agilidade!",
+      texto_en: "Luana, as always, delivering amazing content, and really fast!" },
+    { marca: "Aneethun", logo: "logo-33.webp", estrelas: 5,
+      produto: "Produtos profissionais para cabelo", produto_en: "Professional hair products",
+      texto: "Luana fez um ótimo trabalho! Entregou um conteúdo incrível.",
+      texto_en: "Luana did a great job! She delivered amazing content." },
+    { marca: "Dianthus", logo: "logo-20.webp",
+      produto: "Skincare", produto_en: "Skincare",
+      texto: "Queria te agradecer de verdade pela parceria! Ficou tudo lindo e super profissional. Obrigada pelo cuidado e dedicação.",
+      texto_en: "I really want to thank you for the partnership! Everything turned out beautiful and very professional. Thank you for your care and dedication." },
+    { marca: "Hyze Pay", logo: "logo-22.webp",
+      produto: "Demonstração de plataforma", produto_en: "Platform demo",
+      texto: "Muito obrigado!! Faremos mais trabalhos juntos em breve...",
+      texto_en: "Thank you so much!! We'll be working together again soon..." },
+    { marca: "Creamy", logo: "logo-26.webp",
+      produto: "Skincare", produto_en: "Skincare",
+      texto: "Uauu, super aprovado! Obrigada",
+      texto_en: "Wow, totally approved! Thank you" },
+    { marca: "Mezzo Dermocosméticos", logo: "logo-31.webp", estrelas: 5,
+      produto: "Obiome Concentrado Pós-biótico", produto_en: "Obiome Postbiotic Concentrate",
+      texto: "Gostamos muito do vídeo.",
+      texto_en: "We really liked the video." },
+    { marca: "Ráwve", logo: "logo-34.webp", estrelas: 5,
+      produto: "Pastilhas de chuveiro", produto_en: "Shower steamers",
+      texto: "Luana fez um vídeo lindo, super produzido! Recomendamos muito.",
+      texto_en: "Luana made a beautiful, highly polished video! We highly recommend her." }
   ];
 
   // TEXTOS EM INGLÊS: cada chave corresponde a um data-i18n no HTML.
@@ -1543,6 +1604,10 @@
     "serv.texto": "From script to final delivery, every format is built for the place where it will run.",
     "num.rotulo": "Testimonials",
     "num.titulo": "What <em>brands</em> say",
+    "num.texto": "Real feedback from brands that trusted my work.",
+    "num.carrossel": "Brand testimonials",
+    "num.anterior": "Previous testimonial",
+    "num.proxima": "Next testimonial",
     "cont.rotulo": "Contact",
     "cont.titulo": "Let's create <em>together</em>",
     "cont.texto": "Tell me about your brand and what you need. I'll get back to you quickly with a proposal built around your goal.",
@@ -1572,12 +1637,14 @@
   const UI = {
     pt: {
       habRotulo: "Habilidade", habDicaMouse: "Passe o mouse", habDicaToque: "Toque para virar",
+      notaEstrelas: (n) => `Nota ${n} de 5`,
       abrirMenu: "Abrir menu", fecharMenu: "Fechar menu", verVideoMarca: (m) => `Ver o vídeo para ${m}`,
       assistir: (m) => `Assistir o vídeo para ${m}`, videoDe: (m) => `Vídeo para ${m}`,
       obrigada: (n) => `Obrigada pelo contato, ${n}! Eu respondo em breve no e-mail que você deixou.`
     },
     en: {
       habRotulo: "Skill", habDicaMouse: "Hover me", habDicaToque: "Tap to flip",
+      notaEstrelas: (n) => `Rated ${n} out of 5`,
       abrirMenu: "Open menu", fecharMenu: "Close menu", verVideoMarca: (m) => `Watch the video for ${m}`,
       assistir: (m) => `Play the video for ${m}`, videoDe: (m) => `Video for ${m}`,
       obrigada: (n) => `Thanks for reaching out, ${n}! I'll reply soon to the email you left.`
@@ -1964,6 +2031,58 @@
   } else {
     setTimeout(rodarProcesso, 0);
   }
+  // DEPOIMENTOS: os cartões andam devagar da direita para a esquerda; o mouse em cima pausa;
+  // as setas avançam ou voltam um cartão com um deslizar suave.
+  const DEP_VELOCIDADE = 26; // pixels por segundo
+  let depDesloc = 0, depPausado = false, depUltimo = 0, depAnim = null;
+  function depMedidas() {
+    const trilho = $("#depoimentos"), cartao = trilho && trilho.querySelector(".dep-cartao");
+    if (!cartao) return null;
+    const gap = parseFloat(getComputedStyle(trilho).columnGap) || 0;
+    const passo = cartao.getBoundingClientRect().width + gap;
+    return { trilho, passo, volta: passo * DEPOIMENTOS.length };
+  }
+  function arrumarDepoimentos() {
+    const m = depMedidas(); if (!m) return;
+    depDesloc = ((depDesloc % m.volta) + m.volta) % m.volta;
+    m.trilho.style.transform = `translate3d(${(-(m.volta + depDesloc)).toFixed(1)}px, 0, 0)`;
+  }
+  function andarDepoimentos(t) {
+    if (depUltimo && !depPausado && !depAnim && !document.hidden) {
+      depDesloc += DEP_VELOCIDADE * Math.min(t - depUltimo, 100) / 1000;
+      arrumarDepoimentos();
+    }
+    depUltimo = t;
+    requestAnimationFrame(andarDepoimentos);
+  }
+  // seta: leva o cartão mais próximo para a posição de um cartão à frente (ou atrás)
+  function moverDepoimentos(direcao) {
+    const m = depMedidas(); if (!m) return;
+    const inicio = depDesloc, alvo = (Math.round(depDesloc / m.passo) + direcao) * m.passo;
+    if (reduzirMovimento) { depDesloc = alvo; arrumarDepoimentos(); return; }
+    const t0 = performance.now(), dur = 550;
+    const id = {}; depAnim = id;
+    const passo = (t) => {
+      if (depAnim !== id) return;
+      const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      depDesloc = inicio + (alvo - inicio) * e; arrumarDepoimentos();
+      if (k < 1) requestAnimationFrame(passo); else depAnim = null;
+    };
+    requestAnimationFrame(passo);
+  }
+  (() => {
+    const caixa = $(".dep-carrossel"); if (!caixa) return;
+    $("#dep-anterior").addEventListener("click", () => moverDepoimentos(-1));
+    $("#dep-proxima").addEventListener("click", () => moverDepoimentos(1));
+    caixa.addEventListener("pointerenter", () => { depPausado = true; });
+    caixa.addEventListener("pointerleave", () => { depPausado = false; });
+    caixa.addEventListener("focusin", () => { depPausado = true; });
+    caixa.addEventListener("focusout", () => { depPausado = false; });
+    window.addEventListener("resize", arrumarDepoimentos);
+    // com "reduzir movimento" ligado, os cartões só andam pelas setas
+    if (!reduzirMovimento) requestAnimationFrame(andarDepoimentos);
+  })();
+
   function desenharDados() {
     // Processo
     desenharProcesso();
@@ -2001,17 +2120,23 @@
       </li>`;
       }).join("");
 
-    // Depoimentos
-    $("#depoimentos").innerHTML = DEPOIMENTOS.map((d, i) => `
-      <li class="${classeRevelar()}" data-atraso="${i % 2}">
-        <figure class="depoimento">
-          <blockquote><p style="margin:0">${escapar(campo(d, "texto"))}</p></blockquote>
+    // Depoimentos: a lista aparece 3 vezes seguidas para o carrossel dar a volta sem emendas
+    // (só a do meio é lida por leitores de tela)
+    const cartaoDep = (d, copia) => `
+      <li class="dep-cartao"${copia ? ' aria-hidden="true"' : ""}>
+        <figure>
+          <span class="dep-logo"><img src="${escapar(d.logo)}" alt="" loading="lazy" decoding="async"></span>
           <figcaption>
-            <span class="avatar" aria-hidden="true">${escapar(iniciais(d.nome))}</span>
-            <span><strong>${escapar(d.nome)}</strong><span>${escapar(campo(d, "empresa"))}</span></span>
+            <strong class="dep-marca">${escapar(d.marca)}</strong>
+            ${d.estrelas ? `<span class="dep-estrelas" role="img" aria-label="${escapar(ui().notaEstrelas(d.estrelas))}">${"★".repeat(d.estrelas)}</span>` : ""}
+            <span class="dep-produto">${escapar(campo(d, "produto"))}</span>
           </figcaption>
+          <blockquote><p>${escapar(campo(d, "texto"))}</p></blockquote>
+          ${d.resultado ? `<span class="dep-resultado"><strong>${escapar(d.resultado)}</strong>${escapar(campo(d, "resultadoRotulo") || "")}</span>` : ""}
         </figure>
-      </li>`).join("");
+      </li>`;
+    $("#depoimentos").innerHTML = [true, false, true].map((copia) => DEPOIMENTOS.map((d) => cartaoDep(d, copia)).join("")).join("");
+    if (typeof arrumarDepoimentos === "function") requestAnimationFrame(arrumarDepoimentos);
   }
   const iniciais = (nome) => nome.split(" ").filter(Boolean).map((p) => p[0]).slice(0, 2).join("").toUpperCase();
 

@@ -247,16 +247,6 @@
   .colagem-foto1 { left: .818%; top: .897%; width: 41.909%; --amp: 2.6%; animation: flutuar 5.6s ease-in-out infinite; }
   .colagem-foto2 { left: 59.818%; top: 68.026%; width: 38.636%; --amp: 3%; animation: flutuar 6.4s ease-in-out -3.2s infinite; }
   .colagem-frente { left: 34.636%; top: 16.884%; width: 7.909%; }
-  /* luz suave que passeia pelo fundo rosa da foto acompanhando o mouse (só clareia e escurece o próprio rosa) */
-  .colagem-brilho {
-    position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .8s ease;
-    -webkit-mask: url("sobre-mascara.png?v=2") 0 0 / 100% 100% no-repeat; mask: url("sobre-mascara.png?v=2") 0 0 / 100% 100% no-repeat;
-    mix-blend-mode: soft-light;
-    background:
-      radial-gradient(circle at var(--gx, 50%) var(--gy, 40%), rgba(255, 255, 255, .9) 0%, rgba(255, 255, 255, .35) 22%, rgba(255, 255, 255, 0) 48%),
-      radial-gradient(circle at calc(100% - var(--gx, 50%)) calc(100% - var(--gy, 40%)), rgba(150, 20, 70, .35) 0%, rgba(150, 20, 70, 0) 50%);
-  }
-  .colagem:hover .colagem-brilho { opacity: 1; }
   @keyframes flutuar {
     0%, 100% { transform: translateY(calc(var(--amp) * -1)); }
     50% { transform: translateY(var(--amp)); }
@@ -877,12 +867,7 @@
              sobre-base.webp = foto principal; sobre-foto1/2.webp = fotos pequenas;
              sobre-frente.webp = mecha de cabelo da foto principal que fica na frente da foto pequena de cima. -->
         <div class="colagem">
-          <img class="colagem-base" src="sobre-base.webp" alt="Luana Guimarães sentada, de blusa preta e calça jeans, com duas fotos menores: uma segurando um produto de cabelo e outra com o braço sobre a cabeça" data-i18n-attr="alt:sobre.fotoAlt" loading="lazy" width="1100" height="1226">
-          <!-- degradê rosa que se move com o mouse, só em cima do fundo rosa (sobre-mascara.png marca onde é rosa) -->
-          <span class="colagem-brilho" aria-hidden="true"></span>
-          <img class="colagem-foto colagem-foto1" src="sobre-foto1.webp" alt="" aria-hidden="true" loading="lazy" width="461" height="426">
-          <img class="colagem-frente" src="sobre-frente.webp" alt="" aria-hidden="true" loading="lazy" width="87" height="203">
-          <img class="colagem-foto colagem-foto2" src="sobre-foto2.webp" alt="" aria-hidden="true" loading="lazy" width="425" height="374">
+          <img class="colagem-base" src="sobre-nova.webp" alt="Luana Guimarães sentada, de blusa preta e calça jeans, com duas fotos menores: uma segurando um produto de cabelo e outra com o braço sobre a cabeça" data-i18n-attr="alt:sobre.fotoAlt" loading="lazy" width="1100" height="1238">
         </div>
       </div>
       <div class="sobre-texto">
@@ -1962,13 +1947,6 @@
     $("#cracha-verso").setAttribute("aria-hidden", String(!virar));
   });
   crachaPulo.addEventListener("animationend", () => crachaPulo.classList.remove("pulando"));
-  // degradê rosa do Sobre mim acompanha o mouse
-  const colagem = document.querySelector(".colagem");
-  if (colagem) colagem.addEventListener("pointermove", (e) => {
-    const r = colagem.getBoundingClientRect();
-    colagem.style.setProperty("--gx", ((e.clientX - r.left) / r.width * 100).toFixed(1) + "%");
-    colagem.style.setProperty("--gy", ((e.clientY - r.top) / r.height * 100).toFixed(1) + "%");
-  });
   // brilho furta-cor do crachá segue o mouse (no verso, que está girado, o eixo horizontal é invertido)
   crachaCartao.addEventListener("pointermove", (e) => {
     const r = crachaCartao.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * 100, y = (e.clientY - r.top) / r.height * 100;

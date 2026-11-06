@@ -745,8 +745,8 @@
     background: radial-gradient(circle at var(--cx, 50%) var(--cy, 30%), rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 45%);
   }
   .cracha-verso::after, .cracha-verso::before { --cx: var(--cxi, 50%); }
-  .cracha-cartao:hover .cracha-face::after, .cracha-cartao:focus-visible .cracha-face::after { opacity: .9; }
-  .cracha-cartao:hover .cracha-face::before, .cracha-cartao:focus-visible .cracha-face::before { opacity: 1; }
+  .cracha-cartao:hover .cracha-face::after, .cracha-cartao:focus-visible .cracha-face::after { opacity: .45; }
+  .cracha-cartao:hover .cracha-face::before, .cracha-cartao:focus-visible .cracha-face::before { opacity: .6; }
   .cracha-verso {
     transform: rotateY(180deg); display: flex; align-items: flex-end; padding: 0 11% 13%;
     background: linear-gradient(180deg, #F7F7F7 0%, #F6F6F6 20%, #F3F3F3 100%); /* mesmo tom do cartão da foto */
@@ -761,6 +761,7 @@
     background: url("cracha.webp?v=4") 49.100% 34.270% / 1489.52% auto no-repeat;
     -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
     mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+    mix-blend-mode: multiply; /* o branco em volta do mosquetão some e pega a cor do cartão (inclusive com o brilho) */
   }
   @media (max-width: 920px) {
     /* no celular o crachá vem antes do texto, com o cordão saindo de baixo do menu */

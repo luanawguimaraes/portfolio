@@ -600,6 +600,31 @@
   .resultado .r-rotulo { display: block; font-weight: 600; margin: 10px 0 14px; }
   .resultado p { color: var(--tinta-suave); font-size: 15px; margin: 0 0 18px; }
   .resultado .r-marca { font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--azul); }
+  /* PERGUNTAS FREQUENTES: perguntas que abrem e fecham (sanfona) */
+  .faq { padding-top: clamp(24px, 3.5vw, 48px); }
+  .faq-topo { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; margin-bottom: clamp(24px, 3vw, 36px); }
+  .faq-topo .rotulo { margin-bottom: 0; }
+  .faq-topo .titulo-secao { font-weight: 800; line-height: 1; letter-spacing: -.03em; font-size: clamp(34px, 4vw, 56px); max-width: none; }
+  #titulo-faq em { font-style: normal; }
+  .faq-topo p { margin: 0; color: var(--tinta-suave); }
+  .faq-lista { display: grid; gap: 12px; max-width: 820px; }
+  .faq-item { border: 1px solid var(--linha); border-radius: 16px; overflow: hidden; background: rgba(255, 255, 255, .55); transition: border-color .25s, box-shadow .25s; }
+  .faq-item[open] { border-color: rgba(199, 45, 103, .35); box-shadow: 0 14px 30px -24px rgba(43, 43, 43, .45); }
+  .faq-item summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 20px 18px 22px; cursor: pointer; list-style: none;
+    font-family: var(--serif); font-size: clamp(15px, 1.3vw, 17px); font-weight: 700; color: var(--tinta); transition: background .25s, color .25s; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary:hover { background: rgba(207, 223, 252, .45); }
+  .faq-item[open] summary { background: var(--azul-claro); }
+  .faq-item summary:focus-visible { outline: 2px solid var(--azul); outline-offset: -2px; }
+  .faq-icone { position: relative; flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--azul); transition: transform .3s ease, background .25s; }
+  .faq-icone::before, .faq-icone::after { content: ""; position: absolute; left: 50%; top: 50%; width: 11px; height: 2px; border-radius: 2px; background: #fff; transform: translate(-50%, -50%); }
+  .faq-icone::after { transform: translate(-50%, -50%) rotate(90deg); }
+  .faq-item[open] .faq-icone { transform: rotate(45deg); } /* o + vira x */
+  .faq-resposta { padding: 16px 22px 20px; }
+  .faq-resposta p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--tinta-suave); }
+  .faq-item[open] .faq-resposta { animation: faqAbrir .35s ease; }
+  @keyframes faqAbrir { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .faq-item[open] .faq-resposta { animation: none; } .faq-icone { transition: none; } }
   /* DEPOIMENTOS: cartões que passam sozinhos devagar, com setas para avançar e voltar */
   .dep-topo { align-items: flex-end; }
   /* título no mesmo formato dos outros (Habilidades, Fotos, Processos) */
@@ -1145,6 +1170,19 @@
     </div>
   </section>
 
+  <!-- ============ PERGUNTAS FREQUENTES ============
+       As perguntas e respostas ficam na lista PERGUNTAS, no começo do script -->
+  <section class="secao faq" id="faq" aria-labelledby="titulo-faq">
+    <div class="container">
+      <div class="faq-topo">
+        <span class="rotulo revelar" data-i18n="faq.rotulo">Dúvidas</span>
+        <h2 class="titulo-secao revelar" id="titulo-faq" data-i18n="faq.titulo">Perguntas <em>frequentes</em></h2>
+        <p class="revelar" data-atraso="1" data-i18n="faq.texto">O que as marcas mais perguntam antes de fechar um conteúdo comigo.</p>
+      </div>
+      <div class="faq-lista revelar" id="faq-lista"></div>
+    </div>
+  </section>
+
   <!-- ============ 7. BORA CRIAR JUNTOS ============ -->
   <section class="secao contato" id="contato" aria-labelledby="titulo-contato">
     <div class="container contato-grade">
@@ -1543,6 +1581,22 @@
       texto_en: "Luana made a beautiful, highly polished video! We highly recommend her." }
   ];
 
+  // PERGUNTAS FREQUENTES: seção logo abaixo dos depoimentos. Clicar na pergunta abre/fecha a resposta.
+  const PERGUNTAS = [
+    { pergunta: "Como posso usar o conteúdo?", pergunta_en: "How can I use the content?",
+      resposta: "Nas redes sociais, tráfego pago (ads), catálogos, sites, e-commerces e marketplaces.",
+      resposta_en: "On social media, paid traffic (ads), catalogs, websites, e-commerce stores and marketplaces." },
+    { pergunta: "Tempo de entrega?", pergunta_en: "Delivery time?",
+      resposta: "Prazo padrão de entrega de até 7 dias úteis após o recebimento do produto.",
+      resposta_en: "Standard delivery within 7 business days after receiving the product." },
+    { pergunta: "Tem exclusividade?", pergunta_en: "Is exclusivity available?",
+      resposta: "A exclusividade pode ser negociada mediante ajuste contratual.",
+      resposta_en: "Exclusivity can be negotiated through a contract adjustment." },
+    { pergunta: "Por quanto tempo posso usar o conteúdo?", pergunta_en: "For how long can I use the content?",
+      resposta: "Uso orgânico vitalício para redes sociais e marketplaces. Para uso em tráfego pago, o prazo é de 3 meses.",
+      resposta_en: "Lifetime organic use on social media and marketplaces. For paid traffic, the usage period is 3 months." }
+  ];
+
   // TEXTOS EM INGLÊS: cada chave corresponde a um data-i18n no HTML.
   // O português fica no próprio HTML; aqui fica só a tradução.
   const TEXTOS_EN = {
@@ -1608,6 +1662,9 @@
     "num.rotulo": "Testimonials",
     "num.titulo": "What <em>brands</em> say",
     "num.texto": "Real feedback from brands that trusted my work.",
+    "faq.rotulo": "Questions",
+    "faq.titulo": "Frequently asked <em>questions</em>",
+    "faq.texto": "What brands ask most before booking content with me.",
     "num.carrossel": "Brand testimonials",
     "num.anterior": "Previous testimonial",
     "num.proxima": "Next testimonial",
@@ -2122,6 +2179,13 @@
         </div>
       </li>`;
       }).join("");
+
+    // Perguntas frequentes (a primeira já começa aberta)
+    $("#faq-lista").innerHTML = PERGUNTAS.map((p, i) => `
+      <details class="faq-item"${i === 0 ? " open" : ""}>
+        <summary><span>${escapar(campo(p, "pergunta"))}</span><i class="faq-icone" aria-hidden="true"></i></summary>
+        <div class="faq-resposta"><p>${escapar(campo(p, "resposta"))}</p></div>
+      </details>`).join("");
 
     // Depoimentos: a lista aparece 3 vezes seguidas para o carrossel dar a volta sem emendas
     // (só a do meio é lida por leitores de tela)

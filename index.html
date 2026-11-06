@@ -433,7 +433,12 @@
   .proc-repetir:hover, .proc-repetir:focus-visible { background: var(--azul-claro); }
   /* computador: textos alinhados na altura de cada placa, à esquerda */
   @media (min-width: 1000px) {
-    .proc-rotulos { position: absolute; left: 0; top: 0; width: min(34%, 380px); }
+    .proc-rotulos { position: absolute; left: 0; top: 0; width: min(38%, 440px); }
+    .proc-pilha { left: 69%; }
+  }
+  /* telas médias: as descrições ocupam 2 linhas, então as placas ficam mais afastadas para sobrar espaço entre os textos */
+  @media (min-width: 1000px) and (max-width: 1199px) {
+    .proc-palco { --vao: calc(var(--pw) * .7); height: calc(var(--pw) * 3.15); }
     .proc-rotulo { position: absolute; left: 0; right: 0; top: var(--y, 0); transform: translate(-10px, -9px); }
     .proc-palco[data-fase="3"] .proc-rotulo { transform: translate(0, -9px); }
   }
@@ -1873,7 +1878,7 @@
       </div>`).join("") + `<div class="proc-video" id="proc-video"><img src="${capa}" alt="" loading="lazy" decoding="async"></div>`;
     $("#proc-rotulos").innerHTML = CAMADAS.map((c, i) => `
       <li class="proc-rotulo" style="--atraso: ${(i * 0.12).toFixed(2)}s">
-        <h3>${escapar(campo(c, "titulo"))}</h3>
+        <h3>${i + 1}. ${escapar(campo(c, "titulo"))}</h3>
         <strong>${escapar(campo(c, "subtitulo"))}</strong>
         <p>${escapar(campo(c, "texto"))}</p>
       </li>`).join("");
@@ -1885,13 +1890,21 @@
     if (!palco || window.innerWidth < 1000) { if (svg) svg.innerHTML = ""; return; }
     const caixa = palco.getBoundingClientRect(), rotulos = [...palco.querySelectorAll(".proc-rotulo")];
     const largura = $("#proc-rotulos").getBoundingClientRect().width;
-    let linhas = "";
+    // pontos de cada placa (a perspectiva deixa as placas de baixo mais afastadas entre si)
+    const pontos = [];
     palco.querySelectorAll(".proc-ponto").forEach((p) => {
-      const i = Number(p.dataset.i), r = p.getBoundingClientRect();
-      const x = r.left - caixa.left, y = r.top - caixa.top, x0 = largura + 16;
-      if (rotulos[i]) rotulos[i].style.setProperty("--y", y + "px");
-      const comp = Math.max(0, Math.round(x - 6 - x0));
-      linhas += `<path d="M${x0} ${y.toFixed(1)}H${(x - 6).toFixed(1)}" style="--comp:${comp}; --atraso:${(i * 0.12).toFixed(2)}s"/><circle cx="${(x - 6).toFixed(1)}" cy="${y.toFixed(1)}" r="2.5" style="--atraso:${(i * 0.12 + 0.6).toFixed(2)}s"/>`;
+      const r = p.getBoundingClientRect();
+      pontos[Number(p.dataset.i)] = { x: r.left - caixa.left, y: r.top - caixa.top };
+    });
+    // os textos ficam com espaço igual entre si; a linha sai reta do texto e faz uma curva suave até a placa
+    const n = pontos.length, yIni = pontos[0].y, yFim = pontos[n - 1].y, x0 = largura + 16;
+    let linhas = "";
+    pontos.forEach(({ x, y }, i) => {
+      const yt = n > 1 ? yIni + (yFim - yIni) * i / (n - 1) : y;
+      if (rotulos[i]) rotulos[i].style.setProperty("--y", yt + "px");
+      const xf = x - 6, xm = x0 + (xf - x0) * 0.45;
+      const comp = Math.round(Math.hypot(xf - x0, y - yt) + 20);
+      linhas += `<path d="M${x0} ${yt.toFixed(1)}H${xm.toFixed(1)}C${(xm + (xf - xm) * .5).toFixed(1)} ${yt.toFixed(1)} ${(xm + (xf - xm) * .5).toFixed(1)} ${y.toFixed(1)} ${xf.toFixed(1)} ${y.toFixed(1)}" style="--comp:${comp}; --atraso:${(i * 0.12).toFixed(2)}s"/><circle cx="${xf.toFixed(1)}" cy="${y.toFixed(1)}" r="2.5" style="--atraso:${(i * 0.12 + 0.6).toFixed(2)}s"/>`;
     });
     svg.innerHTML = linhas;
   }

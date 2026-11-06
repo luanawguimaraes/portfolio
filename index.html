@@ -373,9 +373,11 @@
   .proc-palco { --pw: clamp(190px, 18vw, 240px); --vao: calc(var(--pw) * .56); position: relative; height: calc(var(--pw) * 2.8); perspective: 1800px; }
   .proc-pilha { position: absolute; left: 66%; top: 50%; width: var(--pw); height: calc(var(--pw) * 16 / 9);
     margin: calc(var(--pw) * -8 / 9) 0 0 calc(var(--pw) / -2); transform-style: preserve-3d;
-    transform: rotateX(0deg) rotateZ(0deg); transition: transform .9s cubic-bezier(.65, 0, .25, 1); }
-  .proc-palco[data-fase="1"] .proc-pilha { transform: rotateX(0deg) rotateZ(-90deg); }
-  .proc-palco[data-fase="2"] .proc-pilha, .proc-palco[data-fase="3"] .proc-pilha { transform: rotateX(57deg) rotateZ(-97deg); }
+    transform: rotateX(0deg) rotateZ(0deg) scale(1); transition: transform .9s cubic-bezier(.65, 0, .25, 1), left .9s cubic-bezier(.65, 0, .25, 1); }
+  /* fase 0: o vídeo começa grande, no meio da tela; ao girar, diminui e vai para a direita */
+  .proc-palco[data-fase="0"] .proc-pilha { left: 50%; transform: rotateX(0deg) rotateZ(0deg) scale(var(--escala-inicio, 1.5)); }
+  .proc-palco[data-fase="1"] .proc-pilha { transform: rotateX(0deg) rotateZ(-90deg) scale(1); }
+  .proc-palco[data-fase="2"] .proc-pilha, .proc-palco[data-fase="3"] .proc-pilha { transform: rotateX(57deg) rotateZ(-97deg) scale(1); }
   /* cada placa: vidro fino translúcido */
   .proc-placa { position: absolute; inset: 0; border-radius: 16px; overflow: hidden; transform: translateZ(0);
     transition: transform 1s cubic-bezier(.65, 0, .25, 1) var(--atraso, 0s);

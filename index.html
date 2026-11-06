@@ -435,12 +435,14 @@
   @media (min-width: 1000px) {
     .proc-rotulos { position: absolute; left: 0; top: 0; width: min(38%, 440px); }
     .proc-pilha { left: 69%; }
+    /* placas mais afastadas = mais espaço (sempre igual) entre os textos */
+    .proc-palco { --vao: calc(var(--pw) * .66); height: calc(var(--pw) * 3.1); }
+    .proc-rotulo { position: absolute; left: 0; right: 0; top: var(--y, 0); transform: translate(-10px, -9px); }
+    .proc-palco[data-fase="3"] .proc-rotulo { transform: translate(0, -9px); }
   }
   /* telas médias: as descrições ocupam 2 linhas, então as placas ficam mais afastadas para sobrar espaço entre os textos */
   @media (min-width: 1000px) and (max-width: 1199px) {
-    .proc-palco { --vao: calc(var(--pw) * .7); height: calc(var(--pw) * 3.15); }
-    .proc-rotulo { position: absolute; left: 0; right: 0; top: var(--y, 0); transform: translate(-10px, -9px); }
-    .proc-palco[data-fase="3"] .proc-rotulo { transform: translate(0, -9px); }
+    .proc-palco { --vao: calc(var(--pw) * .82); height: calc(var(--pw) * 3.65); }
   }
   /* celular e tablet: pilha centralizada e textos em lista embaixo */
   @media (max-width: 999px) {

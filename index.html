@@ -414,6 +414,11 @@
   .proc-video { position: absolute; inset: 0; border-radius: 16px; overflow: hidden; background: #111; transform: translateZ(2px);
     transition: opacity .7s ease .2s; box-shadow: 0 30px 50px -28px rgba(20, 17, 13, .5); }
   .proc-video img, .proc-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border: 0; }
+  /* a capa fica por cima até o vídeo já estar rodando (assim não aparece a abertura do YouTube);
+     o player fica um pouco ampliado para cortar o título e o logo das bordas */
+  .proc-video img { z-index: 2; transition: opacity .6s ease; }
+  .proc-video.tocando img { opacity: 0; }
+  .proc-video iframe { transform: scale(1.32); pointer-events: none; }
   .proc-palco[data-fase="2"] .proc-video, .proc-palco[data-fase="3"] .proc-video { opacity: 0; }
   /* linhas e textos à esquerda */
   .proc-linhas { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
@@ -424,7 +429,7 @@
   .proc-rotulos { list-style: none; margin: 0; padding: 0; }
   .proc-rotulo { opacity: 0; transform: translateX(-10px); transition: opacity .6s ease var(--atraso, 0s), transform .6s ease var(--atraso, 0s); }
   .proc-palco[data-fase="3"] .proc-rotulo { opacity: 1; transform: none; }
-  .proc-rotulo h3 { margin: 0; font-family: var(--serif); font-size: 13px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--azul); }
+  .proc-rotulo h3 { margin: 0; font-family: var(--serif); font-size: 13px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--azul); }
   .proc-rotulo strong { display: block; margin-top: 3px; font-size: 14.5px; font-weight: 600; color: var(--tinta); }
   .proc-rotulo p { margin: 2px 0 0; font-size: 13.5px; line-height: 1.45; color: var(--tinta-suave); }
   .proc-repetir { display: block; margin: 8px auto 0; padding: 10px 20px; border-radius: 999px; border: 1px solid var(--linha); background: transparent;
@@ -1920,15 +1925,40 @@
     const fase = (f) => { palco.dataset.fase = String(f); };
     if (reduzirMovimento) { fase(3); desenharLinhasProcesso(); $("#proc-repetir").classList.remove("visivel"); return; }
     fase(0);
-    if (!video.querySelector("iframe")) { video.insertAdjacentHTML("beforeend", iframeYouTube(PROCESSO_VIDEO, "", true)); tirarLegendas(video.querySelector("iframe")); }
-    procTempos.push(setTimeout(() => fase(1), 3600));
-    procTempos.push(setTimeout(() => fase(2), 5200));
-    procTempos.push(setTimeout(() => {
-      fase(3); desenharLinhasProcesso();
-      const f = video.querySelector("iframe"); if (f) f.remove(); // o vídeo já sumiu: para de tocar
-    }, 7000));
-    procTempos.push(setTimeout(() => $("#proc-repetir").classList.add("visivel"), 8600));
+    video.classList.remove("tocando");
+    if (procOuvinte) window.removeEventListener("message", procOuvinte);
+    const antigo = video.querySelector("iframe"); if (antigo) antigo.remove();
+    video.insertAdjacentHTML("beforeend", iframeYouTube(PROCESSO_VIDEO, "", true));
+    const player = video.querySelector("iframe");
+    tirarLegendas(player);
+    // depois que o vídeo some, as camadas aparecem: gira, deita, separa e mostra os textos
+    let seguiu = false;
+    const seguir = (espera) => {
+      if (seguiu) return; seguiu = true;
+      const t0 = espera;
+      procTempos.push(setTimeout(() => fase(1), t0));
+      procTempos.push(setTimeout(() => fase(2), t0 + 1600));
+      procTempos.push(setTimeout(() => {
+        fase(3); desenharLinhasProcesso();
+        player.remove(); // o vídeo já sumiu: para de tocar
+        window.removeEventListener("message", procOuvinte);
+      }, t0 + 3400));
+      procTempos.push(setTimeout(() => $("#proc-repetir").classList.add("visivel"), t0 + 5000));
+    };
+    // a capa só sai quando o vídeo já está rodando há um tempinho (a abertura do YouTube some sozinha)
+    procOuvinte = (e) => {
+      if (e.source !== player.contentWindow) return;
+      let dados; try { dados = JSON.parse(e.data); } catch (_) { return; }
+      const estado = dados?.info?.playerState ?? (dados.event === "onStateChange" ? dados.info : undefined);
+      if (estado !== 1 || video.classList.contains("tocando") || seguiu) return;
+      procTempos.push(setTimeout(() => video.classList.add("tocando"), 3200));
+      seguir(3200 + 3000);
+    };
+    window.addEventListener("message", procOuvinte);
+    // se o vídeo não carregar, segue só com a capa
+    procTempos.push(setTimeout(() => seguir(0), 7000));
   }
+  let procOuvinte = null;
   window.addEventListener("resize", () => { if (Number($("#proc-palco")?.dataset.fase) >= 3) desenharLinhasProcesso(); });
   // começa quando a pessoa chega na seção (uma vez); o botão repete
   $("#proc-repetir").addEventListener("click", rodarProcesso);

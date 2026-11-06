@@ -396,16 +396,14 @@
   @media (hover: none) { .dica-mouse { display: none; } .dica-toque { display: inline; } }
   /* verso: gradiente furta-cor que acompanha o mouse */
   .hab-verso {
-    transform: rotateY(180deg); justify-content: flex-start; gap: 12px;
+    transform: rotateY(180deg); justify-content: center; align-items: center; text-align: center;
     background: linear-gradient(125deg, #FFD3E6 0%, #DCE6FF 22%, #FFF3C4 44%, #D5F5EA 66%, #F1D6FF 84%, #FFD3E6 100%);
     background-size: 260% 260%; background-position: var(--mx, 30%) var(--my, 30%); transition: background-position .35s ease-out;
   }
   .hab-verso::after { content: ""; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: soft-light;
     background: radial-gradient(circle at var(--mx, 30%) var(--my, 30%), rgba(255, 255, 255, .85), rgba(255, 255, 255, 0) 55%); }
-  .hab-verso h4 { position: relative; z-index: 1; margin: 6px 0 0; font-family: var(--serif); font-size: 17px; font-weight: 800; line-height: 1.2; color: var(--azul); }
   .hab-verso p { position: relative; z-index: 1; margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--tinta); }
   .hab-verso p strong { font-weight: 500; color: var(--tinta); }
-  .hab-verso .hab-topo { position: relative; z-index: 1; color: #6F6873; }
   @media (prefers-reduced-motion: reduce) { .hab-giro, .hab-cartao { transition-duration: .01s; } }
   /* telas médias: 2 cartões por linha, cada um com o seu cordão (o fio comprido só aparece quando cabem os 4) */
   @media (max-width: 1240px) {
@@ -1627,8 +1625,6 @@
               </div>
             </div>
             <div class="hab-face hab-verso">
-              <div class="hab-topo"><span>${escapar(ui().habRotulo)} / ${num}</span></div>
-              <h4>${escapar(titulo)}</h4>
               <p>${negrito(campo(h, "descricao"))}</p>
             </div>
           </div>

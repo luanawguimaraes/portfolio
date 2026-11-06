@@ -710,7 +710,7 @@
   }
   .cracha-cordao {
     aspect-ratio: 735 / 634;
-    background: url("cracha.webp?v=3") 47.842% 0 / 251.29% auto no-repeat;
+    background: url("cracha.webp?v=4") 47.842% 0 / 251.29% auto no-repeat;
     -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 16%);
     mask-image: linear-gradient(to bottom, transparent 0, #000 16%);
   }
@@ -730,7 +730,23 @@
     -webkit-backface-visibility: hidden; backface-visibility: hidden;
     filter: drop-shadow(0 1px 1.5px rgba(20, 17, 13, .10)) drop-shadow(0 16px 26px rgba(20, 17, 13, .11));
   }
-  .cracha-frente { background: url("cracha.webp?v=3") 47.842% 70.523% / 251.29% auto no-repeat; }
+  .cracha-frente { background: url("cracha.webp?v=4") 47.842% 70.523% / 251.29% auto no-repeat; }
+  /* brilho furta-cor que acompanha o mouse (o mesmo dos cartões de habilidades) */
+  /* camada de cor (multiplicar: tinge o branco do cartão e não clareia o preto do texto) */
+  .cracha-face::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .4s;
+    mix-blend-mode: multiply;
+    background: linear-gradient(125deg, #FFC9E0 0%, #CADBFF 22%, #FFF0B3 44%, #C4F1E1 66%, #E8C9FF 84%, #FFC9E0 100%) var(--cx, 50%) var(--cy, 30%) / 260% 260%;
+  }
+  /* brilho que segue o mouse */
+  .cracha-face::before {
+    content: ""; position: absolute; inset: 0; z-index: 1; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .4s;
+    mix-blend-mode: screen;
+    background: radial-gradient(circle at var(--cx, 50%) var(--cy, 30%), rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 45%);
+  }
+  .cracha-verso::after, .cracha-verso::before { --cx: var(--cxi, 50%); }
+  .cracha-cartao:hover .cracha-face::after, .cracha-cartao:focus-visible .cracha-face::after { opacity: .9; }
+  .cracha-cartao:hover .cracha-face::before, .cracha-cartao:focus-visible .cracha-face::before { opacity: 1; }
   .cracha-verso {
     transform: rotateY(180deg); display: flex; align-items: flex-end; padding: 0 11% 13%;
     background: linear-gradient(180deg, #F7F7F7 0%, #F6F6F6 20%, #F3F3F3 100%); /* mesmo tom do cartão da foto */
@@ -742,7 +758,7 @@
   .cracha-e { background: var(--degrade); -webkit-background-clip: text; background-clip: text; color: transparent; }
   .cracha-gancho {
     position: absolute; top: 0; left: 42.721%; width: 16.871%; aspect-ratio: 124 / 150; z-index: 2; pointer-events: none;
-    background: url("cracha.webp?v=3") 49.100% 34.270% / 1489.52% auto no-repeat;
+    background: url("cracha.webp?v=4") 49.100% 34.270% / 1489.52% auto no-repeat;
     -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
     mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
   }
@@ -1932,6 +1948,13 @@
     $("#cracha-verso").setAttribute("aria-hidden", String(!virar));
   });
   crachaPulo.addEventListener("animationend", () => crachaPulo.classList.remove("pulando"));
+  // brilho furta-cor do crachá segue o mouse (no verso, que está girado, o eixo horizontal é invertido)
+  crachaCartao.addEventListener("pointermove", (e) => {
+    const r = crachaCartao.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * 100, y = (e.clientY - r.top) / r.height * 100;
+    crachaCartao.style.setProperty("--cx", x.toFixed(1) + "%");
+    crachaCartao.style.setProperty("--cxi", (100 - x).toFixed(1) + "%");
+    crachaCartao.style.setProperty("--cy", y.toFixed(1) + "%");
+  });
 
   // Entrada do crachá: cai do alto, vindo da esquerda, e vai balançando até parar no lugar dele.
   // Depois fica parado e só balança com o mouse em cima.
@@ -1960,7 +1983,7 @@
       requestAnimationFrame(quadro);
     };
     const foto = new Image();
-    foto.src = "cracha.webp?v=3";
+    foto.src = "cracha.webp?v=4";
     (foto.decode ? foto.decode() : Promise.resolve()).then(comecar, comecar);
     setTimeout(comecar, 1500); // se a foto demorar, começa assim mesmo
   })();

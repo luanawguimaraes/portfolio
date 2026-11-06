@@ -429,7 +429,7 @@
   .proc-rotulo h3 { margin: 0; font-family: var(--serif); font-size: 13px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--azul); }
   .proc-rotulo strong { display: block; margin-top: 3px; font-size: 14.5px; font-weight: 600; color: var(--tinta); }
   .proc-rotulo p { margin: 2px 0 0; font-size: 13.5px; line-height: 1.45; color: var(--tinta-suave); }
-  .proc-repetir { display: block; margin: 8px auto 0; padding: 10px 20px; border-radius: 999px; border: 1px solid var(--linha); background: transparent;
+  .proc-repetir { display: block; margin: clamp(32px, 4vw, 48px) auto 0; padding: 10px 20px; border-radius: 999px; border: 1px solid var(--linha); background: transparent;
     font: 500 14px var(--sans); color: var(--tinta); cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .4s, background .2s, color .2s; }
   .proc-repetir.visivel { opacity: 1; pointer-events: auto; }
   .proc-repetir:hover, .proc-repetir:focus-visible { background: var(--azul-claro); }
@@ -1089,19 +1089,6 @@
     </div>
   </section>
 
-  <!-- ============ 5. COMO EU TE AJUDO ============ -->
-  <section class="secao servicos" id="servicos" aria-labelledby="titulo-servicos">
-    <div class="container">
-      <div class="cabecalho-secao">
-        <div>
-          <span class="rotulo revelar" data-i18n="serv.rotulo">Como eu te ajudo</span>
-          <h2 class="titulo-secao revelar" id="titulo-servicos" data-i18n="serv.titulo">Serviços pensados para <em>vender</em></h2>
-        </div>
-        <p class="revelar" data-i18n="serv.texto">Do roteiro à entrega final, cada formato é pensado para o lugar onde ele vai rodar.</p>
-      </div>
-      <ul class="servicos-grade" id="servicos-lista"></ul>
-    </div>
-  </section>
 
   <!-- ============ 6. DEPOIMENTOS ============
        (as partes "Resultados que contam a história" e "Resultados de campanha" foram retiradas) -->
@@ -1248,7 +1235,6 @@
     { secao: "#sobre",     pos: { top: "46%", left: "1%" },   tam: 30, giro: -24, celular: false },
     { secao: "#destaques", pos: { top: "10px", left: "45%" }, tam: 110, giro: 12, celular: false },
     { secao: "#trabalhos", pos: { top: "88%", left: "2%" },   tam: 42, giro: -8, celular: false },
-    { secao: "#servicos",  pos: { top: "7%",  right: "6%" },  tam: 92, giro: 16, posCelular: { top: "16px", right: "10px" } },
     { secao: "#numeros",   pos: { top: "62%", left: "1.5%" }, tam: 46, giro: 6, celular: false },
     { secao: "#contato",   pos: { top: "5%",  right: "4%" },  tam: 36, giro: -20, celular: false }
   ];
@@ -2014,14 +2000,6 @@
         </div>
       </li>`;
       }).join("");
-
-    // Serviços
-    $("#servicos-lista").innerHTML = SERVICOS.map((s, i) => `
-      <li class="servico ${classeRevelar()}" data-atraso="${i % 3}">
-        <span class="servico-num">${doisDigitos(i + 1)}</span>
-        <h3>${escapar(campo(s, "titulo"))}</h3>
-        <p>${escapar(campo(s, "descricao"))}</p>
-      </li>`).join("");
 
     // Depoimentos
     $("#depoimentos").innerHTML = DEPOIMENTOS.map((d, i) => `

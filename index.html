@@ -673,25 +673,25 @@
   /* ==========================================================
      7. BORA CRIAR JUNTOS
      ========================================================== */
-  .contato { background: linear-gradient(125deg, #C72D67 0%, #D94C86 55%, #EA70A5 100%); color: var(--branco); position: relative; overflow: hidden; }
-  .contato::before { content: ""; position: absolute; width: 520px; height: 520px; border-radius: 50%; border: 1px solid rgba(255, 253, 250, .18); right: -160px; top: -160px; }
-  .contato .rotulo { color: #FEF8E7; }
-  .contato .rotulo::before { background: #FEF8E7; }
-  .contato .titulo-secao em { color: #FEF8E7; }
-  .contato-grade { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 7vw, 100px); position: relative; }
-  .contato-intro p { color: #FEF8E7; max-width: 40ch; margin: 26px 0 34px; font-size: 18px; }
-  .canais { display: grid; gap: 12px; }
-  .canal {
-    display: flex; align-items: center; gap: 16px; padding: 16px 20px; border-radius: var(--raio);
-    border: 1px solid rgba(255, 253, 250, .28); text-decoration: none; transition: background .25s, border-color .25s;
-  }
-  .canal:hover { background: rgba(255, 253, 250, .1); border-color: rgba(255, 253, 250, .6); }
-  .canal-icone { width: 44px; height: 44px; border-radius: 50%; background: var(--branco); color: var(--azul); display: grid; place-items: center; flex-shrink: 0; }
-  .canal-icone svg { width: 20px; height: 20px; }
-  .canal strong { display: block; font-size: 15px; }
-  .canal span { font-size: 14px; color: #FEF8E7; word-break: break-word; }
-  .contato .seta { margin-left: auto; font-size: 20px; }
-  .formulario { background: var(--creme); color: var(--tinta); border-radius: var(--raio); padding: clamp(26px, 4vw, 44px); box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .45); }
+  /* fundo grafite escuro (da paleta), com o rosa como destaque; o rodapé continua no mesmo fundo */
+  .contato { background: var(--tinta); color: #F4EFE6; position: relative; overflow: hidden; padding-bottom: clamp(56px, 7vw, 96px); }
+  .contato .rotulo { color: var(--roxo-claro); }
+  .contato .rotulo::before { background: var(--roxo-claro); }
+  .contato .titulo-secao { color: #FEF8E7; font-weight: 800; line-height: 1; letter-spacing: -.03em; font-size: clamp(38px, 4.6vw, 64px); max-width: 12ch; }
+  .contato .titulo-secao em { color: var(--roxo-claro); font-style: normal; }
+  .contato-grade { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: clamp(40px, 6vw, 90px); position: relative; align-items: start; }
+  .contato-intro p { color: rgba(244, 239, 230, .78); max-width: 34ch; margin: 26px 0 36px; font-size: 18px; line-height: 1.6; }
+  .canais { display: grid; gap: 16px; }
+  .canal { display: flex; align-items: center; gap: 16px; text-decoration: none; color: #F4EFE6; width: fit-content; }
+  .canal-icone { width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(244, 239, 230, .3); color: #F4EFE6; display: grid; place-items: center; flex-shrink: 0; transition: background .25s, border-color .25s, color .25s; }
+  .canal-icone svg { width: 18px; height: 18px; }
+  .canal-texto { font-size: 16px; word-break: break-word; transition: color .25s; }
+  .canal:hover .canal-icone, .canal:focus-visible .canal-icone { background: var(--roxo-claro); border-color: var(--roxo-claro); color: var(--tinta); }
+  .canal:hover .canal-texto { color: var(--roxo-claro); }
+  /* formulário direto no fundo escuro, com campos em duas colunas */
+  .formulario { color: #F4EFE6; }
+  .campos-duplos { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
+  /* campos padrão (usados também no card do mídia kit, que tem fundo claro) */
   .campo { margin-bottom: 20px; }
   .campo label { display: block; font-size: 13px; font-weight: 600; letter-spacing: .06em; margin-bottom: 8px; }
   .campo input, .campo textarea {
@@ -700,25 +700,38 @@
   }
   .campo textarea { min-height: 140px; resize: vertical; }
   .campo input:focus, .campo textarea:focus { outline: none; border-color: var(--azul); box-shadow: 0 0 0 3px rgba(199, 45, 103, .22); }
-  .formulario .botao { width: 100%; }
+  /* campos do contato, no fundo escuro */
+  .contato .campo { margin-bottom: 22px; }
+  .contato .campo label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 10px; color: rgba(244, 239, 230, .75); }
+  .contato .campo input, .contato .campo textarea { padding: 15px 18px; border-radius: 14px; border-color: rgba(244, 239, 230, .14); background: rgba(255, 255, 255, .06); color: #FEF8E7; font-family: inherit; }
+  .contato .campo input::placeholder, .contato .campo textarea::placeholder { color: rgba(244, 239, 230, .4); }
+  .contato .campo input:focus, .contato .campo textarea:focus { border-color: var(--roxo-claro); background: rgba(255, 255, 255, .09); box-shadow: 0 0 0 3px rgba(234, 112, 165, .22); }
+  .botao-enviar { display: inline-flex; align-items: center; gap: 10px; padding: 16px 30px; border: 0; border-radius: 999px; background: var(--roxo-claro); color: var(--tinta);
+    font: 600 15px var(--sans); cursor: pointer; transition: background .25s, transform .25s; }
+  .botao-enviar:hover, .botao-enviar:focus-visible { background: #F48DB9; transform: translateY(-2px); }
+  .botao-enviar svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .contato .erro-form { color: #FFB3C9 !important; }
   .confirmacao { display: none; text-align: center; padding: 30px 0; }
   .confirmacao.visivel { display: block; animation: surgir .5s ease both; }
-  .confirmacao .check { width: 64px; height: 64px; border-radius: 50%; background: var(--azul); color: var(--branco); display: grid; place-items: center; margin: 0 auto 20px; font-size: 28px; }
-  .confirmacao h3 { font-size: 30px; margin-bottom: 10px; }
-  .confirmacao p { color: var(--tinta-suave); }
+  .confirmacao .check { width: 64px; height: 64px; border-radius: 50%; background: var(--roxo-claro); color: var(--tinta); display: grid; place-items: center; margin: 0 auto 20px; font-size: 28px; }
+  .confirmacao h3 { font-size: 30px; margin-bottom: 10px; color: #FEF8E7; }
+  .confirmacao p { color: rgba(244, 239, 230, .78); }
   .link-texto { background: none; border: 0; padding: 0; color: var(--azul); font-weight: 600; text-decoration: underline; cursor: pointer; }
+  .contato .link-texto { color: var(--roxo-claro); }
+  @media (max-width: 640px) { .campos-duplos { grid-template-columns: 1fr; } }
 
   /* ==========================================================
-     8. RODAPÉ
+     8. RODAPÉ (mesmo fundo do contato, separado por uma linha fina)
      ========================================================== */
-  .rodape { background: var(--tinta); color: var(--creme); padding: 64px 0 36px; }
-  .rodape-topo { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; flex-wrap: wrap; padding-bottom: 40px; border-bottom: 1px solid rgba(243, 238, 233, .16); }
-  .rodape-nome { font-family: var(--serif); font-size: clamp(40px, 7vw, 84px); line-height: 1; }
-  .rodape-nome em { color: var(--roxo-claro); }
-  .redes { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
-  .redes a { text-decoration: none; font-size: 15px; color: #c9c1b6; transition: color .2s; }
-  .redes a:hover { color: var(--creme); }
-  .rodape-base { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 28px; font-size: 14px; color: #a39b90; }
+  .rodape { background: var(--tinta); color: #F4EFE6; padding: 0 0 40px; }
+  .rodape .container { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; padding-top: 40px; border-top: 1px solid rgba(244, 239, 230, .12); }
+  .rodape-nome { margin: 0; font-family: var(--serif); font-size: 22px; font-weight: 800; letter-spacing: -.01em; color: #FEF8E7; }
+  .rodape-nome em { color: var(--roxo-claro); font-style: normal; }
+  .rodape-sub { display: block; margin-top: 6px; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: rgba(244, 239, 230, .55); }
+  .redes { display: flex; align-items: center; gap: 0; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(244, 239, 230, .55); }
+  .redes li + li::before { content: "·"; margin: 0 16px; }
+  .redes a { text-decoration: none; color: rgba(244, 239, 230, .7); transition: color .2s; }
+  .redes a:hover, .redes a:focus-visible { color: var(--roxo-claro); }
 
   /* ==========================================================
      CARD DE CAPTURA (mídia kit)
@@ -1192,20 +1205,17 @@
         <h2 class="titulo-secao revelar" id="titulo-contato" data-i18n="cont.titulo">Bora criar <em>juntos?</em></h2>
         <p class="revelar" data-i18n="cont.texto">Me conta sobre a sua marca e o que você precisa. Eu respondo rapidinho com uma proposta pensada para o seu objetivo.</p>
         <div class="canais revelar">
-          <a class="canal" href="https://wa.me/5511963604439" target="_blank" rel="noopener">
-            <span class="canal-icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-13.4 7.8L3 21l1.3-4.4A9 9 0 1 1 21 12z"/><path d="M9 9.5c.5 2.2 2.3 4 4.5 4.5l1.2-1.2 2 1-.4 1.6c-3.6.4-8-4-7.6-7.6l1.6-.4 1 2z"/></svg></span>
-            <span><strong>WhatsApp</strong><span>(11) 96360-4439</span></span>
-            <span class="seta" aria-hidden="true">↗</span>
-          </a>
           <a class="canal" href="mailto:luanawguimaraes@gmail.com">
             <span class="canal-icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
-            <span><strong data-i18n="cont.email">E-mail</strong><span>luanawguimaraes@gmail.com</span></span>
-            <span class="seta" aria-hidden="true">↗</span>
+            <span class="canal-texto">luanawguimaraes@gmail.com</span>
           </a>
           <a class="canal" href="https://instagram.com/luawiechetek" target="_blank" rel="noopener">
             <span class="canal-icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></svg></span>
-            <span><strong>Instagram</strong><span>@luawiechetek</span></span>
-            <span class="seta" aria-hidden="true">↗</span>
+            <span class="canal-texto">@luawiechetek</span>
+          </a>
+          <a class="canal" href="https://wa.me/5511963604439" target="_blank" rel="noopener">
+            <span class="canal-icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-13.4 7.8L3 21l1.3-4.4A9 9 0 1 1 21 12z"/><path d="M9 9.5c.5 2.2 2.3 4 4.5 4.5l1.2-1.2 2 1-.4 1.6c-3.6.4-8-4-7.6-7.6l1.6-.4 1 2z"/></svg></span>
+            <span class="canal-texto">(11) 96360-4439</span>
           </a>
         </div>
       </div>
@@ -1214,20 +1224,30 @@
         <!-- O formulário mostra a confirmação na tela. Para receber as mensagens de verdade no seu e-mail,
              conecte um serviço gratuito como o Formspree e coloque o endereço dele em FORM_ENDPOINT no script. -->
         <form id="form-contato" novalidate>
-          <div class="campo">
-            <label for="nome" data-i18n="form.nome">Nome</label>
-            <input id="nome" name="nome" type="text" autocomplete="name" required placeholder="Como posso te chamar?" data-i18n-attr="placeholder:form.nomePh">
+          <div class="campos-duplos">
+            <div class="campo">
+              <label for="nome" data-i18n="form.nome">Nome</label>
+              <input id="nome" name="nome" type="text" autocomplete="name" required placeholder="Seu nome" data-i18n-attr="placeholder:form.nomePh">
+            </div>
+            <div class="campo">
+              <label for="email" data-i18n="form.email">E-mail</label>
+              <input id="email" name="email" type="email" autocomplete="email" required placeholder="voce@marca.com" data-i18n-attr="placeholder:form.emailPh">
+            </div>
           </div>
           <div class="campo">
-            <label for="email" data-i18n="form.email">E-mail</label>
-            <input id="email" name="email" type="email" autocomplete="email" required placeholder="voce@suamarca.com" data-i18n-attr="placeholder:form.emailPh">
+            <label for="marca" data-i18n="form.marca">Marca / empresa</label>
+            <input id="marca" name="marca" type="text" autocomplete="organization" placeholder="Nome da marca" data-i18n-attr="placeholder:form.marcaPh">
           </div>
           <div class="campo">
-            <label for="mensagem" data-i18n="form.mensagem">Mensagem</label>
-            <textarea id="mensagem" name="mensagem" required placeholder="Conte sobre a sua marca, o produto e o objetivo da campanha." data-i18n-attr="placeholder:form.mensagemPh"></textarea>
+            <label for="orcamento" data-i18n="form.orcamento">Orçamento estimado</label>
+            <input id="orcamento" name="orcamento" type="text" placeholder="Ex.: R$ 1.000 a R$ 5.000" data-i18n-attr="placeholder:form.orcamentoPh">
           </div>
-          <p class="erro-form" id="erro-form" role="alert" style="color:#a3200e;font-size:14px;margin:-6px 0 14px;display:none" data-i18n="form.erro">Preencha nome, e-mail válido e mensagem para enviar.</p>
-          <button class="botao botao-primario" type="submit" data-i18n="form.enviar">Enviar mensagem</button>
+          <div class="campo">
+            <label for="mensagem" data-i18n="form.mensagem">Conta sobre o projeto</label>
+            <textarea id="mensagem" name="mensagem" required placeholder="Categoria, formato, prazo, objetivo da campanha..." data-i18n-attr="placeholder:form.mensagemPh"></textarea>
+          </div>
+          <p class="erro-form" id="erro-form" role="alert" style="font-size:14px;margin:-6px 0 14px;display:none" data-i18n="form.erro">Preencha nome, e-mail válido e mensagem para enviar.</p>
+          <button class="botao-enviar" type="submit"><span data-i18n="form.enviar">Enviar mensagem</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg></button>
         </form>
         <div class="confirmacao" id="confirmacao" role="status" aria-live="polite" tabindex="-1">
           <div class="check" aria-hidden="true">✓</div>
@@ -1243,19 +1263,17 @@
 <!-- ============ 8. RODAPÉ ============ -->
 <footer class="rodape">
   <div class="container">
-    <div class="rodape-topo">
+    <div>
       <p class="rodape-nome">Luana <em>Guimarães</em></p>
-      <ul class="redes" aria-label="Minhas redes" data-i18n-attr="aria-label:rodape.redes">
-        <li><a href="https://instagram.com/luawiechetek" target="_blank" rel="noopener">Instagram</a></li>
-        <li><a href="https://wa.me/5511963604439" target="_blank" rel="noopener">WhatsApp</a></li>
-        <li><a href="mailto:luanawguimaraes@gmail.com" data-i18n="cont.email">E-mail</a></li>
-        <!-- Adicione outras redes aqui, por exemplo TikTok: <li><a href="https://tiktok.com/@seuusuario">TikTok</a></li> -->
-      </ul>
+      <span class="rodape-sub" data-i18n="rodape.local">UGC Creator · Alphaville (SP)</span>
     </div>
-    <div class="rodape-base">
-      <span>© <span id="ano">2026</span> Luana Guimarães. <span data-i18n="rodape.direitos">Todos os direitos reservados.</span></span>
-      <span data-i18n="rodape.local">UGC Creator · Alphaville (SP)</span>
-    </div>
+    <ul class="redes" aria-label="Minhas redes" data-i18n-attr="aria-label:rodape.redes">
+      <li><a href="mailto:luanawguimaraes@gmail.com">luanawguimaraes@gmail.com</a></li>
+      <li><a href="https://instagram.com/luawiechetek" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://wa.me/5511963604439" target="_blank" rel="noopener">WhatsApp</a></li>
+      <li>© <span id="ano">2026</span></li>
+      <!-- Adicione outras redes aqui, por exemplo TikTok: <li><a href="https://tiktok.com/@seuusuario">TikTok</a></li> -->
+    </ul>
   </div>
 </footer>
 
@@ -1672,10 +1690,14 @@
     "cont.email": "Email",
     "form.nome": "Name",
     "form.email": "Email",
-    "form.mensagem": "Message",
-    "form.nomePh": "What should I call you?",
-    "form.emailPh": "you@yourbrand.com",
-    "form.mensagemPh": "Tell me about your brand, the product and the campaign goal.",
+    "form.mensagem": "Tell me about the project",
+    "form.nomePh": "Your name",
+    "form.emailPh": "you@brand.com",
+    "form.mensagemPh": "Category, format, deadline, campaign goal...",
+    "form.marca": "Brand / company",
+    "form.marcaPh": "Brand name",
+    "form.orcamento": "Estimated budget",
+    "form.orcamentoPh": "E.g. R$ 1,000 to R$ 5,000",
     "form.erro": "Please fill in your name, a valid email and a message.",
     "form.enviar": "Send message",
     "form.enviada": "Message sent!",

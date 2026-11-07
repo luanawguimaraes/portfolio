@@ -136,7 +136,7 @@
   .topo.rolado { border-bottom-color: var(--linha); box-shadow: 0 8px 24px -20px rgba(20, 17, 13, .4); }
   .topo .container { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
   .marca-nome { font-family: var(--serif); font-size: 22px; text-decoration: none; white-space: nowrap; }
-  .marca-nome em { color: var(--azul); }
+  .marca-nome em { color: var(--azul); font-style: normal; } /* "Guimarães" sem itálico */
   .menu { display: flex; align-items: center; gap: clamp(16px, 2.4vw, 34px); list-style: none; margin: 0; padding: 0; }
   .menu a { text-decoration: none; font-size: 14px; font-weight: 500; position: relative; padding: 6px 0; white-space: nowrap; }
   .menu a::after { content: ""; position: absolute; left: 0; bottom: 0; width: 100%; height: 1px; background: var(--azul); transform: scaleX(0); transform-origin: left; transition: transform .3s; }
@@ -2532,9 +2532,13 @@
 
   // Entrada do crachá: cai do alto, vindo da esquerda, e vai balançando até parar no lugar dele.
   // Depois fica parado e só balança com o mouse em cima.
-  (function entradaCracha() {
+  // Também roda de novo quando a pessoa clica em "Página Inicial" (ou no nome lá em cima).
+  let crachaCaindo = false;
+  function entradaCracha(deNovo) {
     const caixa = $("#cracha-entrada");
-    if (reduzirMovimento || window.scrollY > 200) return; // quem pediu menos movimento, ou já abriu no meio da página, vê o crachá parado
+    if (!caixa || reduzirMovimento || crachaCaindo) return;
+    if (!deNovo && window.scrollY > 200) return; // quem já abriu no meio da página vê o crachá parado
+    crachaCaindo = true;
     caixa.classList.add("esperando");
     let comecou = false;
     const comecar = () => {
@@ -2552,15 +2556,29 @@
         const x = -lado * Math.pow(1 - andar, 3);
         const giro = 24 * Math.exp(-t / 0.9) * Math.cos(2 * Math.PI * t / 1.4); // balanço que vai diminuindo
         caixa.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) rotate(${giro.toFixed(2)}deg)`;
-        if (t < 4.6) requestAnimationFrame(quadro); else caixa.style.transform = "";
+        if (t < 4.6) requestAnimationFrame(quadro); else { caixa.style.transform = ""; crachaCaindo = false; }
       };
       requestAnimationFrame(quadro);
     };
+    if (deNovo) { comecar(); return; } // a foto já carregou na primeira vez
     const foto = new Image();
     foto.src = "cracha.webp?v=4";
     (foto.decode ? foto.decode() : Promise.resolve()).then(comecar, comecar);
     setTimeout(comecar, 1500); // se a foto demorar, começa assim mesmo
-  })();
+  }
+  entradaCracha(false);
+  // clique em "Página Inicial" ou no nome: esconde o crachá, espera a página subir até o topo e faz ele cair de novo
+  document.querySelectorAll('a[href="#inicio"]').forEach((a) => a.addEventListener("click", () => {
+    const caixa = $("#cracha-entrada");
+    if (!caixa || reduzirMovimento || crachaCaindo) return;
+    caixa.classList.add("esperando");
+    const inicio = performance.now();
+    const esperarTopo = () => {
+      if (window.scrollY < 40 || performance.now() - inicio > 1600) { caixa.classList.remove("esperando"); entradaCracha(true); }
+      else requestAnimationFrame(esperarTopo);
+    };
+    requestAnimationFrame(esperarTopo);
+  }));
 
   // Estrelas: seis pontas finas e um pouco irregulares, como desenhadas à mão
   function caminhoEstrela() {

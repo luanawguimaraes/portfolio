@@ -673,23 +673,24 @@
   /* ==========================================================
      7. BORA CRIAR JUNTOS
      ========================================================== */
-  /* fundo grafite escuro (da paleta), com o rosa como destaque; o rodapé continua no mesmo fundo */
-  .contato { background: var(--tinta); color: #F4EFE6; position: relative; overflow: hidden; padding-bottom: clamp(56px, 7vw, 96px); }
-  .contato .rotulo { color: var(--roxo-claro); }
-  .contato .rotulo::before { background: var(--roxo-claro); }
+  /* fundo rosa em degradê (o mesmo do portfólio); o rodapé continua no mesmo degradê, sem emenda */
+  .contato, .rodape { background: linear-gradient(90deg, #C72D67 0%, #D94C86 55%, #EA70A5 100%); }
+  .contato { color: #FFF8FB; position: relative; overflow: hidden; padding-bottom: clamp(56px, 7vw, 96px); }
+  .contato .rotulo { color: #FEF8E7; }
+  .contato .rotulo::before { background: #FEF8E7; }
   .contato .titulo-secao { color: #FEF8E7; font-weight: 800; line-height: 1; letter-spacing: -.03em; font-size: clamp(38px, 4.6vw, 64px); max-width: 12ch; }
-  .contato .titulo-secao em { color: var(--roxo-claro); font-style: normal; }
+  .contato .titulo-secao em { color: #FFD3E6; font-style: normal; }
   .contato-grade { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: clamp(40px, 6vw, 90px); position: relative; align-items: start; }
-  .contato-intro p { color: rgba(244, 239, 230, .78); max-width: 34ch; margin: 26px 0 36px; font-size: 18px; line-height: 1.6; }
+  .contato-intro p { color: rgba(255, 248, 251, .92); max-width: 34ch; margin: 26px 0 36px; font-size: 18px; line-height: 1.6; }
   .canais { display: grid; gap: 16px; }
-  .canal { display: flex; align-items: center; gap: 16px; text-decoration: none; color: #F4EFE6; width: fit-content; }
-  .canal-icone { width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(244, 239, 230, .3); color: #F4EFE6; display: grid; place-items: center; flex-shrink: 0; transition: background .25s, border-color .25s, color .25s; }
+  .canal { display: flex; align-items: center; gap: 16px; text-decoration: none; color: #FFF8FB; width: fit-content; }
+  .canal-icone { width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(255, 248, 251, .55); color: #FFF8FB; display: grid; place-items: center; flex-shrink: 0; transition: background .25s, border-color .25s, color .25s; }
   .canal-icone svg { width: 18px; height: 18px; }
   .canal-texto { font-size: 16px; word-break: break-word; transition: color .25s; }
-  .canal:hover .canal-icone, .canal:focus-visible .canal-icone { background: var(--roxo-claro); border-color: var(--roxo-claro); color: var(--tinta); }
-  .canal:hover .canal-texto { color: var(--roxo-claro); }
+  .canal:hover .canal-icone, .canal:focus-visible .canal-icone { background: #FEF8E7; border-color: #FEF8E7; color: var(--azul); }
+  .canal:hover .canal-texto { text-decoration: underline; text-underline-offset: 4px; }
   /* formulário direto no fundo escuro, com campos em duas colunas */
-  .formulario { color: #F4EFE6; }
+  .formulario { color: #FFF8FB; }
   .campos-duplos { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
   /* campos padrão (usados também no card do mídia kit, que tem fundo claro) */
   .campo { margin-bottom: 20px; }
@@ -702,36 +703,36 @@
   .campo input:focus, .campo textarea:focus { outline: none; border-color: var(--azul); box-shadow: 0 0 0 3px rgba(199, 45, 103, .22); }
   /* campos do contato, no fundo escuro */
   .contato .campo { margin-bottom: 22px; }
-  .contato .campo label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 10px; color: rgba(244, 239, 230, .75); }
-  .contato .campo input, .contato .campo textarea { padding: 15px 18px; border-radius: 14px; border-color: rgba(244, 239, 230, .14); background: rgba(255, 255, 255, .06); color: #FEF8E7; font-family: inherit; }
-  .contato .campo input::placeholder, .contato .campo textarea::placeholder { color: rgba(244, 239, 230, .4); }
-  .contato .campo input:focus, .contato .campo textarea:focus { border-color: var(--roxo-claro); background: rgba(255, 255, 255, .09); box-shadow: 0 0 0 3px rgba(234, 112, 165, .22); }
-  .botao-enviar { display: inline-flex; align-items: center; gap: 10px; padding: 16px 30px; border: 0; border-radius: 999px; background: var(--roxo-claro); color: var(--tinta);
+  .contato .campo label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 10px; color: rgba(255, 248, 251, .88); }
+  .contato .campo input, .contato .campo textarea { padding: 15px 18px; border-radius: 14px; border-color: rgba(255, 248, 251, .45); background: rgba(255, 255, 255, .14); color: #FFFFFF; font-family: inherit; }
+  .contato .campo input::placeholder, .contato .campo textarea::placeholder { color: rgba(255, 248, 251, .7); }
+  .contato .campo input:focus, .contato .campo textarea:focus { border-color: #FFFFFF; background: rgba(255, 255, 255, .22); box-shadow: 0 0 0 3px rgba(255, 255, 255, .25); }
+  .botao-enviar { display: inline-flex; align-items: center; gap: 10px; padding: 16px 30px; border: 0; border-radius: 999px; background: #FEF8E7; color: var(--azul);
     font: 600 15px var(--sans); cursor: pointer; transition: background .25s, transform .25s; }
-  .botao-enviar:hover, .botao-enviar:focus-visible { background: #F48DB9; transform: translateY(-2px); }
+  .botao-enviar:hover, .botao-enviar:focus-visible { background: #FFFFFF; transform: translateY(-2px); }
   .botao-enviar svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-  .contato .erro-form { color: #FFB3C9 !important; }
+  .contato .erro-form { color: #FFF3C4 !important; }
   .confirmacao { display: none; text-align: center; padding: 30px 0; }
   .confirmacao.visivel { display: block; animation: surgir .5s ease both; }
-  .confirmacao .check { width: 64px; height: 64px; border-radius: 50%; background: var(--roxo-claro); color: var(--tinta); display: grid; place-items: center; margin: 0 auto 20px; font-size: 28px; }
+  .confirmacao .check { width: 64px; height: 64px; border-radius: 50%; background: #FEF8E7; color: var(--azul); display: grid; place-items: center; margin: 0 auto 20px; font-size: 28px; }
   .confirmacao h3 { font-size: 30px; margin-bottom: 10px; color: #FEF8E7; }
-  .confirmacao p { color: rgba(244, 239, 230, .78); }
+  .confirmacao p { color: rgba(255, 248, 251, .9); }
   .link-texto { background: none; border: 0; padding: 0; color: var(--azul); font-weight: 600; text-decoration: underline; cursor: pointer; }
-  .contato .link-texto { color: var(--roxo-claro); }
+  .contato .link-texto { color: #FEF8E7; }
   @media (max-width: 640px) { .campos-duplos { grid-template-columns: 1fr; } }
 
   /* ==========================================================
      8. RODAPÉ (mesmo fundo do contato, separado por uma linha fina)
      ========================================================== */
-  .rodape { background: var(--tinta); color: #F4EFE6; padding: 0 0 40px; }
-  .rodape .container { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; padding-top: 40px; border-top: 1px solid rgba(244, 239, 230, .12); }
+  .rodape { color: #FFF8FB; padding: 0 0 40px; }
+  .rodape .container { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; padding-top: 40px; border-top: 1px solid rgba(255, 248, 251, .35); }
   .rodape-nome { margin: 0; font-family: var(--serif); font-size: 22px; font-weight: 800; letter-spacing: -.01em; color: #FEF8E7; }
-  .rodape-nome em { color: var(--roxo-claro); font-style: normal; }
-  .rodape-sub { display: block; margin-top: 6px; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: rgba(244, 239, 230, .55); }
-  .redes { display: flex; align-items: center; gap: 0; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(244, 239, 230, .55); }
+  .rodape-nome em { color: #FFD3E6; font-style: normal; }
+  .rodape-sub { display: block; margin-top: 6px; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: rgba(255, 248, 251, .8); }
+  .redes { display: flex; align-items: center; gap: 0; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255, 248, 251, .8); }
   .redes li + li::before { content: "·"; margin: 0 16px; }
-  .redes a { text-decoration: none; color: rgba(244, 239, 230, .7); transition: color .2s; }
-  .redes a:hover, .redes a:focus-visible { color: var(--roxo-claro); }
+  .redes a { text-decoration: none; color: rgba(255, 248, 251, .9); transition: color .2s; }
+  .redes a:hover, .redes a:focus-visible { color: #FFFFFF; text-decoration: underline; text-underline-offset: 4px; }
 
   /* ==========================================================
      CARD DE CAPTURA (mídia kit)

@@ -960,7 +960,8 @@
   }
   @media (max-width: 920px) {
     /* no celular o crachá vem antes do texto, com o cordão saindo de baixo do menu */
-    .cracha-area { order: -1; margin-top: calc(-1 * clamp(40px, 7vw, 90px)); }
+    /* igual ao computador: o cordão começa lá no topo da página, por trás do menu, então o esfumado do começo do cordão não aparece */
+    .cracha-area { order: -1; margin-top: calc(-1 * (var(--topo) + clamp(40px, 7vw, 90px))); }
     .cracha-entrada { width: min(230px, 66%); }
     .sobre-colagem { width: 100%; margin-left: auto; margin-right: auto; } /* montagem centralizada no celular */
   }

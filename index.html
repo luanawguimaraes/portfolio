@@ -763,7 +763,12 @@
   .modal-fechar:focus-visible { outline: 2px solid var(--azul); outline-offset: 2px; }
   .modal-arquivo { flex: 1; text-align: center; margin-right: 55px; font-size: 13px; font-weight: 600; color: var(--tinta-suave); letter-spacing: .02em; }
   .modal-corpo { padding: clamp(24px, 5vw, 40px) clamp(22px, 5vw, 40px) clamp(24px, 5vw, 36px); }
-  .modal h2 { font-family: var(--serif); font-size: clamp(22px, 4.6vw, 28px); font-weight: 800; line-height: 1.12; letter-spacing: -.01em; text-transform: uppercase; color: var(--tinta); margin: 0 0 14px; }
+  /* título no mesmo formato dos títulos do portfólio (sem caixa alta), em até 3 linhas */
+  .modal h2 { font-family: var(--serif); font-size: clamp(21px, 5.4vw, 28px); font-weight: 800; line-height: 1.08; letter-spacing: -.03em; color: var(--tinta); margin: 0 0 14px; text-wrap: balance; }
+  .modal h2 em { font-style: normal; }
+  /* marca e WhatsApp lado a lado quando há espaço */
+  .modal .campos-duplos { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+  @media (max-width: 420px) { .modal .campos-duplos { grid-template-columns: 1fr; } }
   #modal-conteudo > p { color: var(--tinta-suave); font-size: 16px; line-height: 1.6; margin: 0 0 22px; }
   .modal .campo { margin-bottom: 16px; }
   .modal .campo label { font-weight: 700; letter-spacing: .01em; color: var(--tinta); }
@@ -1313,7 +1318,7 @@
     </div>
     <div class="modal-corpo">
       <div id="modal-conteudo">
-        <h2 id="modal-titulo" data-i18n="kit.titulo">Quer receber minha tabela de investimentos + opções de pacotes UGC?</h2>
+        <h2 id="modal-titulo" data-i18n="kit.titulo">Quer receber minha tabela de investimentos + opções de <em>pacotes UGC?</em></h2>
         <p data-i18n="kit.texto">Preenche aqui que eu te mando os valores, os formatos e os pacotes pensados para a sua marca.</p>
         <form id="form-kit" novalidate>
           <div class="campo">
@@ -1324,13 +1329,15 @@
             <label for="kit-email" data-i18n="form.email">E-mail</label>
             <input id="kit-email" name="email" type="email" autocomplete="email" required>
           </div>
-          <div class="campo">
-            <label for="kit-marca" data-i18n="kit.marca">Nome da marca</label>
-            <input id="kit-marca" name="marca" type="text" autocomplete="organization">
-          </div>
-          <div class="campo">
-            <label for="kit-whats" data-i18n="kit.whats">WhatsApp</label>
-            <input id="kit-whats" name="whatsapp" type="tel" autocomplete="tel" placeholder="(11) 90000-0000">
+          <div class="campos-duplos">
+            <div class="campo">
+              <label for="kit-marca" data-i18n="kit.marca">Nome da marca</label>
+              <input id="kit-marca" name="marca" type="text" autocomplete="organization">
+            </div>
+            <div class="campo">
+              <label for="kit-whats" data-i18n="kit.whats">WhatsApp</label>
+              <input id="kit-whats" name="whatsapp" type="tel" autocomplete="tel" placeholder="(11) 90000-0000">
+            </div>
           </div>
           <button class="modal-botao" type="submit"><span data-i18n="kit.botao">Quero receber a tabela</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg></button>
         </form>
@@ -1749,7 +1756,7 @@
     "rodape.direitos": "All rights reserved.",
     "kit.fechar": "Close",
     "kit.arquivo": "rate-card",
-    "kit.titulo": "Want my rate card + UGC package options?",
+    "kit.titulo": "Want my rate card + <em>UGC package options?</em>",
     "kit.texto": "Fill this in and I'll send you the rates, formats and packages designed for your brand.",
     "kit.marca": "Brand name",
     "kit.whats": "WhatsApp",

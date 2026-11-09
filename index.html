@@ -358,7 +358,7 @@
   .fotos-topo p { max-width: 52ch; text-wrap: balance; }
   @media (min-width: 1200px) { .fotos-topo p { max-width: 76ch; } } /* texto em 2 linhas no computador */
   .fotos-arco { position: relative; list-style: none; margin: 0 auto; padding: 0; width: 100%; max-width: 1400px; height: var(--arco-altura, 520px);
-    perspective: var(--arco-perspectiva, 1200px); transform-style: preserve-3d;
+    perspective: var(--arco-perspectiva, 1200px);
     -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
             mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 88%, transparent 100%); }
   /* PROCESSO: o vídeo em pé gira 90 graus, deita e se separa em placas de vidro (visão explodida).
@@ -461,11 +461,14 @@
   }
   /* no computador, as fotos maiores das pontas sobem ao lado do texto e o arco fica mais perto dele */
   @media (min-width: 1280px) { .fotos-arco { margin-top: calc(var(--foto-l, 180px) * -0.4); } }
-  .foto-card { position: absolute; left: 50%; top: 50%; width: var(--foto-l, 180px); aspect-ratio: 3 / 4; border-radius: 16px; overflow: hidden;
-    background: #EDE6DC; box-shadow: 0 18px 36px -20px rgba(43, 43, 43, .45); backface-visibility: hidden; }
-  .foto-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
-  .foto-card:hover img { transform: scale(1.05); }
-  @media (prefers-reduced-motion: reduce) { .foto-card img { transition: none; } .foto-card:hover img { transform: none; } }
+  .foto-card { position: absolute; left: 50%; top: 50%; width: var(--foto-l, 180px); aspect-ratio: 3 / 4; backface-visibility: hidden; }
+  .foto-moldura { display: block; width: 100%; height: 100%; border-radius: 16px; overflow: hidden; background: #EDE6DC;
+    box-shadow: 0 18px 36px -20px rgba(43, 43, 43, .45); transition: transform .35s cubic-bezier(.2, .7, .3, 1), box-shadow .35s; }
+  .foto-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* mouse em cima: o arco para (pelo script) e a foto cresce na frente das outras, para ver melhor */
+  .foto-card:hover { z-index: 300 !important; }
+  .foto-card:hover .foto-moldura { transform: scale(1.45); box-shadow: 0 30px 60px -24px rgba(43, 43, 43, .55); }
+  @media (prefers-reduced-motion: reduce) { .foto-moldura { transition: none; } }
   /* título e frase centralizados, um embaixo do outro */
   .habilidades .cabecalho-secao { flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 18px; margin-bottom: clamp(36px, 4.8vw, 56px); }
   .habilidades .cabecalho-secao p { max-width: 52ch; }
@@ -996,6 +999,11 @@
     .colagem-foto { animation: none; }
   }
 </style>
+<!-- Ligação com o painel (Supabase). Carrega sem travar a página. -->
+<script>window.videosDoBanco = new Promise(function (r) { window.__resolverVideosDoBanco = r; });</script>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script defer src="js/banco.js"></script>
+<script defer src="js/site-banco.js"></script>
 </head>
 <body>
 <a class="pular" href="#conteudo" data-i18n="pular">Pular para o conteúdo</a>
@@ -1349,6 +1357,7 @@
 </div>
 
 <script>
+(async () => { // o site espera os vídeos do banco (no máximo 3 segundos) antes de montar as listas
   /* ==========================================================
      DADOS DO PORTFÓLIO: edite aqui sem mexer no HTML
      Os campos que terminam em "_en" são a versão em inglês.
@@ -1658,6 +1667,33 @@
       resposta_en: "Lifetime organic use on social media and marketplaces. For paid traffic, the usage period is 3 months." }
   ];
 
+  // VÍDEOS DO PAINEL: se a tabela "videos" do banco tiver vídeos visíveis, eles substituem as listas acima.
+  // Vídeos com "formato" entram no carrossel de destaque; cada vídeo aparece no nicho escolhido no painel.
+  // Um nicho sem nenhum vídeo no banco continua com a lista fixa daqui, e se o banco não responder o site usa tudo daqui.
+  function idDoYouTube(link) {
+    const m = String(link || "").match(/(?:shorts\/|v=|youtu\.be\/|embed\/)([\w-]{11})/);
+    return m ? m[1] : (/^[\w-]{11}$/.test(String(link || "").trim()) ? String(link).trim() : "");
+  }
+  function aplicarVideosDoBanco(lista) {
+    if (!Array.isArray(lista) || !lista.length) return;
+    const capas = {}; // mantém a capa escolhida à mão (ex.: Hyze Pay) quando o vídeo é o mesmo
+    [...DESTAQUES, ...NICHOS.flatMap((n) => n.videos)].forEach((v) => { if (v.capa) capas[v.id] = v.capa; });
+    const videos = lista.map((v) => ({ ...v, yt: idDoYouTube(v.link) })).filter((v) => v.yt);
+    const nome = (v) => (v.marca || v.titulo || "").trim();
+    const destaques = videos.filter((v) => String(v.formato || "").trim());
+    if (destaques.length) DESTAQUES.splice(0, DESTAQUES.length, ...destaques.map((v) => ({
+      marca: nome(v), id: v.yt, formato: v.formato, formato_en: v.formato,
+      ...(String(v.destaque || "").trim() ? { numero: v.destaque.trim(), rotulo: "" } : {}),
+      ...(capas[v.yt] ? { capa: capas[v.yt] } : {})
+    })));
+    NICHOS.forEach((n) => {
+      const doNicho = videos.filter((v) => v.nicho === n.id);
+      if (doNicho.length) n.videos = doNicho.map((v) => ({ marca: nome(v), id: v.yt, ...(capas[v.yt] ? { capa: capas[v.yt] } : {}) }));
+    });
+  }
+  try {
+    aplicarVideosDoBanco(await Promise.race([window.videosDoBanco || Promise.resolve(null), new Promise((r) => setTimeout(() => r(null), 3000))]));
+  } catch (_) { /* qualquer problema com o banco: o site segue com as listas fixas */ }
   // TEXTOS EM INGLÊS: cada chave corresponde a um data-i18n no HTML.
   // O português fica no próprio HTML; aqui fica só a tradução.
   const TEXTOS_EN = {
@@ -2217,7 +2253,7 @@
 
     // Fotos UGC
     $("#fotos-arco").innerHTML = FOTOS.map((f) =>
-      `<li class="foto-card"><img src="${escapar(f.src)}" alt="${escapar(campo(f, "alt"))}" loading="lazy" decoding="async"></li>`).join("");
+      `<li class="foto-card"><span class="foto-moldura"><img src="${escapar(f.src)}" alt="${escapar(campo(f, "alt"))}" loading="lazy" decoding="async"></span></li>`).join("");
     arrumarArco();
 
     // Habilidades
@@ -2494,6 +2530,13 @@
     }
     erro.style.display = "none";
     ultimoNome = form.nome.value.trim().split(" ")[0];
+    // entra na base de marcas do painel como Lead
+    if (window.enviarLeadAoBanco) {
+      const partes = [`Contato: ${form.nome.value.trim()}`];
+      if (form.orcamento && form.orcamento.value.trim()) partes.push(`Orçamento: ${form.orcamento.value.trim()}`);
+      partes.push(`Mensagem: ${form.mensagem.value.trim()}`);
+      window.enviarLeadAoBanco({ nome: form.nome.value, marca: form.marca ? form.marca.value : "", email: form.email.value, obs: partes.join(" | ") }).catch(() => {});
+    }
     if (FORM_ENDPOINT) {
       try { await fetch(FORM_ENDPOINT, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } }); } catch (_) {}
     }
@@ -2722,6 +2765,9 @@
     e.preventDefault();
     const f = e.target;
     if (!f.checkValidity() || !f.nome.value.trim()) { (f.querySelector(":invalid") || f.nome).focus(); return; }
+    // pedido da tabela também entra na base de marcas do painel como Lead
+    if (window.enviarLeadAoBanco) window.enviarLeadAoBanco({ nome: f.nome.value, marca: f.marca ? f.marca.value : "", email: f.email.value,
+      telefone: f.whatsapp ? f.whatsapp.value : "", obs: `Pediu a tabela de investimentos pelo site. Contato: ${f.nome.value.trim()}` }).catch(() => {});
     if (FORM_ENDPOINT) {
       try { await fetch(FORM_ENDPOINT, { method: "POST", body: new FormData(f), headers: { Accept: "application/json" } }); } catch (_) {}
     }
@@ -2731,6 +2777,7 @@
     setTimeout(fecharKit, 3500);
   });
   if (!lerSessao()) setTimeout(abrirKit, ATRASO_MIDIA_KIT);
+})();
 </script>
 </body>
 </html>

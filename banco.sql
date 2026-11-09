@@ -9,16 +9,37 @@
 
 -- ---------------------------------------------------------------------
 -- 1. QUEM É A DONA
--- Esta função responde "sim" só quando quem está logada é a Luana.
--- Todas as trancas abaixo usam ela. Se um dia o e-mail de login mudar,
--- troque só aqui.
+-- ANTES de rodar este arquivo, crie o seu usuário no Supabase
+-- (Authentication > Users > Add user). Este arquivo guarda esse usuário
+-- como a dona do painel. Assim nenhum e-mail fica escrito aqui.
+-- A tabela "dona" também fica trancada: ninguém lê pelo site.
+-- Se um dia trocar de usuário: apague a linha da tabela "dona" no
+-- Table Editor e rode este arquivo de novo.
 -- ---------------------------------------------------------------------
+create table if not exists public.dona (
+  id         uuid primary key references auth.users (id) on delete cascade,
+  criado_em  timestamptz not null default now()
+);
+alter table public.dona enable row level security;
+revoke all on public.dona from anon, authenticated;
+
+-- Guarda o primeiro usuário criado (o seu), só se ainda não tiver dona.
+insert into public.dona (id)
+select u.id from auth.users u
+where not exists (select 1 from public.dona)
+order by u.created_at
+limit 1;
+
+-- Esta função responde "sim" só quando quem está logada é a dona.
+-- Todas as trancas abaixo usam ela.
 create or replace function public.eh_dona()
 returns boolean
 language sql
 stable
+security definer
+set search_path = public
 as $$
-  select coalesce(auth.jwt() ->> 'email', '') = 'luanawguimaraes@gmail.com';
+  select exists (select 1 from public.dona where id = auth.uid());
 $$;
 
 

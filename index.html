@@ -753,15 +753,13 @@
   .modal-fundo { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
   .modal-barra { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; padding: 14px 18px; border-bottom: 1px solid rgba(43, 43, 43, .08);
     background: linear-gradient(180deg, #FFF0F6, #FFE6F0); }
-  .modal-bolinhas { display: flex; gap: 8px; }
-  .modal-bolinhas i, .modal-fechar { width: 13px; height: 13px; border-radius: 50%; display: block; }
-  .modal-bolinhas i:nth-of-type(1) { background: #F5BF4F; }
-  .modal-bolinhas i:nth-of-type(2) { background: #61C554; }
-  .modal-fechar { padding: 0; border: 0; background: #ED6A5E; cursor: pointer; position: relative; }
-  .modal-fechar::after { content: "×"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 11px; line-height: 1; color: rgba(80, 0, 0, .7); opacity: 0; transition: opacity .2s; }
-  .modal-fechar:hover::after, .modal-fechar:focus-visible::after { opacity: 1; }
+  .modal-estrela { width: 28px; height: 28px; flex-shrink: 0; color: #A9C1F3; transform: rotate(-12deg); }
+  .modal-estrela path { fill: currentColor; }
+  .modal-arquivo { flex: 1; text-align: center; font-size: 13px; font-weight: 600; color: var(--tinta-suave); letter-spacing: .02em; }
+  .modal-fechar { width: 30px; height: 30px; flex-shrink: 0; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--tinta-suave);
+    font-size: 22px; line-height: 1; cursor: pointer; display: grid; place-items: center; transition: background .2s, color .2s; }
+  .modal-fechar:hover, .modal-fechar:focus-visible { background: var(--azul-claro); color: var(--tinta); }
   .modal-fechar:focus-visible { outline: 2px solid var(--azul); outline-offset: 2px; }
-  .modal-arquivo { flex: 1; text-align: center; margin-right: 55px; font-size: 13px; font-weight: 600; color: var(--tinta-suave); letter-spacing: .02em; }
   .modal-corpo { padding: clamp(24px, 5vw, 40px) clamp(22px, 5vw, 40px) clamp(24px, 5vw, 36px); }
   /* título no mesmo formato dos títulos do portfólio (sem caixa alta), em até 3 linhas */
   .modal h2 { font-family: var(--serif); font-size: clamp(21px, 5.4vw, 28px); font-weight: 800; line-height: 1.08; letter-spacing: -.03em; color: var(--tinta); margin: 0 0 14px; text-wrap: balance; }
@@ -1308,13 +1306,11 @@
 <!-- ============ CARD DE CAPTURA: MÍDIA KIT ============ -->
 <div class="modal-fundo" id="modal-fundo" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
-    <!-- barra no estilo de janela: a bolinha vermelha fecha o card -->
+    <!-- barra no topo: estrela azul (a mesma das estrelas do portfólio), nome do arquivo e o X que fecha -->
     <div class="modal-barra">
-      <span class="modal-bolinhas">
-        <button class="modal-fechar" id="modal-fechar" type="button" aria-label="Fechar" data-i18n-attr="aria-label:kit.fechar"></button>
-        <i aria-hidden="true"></i><i aria-hidden="true"></i>
-      </span>
+      <svg class="modal-estrela" viewBox="0 0 100 100" aria-hidden="true"><path/></svg>
       <span class="modal-arquivo" data-i18n="kit.arquivo">tabela-de-investimentos</span>
+      <button class="modal-fechar" id="modal-fechar" type="button" aria-label="Fechar" data-i18n-attr="aria-label:kit.fechar">×</button>
     </div>
     <div class="modal-corpo">
       <div id="modal-conteudo">
@@ -2642,6 +2638,7 @@
     return d + "Z";
   }
   const formaEstrela = caminhoEstrela();
+  document.querySelector(".modal-estrela path")?.setAttribute("d", formaEstrela); // estrela da barra do card da tabela
   const telaPequena = window.matchMedia("(max-width: 760px)");
   const estrelasCriadas = ESTRELAS.map((e) => {
     const secao = document.querySelector(e.secao);

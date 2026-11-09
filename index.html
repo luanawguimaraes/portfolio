@@ -794,6 +794,10 @@
     .capa-foto { max-width: 420px; width: 100%; margin-left: auto; margin-right: auto; }
     .capa-foto .selo { left: -8px; }
     .sobre-foto { max-width: 460px; width: calc(100% - 22px); }
+  }
+  /* celular: a colagem do Sobre mim fica menor e centralizada, proporcional ao resto da página */
+  @media (max-width: 640px) {
+    .sobre-foto { max-width: 290px; width: 76%; margin-left: auto; margin-right: auto; }
     .servicos-grade { grid-template-columns: repeat(2, 1fr); }
     .servico, .servico:not(:nth-child(3n + 1)) { padding: 36px 24px 40px 0; border-left: 0; }
     .servico:nth-child(even) { padding-left: 24px; border-left: 1px solid rgba(43, 43, 43, .14); }

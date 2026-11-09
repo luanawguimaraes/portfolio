@@ -743,20 +743,36 @@
     display: grid; place-items: center; padding: 16px; opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s;
   }
   .modal-fundo.aberto { opacity: 1; visibility: visible; }
+  /* card no estilo de uma janela de computador, com as três bolinhas em cima */
   .modal {
-    position: relative; width: 100%; max-width: 460px; max-height: calc(100vh - 32px); overflow-y: auto;
-    background: var(--creme); border-radius: var(--raio); padding: clamp(28px, 5vw, 44px); box-shadow: 0 40px 80px -30px rgba(0, 0, 0, .5);
+    position: relative; width: 100%; max-width: 480px; max-height: calc(100vh - 32px); overflow-y: auto;
+    background: linear-gradient(160deg, #FFF8F2 0%, #FFE9F2 100%); border-radius: 22px; box-shadow: 0 40px 80px -30px rgba(0, 0, 0, .5);
     transform: translateY(20px) scale(.98); transition: transform .4s;
   }
   .modal-fundo.aberto .modal { transform: none; }
-  .modal .rotulo { margin-bottom: 12px; }
-  .modal h2 { font-size: clamp(30px, 5vw, 40px); margin-bottom: 12px; padding-right: 30px; }
-  .modal > p { color: var(--tinta-suave); font-size: 15px; margin-bottom: 24px; }
-  .modal-fechar {
-    position: absolute; top: 14px; right: 14px; width: 40px; height: 40px; border-radius: 50%;
-    border: 1px solid var(--linha); background: var(--branco); cursor: pointer; font-size: 20px; line-height: 1; display: grid; place-items: center;
-  }
-  .modal-fechar:hover { background: var(--tinta); color: var(--creme); }
+  .modal-fundo { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .modal-barra { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; padding: 14px 18px; border-bottom: 1px solid rgba(43, 43, 43, .08);
+    background: linear-gradient(180deg, #FFF0F6, #FFE6F0); }
+  .modal-bolinhas { display: flex; gap: 8px; }
+  .modal-bolinhas i, .modal-fechar { width: 13px; height: 13px; border-radius: 50%; display: block; }
+  .modal-bolinhas i:nth-of-type(1) { background: #F5BF4F; }
+  .modal-bolinhas i:nth-of-type(2) { background: #61C554; }
+  .modal-fechar { padding: 0; border: 0; background: #ED6A5E; cursor: pointer; position: relative; }
+  .modal-fechar::after { content: "×"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 11px; line-height: 1; color: rgba(80, 0, 0, .7); opacity: 0; transition: opacity .2s; }
+  .modal-fechar:hover::after, .modal-fechar:focus-visible::after { opacity: 1; }
+  .modal-fechar:focus-visible { outline: 2px solid var(--azul); outline-offset: 2px; }
+  .modal-arquivo { flex: 1; text-align: center; margin-right: 55px; font-size: 13px; font-weight: 600; color: var(--tinta-suave); letter-spacing: .02em; }
+  .modal-corpo { padding: clamp(24px, 5vw, 40px) clamp(22px, 5vw, 40px) clamp(24px, 5vw, 36px); }
+  .modal h2 { font-family: var(--serif); font-size: clamp(22px, 4.6vw, 28px); font-weight: 800; line-height: 1.12; letter-spacing: -.01em; text-transform: uppercase; color: var(--tinta); margin: 0 0 14px; }
+  #modal-conteudo > p { color: var(--tinta-suave); font-size: 16px; line-height: 1.6; margin: 0 0 22px; }
+  .modal .campo { margin-bottom: 16px; }
+  .modal .campo label { font-weight: 700; letter-spacing: .01em; color: var(--tinta); }
+  .modal .campo input { background: #FFFCFA; border-color: rgba(43, 43, 43, .16); border-radius: 10px; }
+  .modal .campo input::placeholder { color: rgba(43, 43, 43, .38); }
+  .modal-botao { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 6px; padding: 17px 24px; border: 0; border-radius: 10px;
+    background: var(--degrade); color: #FFF8FB; font: 700 16px var(--sans); cursor: pointer; transition: filter .2s, transform .2s; }
+  .modal-botao:hover, .modal-botao:focus-visible { filter: brightness(1.06); transform: translateY(-1px); }
+  .modal-botao svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 
   /* ==========================================================
      ANIMAÇÃO DE ENTRADA (só ativa quando o JS carrega)
@@ -1287,29 +1303,46 @@
 <!-- ============ CARD DE CAPTURA: MÍDIA KIT ============ -->
 <div class="modal-fundo" id="modal-fundo" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
-    <button class="modal-fechar" id="modal-fechar" type="button" aria-label="Fechar" data-i18n-attr="aria-label:kit.fechar">×</button>
-    <div id="modal-conteudo">
-      <span class="rotulo" data-i18n="kit.rotulo">Mídia kit</span>
-      <h2 id="modal-titulo" data-i18n="kit.titulo">Quer meu mídia kit <em>completo?</em></h2>
-      <p data-i18n="kit.texto">Deixe seu nome e e-mail que eu te envio valores, formatos e resultados.</p>
-      <form id="form-kit" novalidate>
-        <div class="campo">
-          <label for="kit-nome" data-i18n="form.nome">Nome</label>
-          <input id="kit-nome" name="nome" type="text" autocomplete="name" required>
-        </div>
-        <div class="campo">
-          <label for="kit-email" data-i18n="form.email">E-mail</label>
-          <input id="kit-email" name="email" type="email" autocomplete="email" required>
-        </div>
-        <button class="botao botao-primario" type="submit" style="width:100%" data-i18n="kit.botao">Quero receber</button>
-      </form>
+    <!-- barra no estilo de janela: a bolinha vermelha fecha o card -->
+    <div class="modal-barra">
+      <span class="modal-bolinhas">
+        <button class="modal-fechar" id="modal-fechar" type="button" aria-label="Fechar" data-i18n-attr="aria-label:kit.fechar"></button>
+        <i aria-hidden="true"></i><i aria-hidden="true"></i>
+      </span>
+      <span class="modal-arquivo" data-i18n="kit.arquivo">tabela-de-investimentos</span>
     </div>
-    <div class="confirmacao" id="kit-confirmacao" role="status" aria-live="polite">
-      <div class="check" aria-hidden="true">✓</div>
-      <h3 data-i18n="kit.ok">Prontinho!</h3>
-      <p data-i18n="kit.okTexto">Em breve o mídia kit chega no seu e-mail.</p>
+    <div class="modal-corpo">
+      <div id="modal-conteudo">
+        <h2 id="modal-titulo" data-i18n="kit.titulo">Quer receber minha tabela de investimentos + opções de pacotes UGC?</h2>
+        <p data-i18n="kit.texto">Preenche aqui que eu te mando os valores, os formatos e os pacotes pensados para a sua marca.</p>
+        <form id="form-kit" novalidate>
+          <div class="campo">
+            <label for="kit-nome" data-i18n="form.nome">Nome</label>
+            <input id="kit-nome" name="nome" type="text" autocomplete="name" required>
+          </div>
+          <div class="campo">
+            <label for="kit-email" data-i18n="form.email">E-mail</label>
+            <input id="kit-email" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="campo">
+            <label for="kit-marca" data-i18n="kit.marca">Nome da marca</label>
+            <input id="kit-marca" name="marca" type="text" autocomplete="organization">
+          </div>
+          <div class="campo">
+            <label for="kit-whats" data-i18n="kit.whats">WhatsApp</label>
+            <input id="kit-whats" name="whatsapp" type="tel" autocomplete="tel" placeholder="(11) 90000-0000">
+          </div>
+          <button class="modal-botao" type="submit"><span data-i18n="kit.botao">Quero receber a tabela</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg></button>
+        </form>
+      </div>
+      <div class="confirmacao" id="kit-confirmacao" role="status" aria-live="polite">
+        <div class="check" aria-hidden="true">✓</div>
+        <h3 data-i18n="kit.ok">Prontinho!</h3>
+        <p data-i18n="kit.okTexto">Em breve a tabela chega no seu e-mail.</p>
+      </div>
     </div>
   </div>
+</div>
 </div>
 
 <script>
@@ -1715,12 +1748,14 @@
     "rodape.redes": "My social media",
     "rodape.direitos": "All rights reserved.",
     "kit.fechar": "Close",
-    "kit.rotulo": "Media kit",
-    "kit.titulo": "Want my full <em>media kit?</em>",
-    "kit.texto": "Leave your name and email and I'll send you my rates, formats and results.",
-    "kit.botao": "Send it to me",
+    "kit.arquivo": "rate-card",
+    "kit.titulo": "Want my rate card + UGC package options?",
+    "kit.texto": "Fill this in and I'll send you the rates, formats and packages designed for your brand.",
+    "kit.marca": "Brand name",
+    "kit.whats": "WhatsApp",
+    "kit.botao": "Send me the rate card",
     "kit.ok": "All set!",
-    "kit.okTexto": "The media kit will be in your inbox soon."
+    "kit.okTexto": "The rate card will be in your inbox soon."
   };
 
   // Textos usados pelo script (filtros, menu, confirmações)

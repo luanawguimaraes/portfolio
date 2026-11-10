@@ -54,38 +54,14 @@
   .cracha-entrada { width: min(172px, 46vw); transform-origin: 50.6% 0; will-change: transform; }
   .cracha-entrada.esperando { visibility: hidden; }
   .cracha { width: 100%; transform-origin: 50.6% 0; will-change: transform; }
-  .cracha-pulo.pulando { animation: pulinho .55s cubic-bezier(.3, .6, .35, 1); }
-  @keyframes pulinho { 0% { transform: translateY(0); } 38% { transform: translateY(-14px); } 72% { transform: translateY(2px); } 100% { transform: translateY(0); } }
   .cracha-cordao { aspect-ratio: 735 / 634; background: url("../cracha.webp?v=4") 47.842% 0 / 251.29% auto no-repeat; }
-  .cracha-cartao {
-    position: relative; display: block; width: 100%; aspect-ratio: 735 / 1101; margin-top: -1px;
-    padding: 0; border: 0; background: none; cursor: pointer; perspective: 1600px;
-    border-radius: 8.44% / 5.63%; container-type: inline-size;
-  }
-  .cracha-cartao:focus-visible { outline-offset: 6px; }
-  .cracha-giro { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform 1.05s cubic-bezier(.45, .05, .2, 1); }
-  .cracha-cartao.virado .cracha-giro { transform: rotateY(180deg); }
-  .cracha-face {
+  /* cartão do crachá: só a foto, sem virar e sem brilho por cima */
+  .cracha-cartao { position: relative; display: block; width: 100%; aspect-ratio: 735 / 1101; margin-top: -1px; border-radius: 8.44% / 5.63%; }
+  .cracha-frente {
     position: absolute; inset: 0; border-radius: 8.44% / 5.63%;
-    -webkit-backface-visibility: hidden; backface-visibility: hidden;
+    background: url("../cracha.webp?v=4") 47.842% 70.523% / 251.29% auto no-repeat; background-color: #F6F6F6;
     filter: drop-shadow(0 1px 1.5px rgba(20, 17, 13, .10)) drop-shadow(0 16px 26px rgba(20, 17, 13, .13));
   }
-  .cracha-frente { background: url("../cracha.webp?v=4") 47.842% 70.523% / 251.29% auto no-repeat; background-color: #F6F6F6; }
-  .cracha-face::after {
-    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .4s; mix-blend-mode: multiply;
-    background: linear-gradient(125deg, #FFC9E0 0%, #CADBFF 22%, #FFF0B3 44%, #C4F1E1 66%, #E8C9FF 84%, #FFC9E0 100%) var(--cx, 50%) var(--cy, 30%) / 260% 260%;
-  }
-  .cracha-face::before {
-    content: ""; position: absolute; inset: 0; z-index: 1; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .4s; mix-blend-mode: screen;
-    background: radial-gradient(circle at var(--cx, 50%) var(--cy, 30%), rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 45%);
-  }
-  .cracha-verso::after, .cracha-verso::before { --cx: var(--cxi, 50%); }
-  .cracha-cartao:hover .cracha-face::after, .cracha-cartao:focus-visible .cracha-face::after { opacity: .45; }
-  .cracha-cartao:hover .cracha-face::before, .cracha-cartao:focus-visible .cracha-face::before { opacity: .6; }
-  .cracha-verso { transform: rotateY(180deg); display: flex; align-items: flex-end; padding: 0 11% 13%;
-    background: linear-gradient(180deg, #F7F7F7 0%, #F6F6F6 20%, #F3F3F3 100%); }
-  .cracha-texto { font-family: var(--serif); font-weight: 800; font-size: 10.5cqi; line-height: 1.08; letter-spacing: -.02em; color: var(--tinta); text-align: left; }
-  .cracha-e { background: var(--degrade); -webkit-background-clip: text; background-clip: text; color: transparent; }
   .cracha-gancho {
     position: absolute; top: 0; left: 42.721%; width: 16.871%; aspect-ratio: 124 / 150; z-index: 2; pointer-events: none;
     background: url("../cracha.webp?v=4") 49.100% 34.270% / 1489.52% auto no-repeat;
@@ -107,15 +83,17 @@
   .etiqueta strong { display: block; font: 800 13px/1.1 var(--serif); letter-spacing: -.01em; }
   .etiqueta small { display: block; font-size: 10.5px; line-height: 1.2; opacity: .92; white-space: nowrap; }
   /* posições medidas a partir da altura do cartão (--h), para não cobrir o rosto nem o nome em nenhum tamanho de tela */
-  .cracha-area { --h: calc(min(172px, 46vw) * 1.498); }
-  .etiqueta.e1 { left: 4px; bottom: calc(var(--h) * .83); transform: rotate(-4deg); animation-delay: 1.1s, 1.6s; }
-  .etiqueta.e2 { right: 4px; bottom: calc(var(--h) * .60 - 50px); transform: rotate(3deg); animation-delay: 1.35s, 2.4s; }
-  .etiqueta.e3 { left: 4px; bottom: calc(var(--h) * .26); transform: rotate(-2deg); animation-delay: 1.6s, 3.1s; }
+  /* --cw: largura do crachá. As etiquetas ficam encostadas nele (entram um pouco por cima da borda)
+     e nunca chegam a menos de 12px da beirada da janela */
+  .cracha-area { --cw: min(172px, 46vw); --h: calc(var(--cw) * 1.498); --perto: max(12px, calc(50% - var(--cw) / 2 - 68px)); }
+  .etiqueta.e1 { left: var(--perto); bottom: calc(var(--h) * .83); transform: rotate(-4deg); animation-delay: 1.1s, 1.6s; }
+  .etiqueta.e2 { right: var(--perto); bottom: calc(var(--h) * .60 - 50px); transform: rotate(3deg); animation-delay: 1.35s, 2.4s; }
+  .etiqueta.e3 { left: var(--perto); bottom: calc(var(--h) * .26); transform: rotate(-2deg); animation-delay: 1.6s, 3.1s; }
   @keyframes aparecer { from { opacity: 0; scale: .6; } to { opacity: 1; scale: 1; } }
   @keyframes flutuar { 0%, 100% { translate: 0 0; } 50% { translate: 0 -5px; } }
   @media (prefers-reduced-motion: reduce) { .etiqueta { opacity: 1; } }
   /* celulares bem estreitos: etiquetas um pouco menores */
-  @media (max-width: 359px) {
+  @media (max-width: 380px) {
     .etiqueta { gap: 6px; padding: 5px 9px 5px 5px; border-radius: 10px; }
     .etiqueta .bolinha { width: 22px; height: 22px; }
     .etiqueta .bolinha svg { width: 13px; height: 13px; }
@@ -123,7 +101,6 @@
     .etiqueta small { font-size: 9.5px; }
   }
 
-  .dica-cracha { margin: 8px 0 0; font-size: 12px; color: var(--tinta-suave); opacity: .8; }
 
   /* estrelinhas em volta do crachá */
   .estrela-solta { position: absolute; pointer-events: none; animation: girar 20s linear infinite; }
@@ -134,7 +111,7 @@
 
   /* ===== TEXTO ===== */
   .balao {
-    position: relative; display: inline-block; margin: 18px auto 14px; padding: 12px 22px; border-radius: 999px;
+    position: relative; display: inline-block; margin: 24px auto 14px; padding: 12px 22px; border-radius: 999px;
     background: var(--branco); border: 1px solid rgba(43, 43, 43, .08); box-shadow: 0 16px 30px -22px rgba(199, 45, 103, .55);
   }
   .balao::before { /* biquinho do balão apontando para o crachá */
@@ -198,20 +175,14 @@
         <ul class="etiquetas" id="etiquetas"></ul>
         <div class="cracha-entrada esperando" id="cracha-entrada">
           <div class="cracha" id="cracha">
-            <div class="cracha-pulo" id="cracha-pulo">
-              <div class="cracha-cordao" aria-hidden="true"></div>
-              <button class="cracha-cartao" id="cracha-cartao" type="button" aria-pressed="false">
-                <span class="cracha-giro">
-                  <span class="cracha-face cracha-frente" id="cracha-frente" role="img"></span>
-                  <span class="cracha-face cracha-verso" id="cracha-verso" aria-hidden="true"><span class="cracha-texto" id="cracha-texto"></span></span>
-                </span>
-                <span class="cracha-gancho" aria-hidden="true"></span>
-              </button>
+            <div class="cracha-cordao" aria-hidden="true"></div>
+            <div class="cracha-cartao" id="cracha-cartao">
+              <span class="cracha-frente" id="cracha-frente" role="img"></span>
+              <span class="cracha-gancho" aria-hidden="true"></span>
             </div>
           </div>
         </div>
       </div>
-      <p class="dica-cracha" id="dica-cracha"></p>
 
       <div class="balao"><h1 id="titulo"></h1></div>
       <p class="cargo" id="cargo"></p>
@@ -240,18 +211,16 @@
       titulo: 'Oi, eu sou a <em>Luana!</em>',
       cargo: "Criadora UGC & designer de portfólios UGC",
       frase: "Vídeos <em>autênticos e estratégicos</em> para marcas.",
-      dica: "Toque no crachá para virar", virar: "Virar o crachá", emBreve: "em breve",
-      fotoAlt: "Luana Guimarães com o crachá de Criadora UGC e Designer",
-      verso: 'UGC creator <span class="cracha-e">&amp;</span><br>Designer de<br>portfólios UGC'
+      emBreve: "em breve",
+      fotoAlt: "Luana Guimarães com o crachá de Criadora UGC e Designer"
     },
     en: {
       barra: "link-in-bio", botao: "PT", botaoNome: "Ler em português",
       titulo: 'Hi, I\'m <em>Luana!</em>',
       cargo: "UGC creator & UGC portfolio designer",
       frase: "<em>Authentic, strategic</em> videos for brands.",
-      dica: "Tap the badge to flip it", virar: "Flip the badge", emBreve: "soon",
-      fotoAlt: "Luana Guimarães wearing her UGC Creator and Designer badge",
-      verso: 'UGC creator <span class="cracha-e">&amp;</span><br>UGC portfolio<br>designer'
+      emBreve: "soon",
+      fotoAlt: "Luana Guimarães wearing her UGC Creator and Designer badge"
     }
   };
 
@@ -301,10 +270,7 @@
     $("#titulo").innerHTML = t.titulo;
     $("#cargo").textContent = t.cargo;
     $("#frase").innerHTML = t.frase;
-    $("#dica-cracha").textContent = t.dica;
-    $("#cracha-cartao").setAttribute("aria-label", t.virar);
     $("#cracha-frente").setAttribute("aria-label", t.fotoAlt);
-    $("#cracha-texto").innerHTML = t.verso;
     $("#etiquetas").innerHTML = ETIQUETAS.map((e, i) => `<li class="etiqueta e${i + 1}">
       <span class="bolinha" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="${forma}"/></svg></span>
       <span><strong>${esc(en ? e.titulo_en : e.titulo)}</strong><small>${esc(en ? e.detalhe_en : e.detalhe)}</small></span></li>`).join("");
@@ -326,8 +292,8 @@
     desenhar(lingua);
   });
 
-  /* ===== CRACHÁ: cai balançando ao abrir, balança com o mouse e vira ao tocar ===== */
-  const cracha = $("#cracha"), crachaPulo = $("#cracha-pulo"), crachaCartao = $("#cracha-cartao");
+  /* ===== CRACHÁ: cai balançando ao abrir e balança com o mouse em cima ===== */
+  const cracha = $("#cracha");
   let balancoAmp = 0, balancoAlvo = 0, balancoFase = 0, balancoTempo = 0, balancando = false;
   function balancar(agora) {
     const dt = Math.min((agora - balancoTempo) / 1000, 0.05);
@@ -344,21 +310,6 @@
     if (!balancando) { balancando = true; balancoFase = 0; balancoTempo = performance.now(); requestAnimationFrame(balancar); }
   });
   cracha.addEventListener("pointerleave", () => { balancoAlvo = 0; });
-  crachaCartao.addEventListener("click", () => {
-    const virar = !crachaCartao.classList.contains("virado");
-    crachaPulo.classList.remove("pulando"); void crachaPulo.offsetWidth; crachaPulo.classList.add("pulando");
-    setTimeout(() => crachaCartao.classList.toggle("virado", virar), reduzirMovimento ? 0 : 170);
-    crachaCartao.setAttribute("aria-pressed", String(virar));
-    $("#cracha-frente").setAttribute("aria-hidden", String(virar));
-    $("#cracha-verso").setAttribute("aria-hidden", String(!virar));
-  });
-  crachaPulo.addEventListener("animationend", () => crachaPulo.classList.remove("pulando"));
-  crachaCartao.addEventListener("pointermove", (e) => {
-    const r = crachaCartao.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * 100, y = (e.clientY - r.top) / r.height * 100;
-    crachaCartao.style.setProperty("--cx", x.toFixed(1) + "%");
-    crachaCartao.style.setProperty("--cxi", (100 - x).toFixed(1) + "%");
-    crachaCartao.style.setProperty("--cy", y.toFixed(1) + "%");
-  });
 
   // entrada: cai do alto e vai balançando até parar
   (function entrada() {

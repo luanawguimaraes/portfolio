@@ -104,9 +104,16 @@
 
   /* estrelinhas em volta do crachá */
   .estrela-solta { position: absolute; pointer-events: none; animation: girar 20s linear infinite; }
-  .estrela-solta.e1 { width: 34px; top: 120px; left: 9%; color: var(--estrela); }
-  .estrela-solta.e2 { width: 22px; top: 250px; right: 11%; color: #F6BFD6; animation-direction: reverse; animation-duration: 26s; }
-  .estrela-solta.e3 { width: 16px; top: 80px; right: 20%; color: var(--estrela); animation-duration: 32s; }
+  /* e1: rosa, em cima à esquerda (para não ficar azul embaixo da estrela azul da barra)
+     e2: azul, à direita, no espaço vazio abaixo da etiqueta "Criadora" */
+  .estrela-solta.e1 { width: 30px; top: 100px; left: 9%; color: #F6BFD6; }
+  .estrela-solta.e2 { width: 26px; top: calc(var(--h-cartao) + 80px); right: 9%; color: var(--estrela); animation-direction: reverse; animation-duration: 26s; }
+  .estrela-solta.e3 { width: 16px; top: 104px; right: 20%; color: var(--estrela); animation-duration: 32s; }
+  .corpo { --h-cartao: calc(min(172px, 46vw) * 1.498); }
+  @media (max-width: 359px) {
+    .estrela-solta.e1 { width: 22px; top: 92px; left: 5%; }
+    .estrela-solta.e3 { right: 6%; }
+  }
   @keyframes girar { to { transform: rotate(360deg); } }
 
   /* ===== TEXTO ===== */

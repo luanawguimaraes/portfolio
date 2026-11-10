@@ -235,9 +235,12 @@ function desenharPortfolio() {
   const noAr = dados.videos.filter((v) => v.visivel && !v.exemplo);
   const nicho = contar(noAr, "nicho")[0];
   const origem = contar(visitas, "origem")[0];
+  const inicio14 = new Date(); inicio14.setHours(0, 0, 0, 0); inicio14.setDate(inicio14.getDate() - 13);
+  const contatosSite = dados.marcas.filter((m) => m.origem === "site" && !m.exemplo && new Date(m.criado_em) >= inicio14).length;
   $("#portfolio-numeros").innerHTML = [
     ["Visitas em 14 dias", visitas.length],
     ["Visitas hoje", deHoje],
+    ["Contatos pelo site", contatosSite, "formulários em 14 dias"],
     ["Vídeos no ar", noAr.length],
     ["Nicho mais forte", nicho ? `${nomeNicho(nicho[0])}` : "Ainda sem vídeos", nicho ? `${nicho[1]} vídeo${nicho[1] > 1 ? "s" : ""}` : ""],
     ["De onde mais vêm", origem ? origem[0] : "Ainda sem visitas", origem ? `${origem[1]} visita${origem[1] > 1 ? "s" : ""}` : ""]
@@ -249,7 +252,7 @@ function desenharPortfolio() {
   const porDia = {}; visitas.forEach((v) => { const k = isoDia(new Date(v.data)); porDia[k] = (porDia[k] || 0) + 1; });
   const maior = Math.max(0, ...dias.map((d) => porDia[d] || 0));
   $("#grafico").innerHTML = maior === 0
-    ? '<p class="vazio">Quando as pessoas começarem a visitar o seu portfólio, aqui aparece uma barra por dia com o número de visitas dos últimos 14 dias.</p>'
+    ? '<p class="vazio">Quando as pessoas começarem a visitar o seu portfólio, aqui aparece uma barra por dia com o número de visitas dos últimos 14 dias.<br><br><b>As suas próprias visitas não contam:</b> neste navegador você está logada, então o site entende que é você e não registra. Para testar, abra o portfólio numa aba anônima ou no celular.</p>'
     : `<div class="grafico">${dias.map((d) => { const n = porDia[d] || 0; const [, m, dd] = d.split("-");
         return `<div class="barra${d === hoje ? " hoje" : ""}" title="${n} visita${n === 1 ? "" : "s"} em ${dataBR(d)}"><b>${n || ""}</b><i style="height:${Math.round((n / maior) * 100)}%"></i><span>${dd}/${m}</span></div>`; }).join("")}</div>`;
 

@@ -43,7 +43,7 @@ const IC = {
 
 const NICHOS_SITE = [
   ["acessorios", "Acessórios"], ["skincare", "Skincare"], ["haircare", "Haircare"], ["tech", "Tech & App"],
-  ["moda", "Moda"], ["saude", "Saúde & bem-estar"], ["pet", "Pet"], ["collab", "Collab"]
+  ["moda", "Moda"], ["saude", "Saúde & bem-estar"], ["pet", "Pet"], ["casa", "Casa e decoração"], ["collab", "Collab"]
 ];
 const nomeNicho = (id) => (NICHOS_SITE.find((n) => n[0] === id) || [id, id])[1] || "";
 const SITUACOES = [["lead", "Lead"], ["conversando", "Conversando"], ["cliente", "Cliente"], ["parada", "Parada"]];

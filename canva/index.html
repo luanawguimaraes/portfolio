@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modelos escondidos no Canva | Luana Guimarães</title>
+<meta name="description" content="A lista de buscas no Canva que eu uso para achar modelos bonitos, com print de cada uma e botão para copiar.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;700;800&family=Yellowtail&display=swap" rel="stylesheet">
+<style>
+  :root { --chiclete: #E2457F; --bebe: #F6B8CF; --vinho: #7A1238; --preto: #1E1A1B; --branco: #FBF7F5; --nude: #EDE3DE; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font: 400 17px/1.5 "Inter Tight", sans-serif; color: var(--preto);
+    background-color: var(--nude);
+    background-image: linear-gradient(rgba(122,18,56,.08) 1.5px, transparent 1.5px), linear-gradient(90deg, rgba(122,18,56,.08) 1.5px, transparent 1.5px);
+    background-size: 44px 44px;
+  }
+  main { max-width: 760px; margin: 0 auto; padding: 0 16px 80px; }
+
+  /* topo com o crachá */
+  .topo { position: relative; text-align: center; padding: 24px 0 36px; }
+  .cracha { display: block; width: min(320px, 78vw); height: auto; margin: 0 auto; transform-origin: 50% 0; animation: balanca 4s ease-in-out infinite; filter: drop-shadow(0 22px 30px rgba(122,18,56,.22)); }
+  @keyframes balanca { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+  @media (prefers-reduced-motion: reduce) { .cracha { animation: none; } }
+
+  .kick { margin-top: 34px; font: 800 13px "Inter Tight"; letter-spacing: .3em; text-transform: uppercase; color: var(--chiclete); }
+  h1 { margin-top: 8px; font: 400 clamp(46px, 11vw, 78px)/.95 "Instrument Serif", serif; letter-spacing: -.03em; }
+  h1 span { font-family: "Yellowtail", cursive; color: var(--chiclete); font-size: 1.12em; }
+  .intro { max-width: 520px; margin: 16px auto 0; color: #4a4245; }
+
+  .como { margin: 30px 0 10px; background: var(--branco); border-left: 6px solid var(--chiclete); padding: 18px 22px; border-radius: 6px; box-shadow: 0 12px 26px rgba(122,18,56,.08); font-size: 16px; color: #4a4245; }
+  .como b { color: var(--preto); }
+
+  .lista { display: grid; gap: 26px; margin-top: 26px; }
+  .item { background: var(--branco); border-radius: 26px; padding: 18px; box-shadow: 0 18px 40px rgba(122,18,56,.12); display: grid; grid-template-columns: 200px 1fr; gap: 22px; align-items: center; }
+  .item img { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; object-position: 50% 0; border-radius: 16px; display: block; box-shadow: 0 8px 18px rgba(0,0,0,.08); }
+  .num { font: 400 40px/1 "Yellowtail"; color: var(--chiclete); }
+  .item h2 { margin-top: 4px; font: 400 40px/1 "Instrument Serif", serif; letter-spacing: -.02em; }
+  .item p { margin-top: 8px; font-size: 15.5px; color: #4a4245; }
+  .busca { margin-top: 14px; display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 16px; background: #fff; border: 2px solid rgba(226,69,127,.45); border-radius: 999px; }
+  .busca svg { width: 20px; height: 20px; flex: none; fill: none; stroke: var(--chiclete); stroke-width: 2.6; stroke-linecap: round; }
+  .busca code { flex: 1; font: 600 16px "Inter Tight"; color: var(--preto); overflow-wrap: anywhere; }
+  .copiar { flex: none; border: 0; cursor: pointer; padding: 10px 18px; border-radius: 999px; background: var(--preto); color: #fff; font: 800 13px "Inter Tight"; letter-spacing: .08em; text-transform: uppercase; transition: background .2s; }
+  .copiar:hover, .copiar:focus-visible { background: var(--vinho); }
+  .copiar:focus-visible { outline: 3px solid var(--bebe); outline-offset: 2px; }
+  .copiar.ok { background: var(--chiclete); }
+
+  .fim { margin-top: 44px; text-align: center; background: var(--vinho); color: #fff; border-radius: 28px; padding: 38px 26px; }
+  .fim h3 { font: 400 40px/1 "Instrument Serif", serif; }
+  .fim h3 span { font-family: "Yellowtail", cursive; color: var(--bebe); }
+  .fim p { margin-top: 10px; color: #F6D9E4; }
+  .fim a { display: inline-block; margin-top: 20px; padding: 14px 28px; border-radius: 999px; background: var(--chiclete); color: #fff; font-weight: 800; text-decoration: none; letter-spacing: .04em; }
+  .fim a + a { background: transparent; border: 2px solid var(--bebe); color: #fff; margin-left: 8px; }
+  footer { margin-top: 28px; text-align: center; font: 600 12px "Inter Tight"; letter-spacing: .28em; text-transform: uppercase; color: var(--vinho); }
+
+  @media (max-width: 560px) {
+    .item { grid-template-columns: 1fr; }
+    .item img { max-width: 240px; margin: 0 auto; }
+    .fim a + a { margin-left: 0; margin-top: 10px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header class="topo">
+    <img class="cracha" src="../cracha.webp" alt="Crachá da Luana Guimarães, UGC creator e designer de portfólios" width="1847" height="2000">
+    <p class="kick">Lista completa</p>
+    <h1>Modelos escondidos no <span>Canva</span></h1>
+    <p class="intro">As buscas que eu uso para achar modelos bonitos e fugir do óbvio. Toca em <b>copiar</b> e cola na busca do Canva.</p>
+  </header>
+
+  <p class="como"><b>Como usar:</b> abre o Canva, toca em <b>Modelos</b>, depois na <b>lupa</b>, e cola o nome. Os nomes funcionam melhor em inglês, do jeito que estão aqui.</p>
+
+  <section class="lista" id="lista" aria-label="Lista de buscas"></section>
+
+  <section class="fim">
+    <h3>Quer um portfólio com <span>essa cara</span>?</h3>
+    <p>Eu crio portfólios personalizados para creators, pensados para a marca entender rápido por que contratar você.</p>
+    <a href="https://portfoliopersonalizado.luanaguimaraes.com.br/">Quero o meu</a>
+    <a href="https://instagram.com/luawiechetek">Me segue no Instagram</a>
+  </section>
+  <footer>@luawiechetek</footer>
+</main>
+
+<script>
+  /* LISTA: para acrescentar uma busca, copie uma linha e troque o nome, a imagem e o texto */
+  const BUSCAS = [
+    { termo: "IOS core", img: "ios-core.webp", texto: "Visual de celular, com pastas e janelinhas. Super atual." },
+    { termo: "Creator lifestyle", img: "creator-lifestyle.webp", texto: "Os modelos que as creators mais estão usando agora." },
+    { termo: "Trend", img: "trend.webp", texto: "O que está em alta no Instagram, já pronto para editar." },
+    { termo: "Journal", img: "journal.webp", texto: "Cara de caderno e diário. Ótimo para o \"sobre mim\" do portfólio." },
+    { termo: "Coquette aesthetic", img: "coquette-aesthetic.webp", texto: "Laços, rosa e colagem. Perfeito para beleza, moda e lifestyle." },
+    { termo: "Folder carousel", img: "folder-carousel.webp", texto: "Carrossel em formato de pasta. Lindo para mostrar trabalhos e serviços." },
+    { termo: "Aesthetic", img: "aesthetic.webp", texto: "Uma mistura de tudo que está em alta: colagem, editorial e recortes." },
+    { termo: "Letter", img: "letter.webp", texto: "Cartas, envelopes e selos. Delicado e diferente." }
+  ];
+  const lupa = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M15.5 15.5L21 21"/></svg>';
+  const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  document.getElementById("lista").innerHTML = BUSCAS.map((b, i) => `
+    <article class="item">
+      <img src="${b.img}" alt="Resultado da busca ${esc(b.termo)} no Canva" loading="lazy" width="736" height="1240">
+      <div>
+        <span class="num">${i + 1}</span>
+        <h2>${esc(b.termo)}</h2>
+        <p>${esc(b.texto)}</p>
+        <div class="busca">${lupa}<code>${esc(b.termo)}</code><button class="copiar" type="button" data-termo="${esc(b.termo)}">Copiar</button></div>
+      </div>
+    </article>`).join("");
+
+  // copiar: usa a área de transferência e, se não der, seleciona um campo escondido
+  async function copiar(texto) {
+    try { await navigator.clipboard.writeText(texto); return true; } catch (_) {}
+    const t = document.createElement("textarea");
+    t.value = texto; t.setAttribute("readonly", ""); t.style.position = "fixed"; t.style.opacity = "0";
+    document.body.appendChild(t); t.select();
+    let ok = false; try { ok = document.execCommand("copy"); } catch (_) {}
+    t.remove(); return ok;
+  }
+  document.getElementById("lista").addEventListener("click", async (e) => {
+    const b = e.target.closest(".copiar"); if (!b) return;
+    const ok = await copiar(b.dataset.termo);
+    b.textContent = ok ? "Copiado!" : "Segure e copie";
+    b.classList.toggle("ok", ok);
+    setTimeout(() => { b.textContent = "Copiar"; b.classList.remove("ok"); }, 1800);
+  });
+</script>
+</body>
+</html>
